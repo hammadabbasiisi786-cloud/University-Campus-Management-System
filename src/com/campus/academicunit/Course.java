@@ -106,11 +106,39 @@ public class Course {
     //OTHER METHODS
 
     public void addStudent(Student student) {
+        for(int i=0;i<students.size();i++){
+            Student temp = students.get(i);
+            if(temp.equals(student)){
+                System.out.println("Student already exists in this course");
+                return;
+            }
+        }
+        if(students.size()>=maxcapacity) {
+            System.out.println("Maximum Capacity Reached!!!");
+            return;
+        }
         students.add(student);
+
     }
 
     public void removeStudent(Student student) {
-        students.remove(student);
+
+        if (student == null) {
+            System.out.println("Invalid student");
+            return;
+        }
+
+        for (int i = 0; i < students.size(); i++) {
+            Student temp = students.get(i);
+
+            if (temp.equals(student)) {
+                students.remove(i);
+                System.out.println("Student removed successfully");
+                return;
+            }
+        }
+
+        System.out.println("Student not found in this course");
     }
 
     public void addAssignment(Assignment assignment) {
@@ -118,30 +146,23 @@ public class Course {
     }
 
     public void removeAssignment(Assignment assignment) {
-        assignments.remove(assignment);
+
+        if (assignment == null) {
+            System.out.println("Invalid assignment");
+            return;
+        }
+
+        for (int i = 0; i < assignments.size(); i++) {
+            if (assignments.get(i) == assignment) {
+                assignments.remove(i);
+                System.out.println("Assignment removed successfully");
+                return;
+            }
+        }
+
+        System.out.println("Assignment not found");
     }
 
 
-
-//    public void addStudent(Student student) {
-//
-//        for (Student temp : students) {
-//            if (student.equals(temp)) {
-//                System.out.println("Student already exists");
-//                return;
-//            }
-//        }
-//
-//        if (students.size() <= maxcapacity) {
-//            students.add(student);
-//        } else {
-//            System.out.println("Maximum number of students no more could be added");
-//        }
-//    }
-//
-//    public void removeStudent(Student student) {
-//        this.students.remove(student);
-//        System.out.println("Student Removed!!!");
-//    }
 
 }
