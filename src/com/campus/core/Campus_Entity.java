@@ -1,6 +1,4 @@
-package com.campus.academicunit;
-
-import java.util.ArrayList;
+package com.campus.core;
 
 public class Campus_Entity {
     protected String entityID;

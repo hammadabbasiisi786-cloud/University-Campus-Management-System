@@ -1,18 +1,17 @@
 package com.campus.academicunit;
 
-import com.campus.core.Academic_Unit;
+import com.campus.core.Academic_unit;
 
 import java.util.*;
 
 
-class Department extends Academic_Unit {
+class Department extends Academic_unit {
 
     private String departmentName;
     private Professor headOfDepartment;
 
     ArrayList<Faculty> Faculties = new ArrayList<>();
     ArrayList<Course> courses = new ArrayList<>();
-
 
 
     public Department() {
