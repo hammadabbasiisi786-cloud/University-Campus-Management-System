@@ -1,13 +1,16 @@
 package com.campus.academicunit;
 
+import com.campus.core.Academic_unit;
+
 import java.util.ArrayList;
 
-class Classroom {
+class Classroom extends Academic_unit {
 
     private static int idCounter = 0;
-    private boolean isAvailable;
     private final String classNumber;
     private int capacity;
+
+    ArrayList<String> occupiedSlots = new ArrayList<String>();
 
     public Classroom() {
         idCounter++;
@@ -17,11 +20,8 @@ class Classroom {
     public Classroom(boolean isAvailable, int capacity) {
         idCounter++;
         this.classNumber = "LAB-" + idCounter;
-        isAvailable(isAvailable);
         setCapacity(capacity);
     }
-
-    public void isAvailable(boolean isAvailable) {this.isAvailable = isAvailable;}
 
     public void setCapacity(int capacity) {
         if (capacity > 0) {
@@ -32,11 +32,36 @@ class Classroom {
     }
 
 
-    public boolean isAvailable() {return isAvailable;}
-
     public String getClassNumber() {return classNumber;}
 
     public int getCapacity() {return capacity;}
 
+
+    public boolean isSlotAvailable(String day, String time) {
+        String schedule = day + "-" + time;
+
+        if (occupiedSlots.contains(schedule)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void bookSlot(String day, String time) {
+        String schedule = day + "-" + time;
+        occupiedSlots.add(schedule);
+
+    }
+
+    public double calculateOperationalCost() {
+
+        double operationalSum = 0;
+
+        for (Equipment eq : equipments) {
+            operationalSum += eq.getOperationalCost();
+        }
+
+        return operationalSum + (capacity * 100);
+    }
 
 }

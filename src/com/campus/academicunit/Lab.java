@@ -1,17 +1,23 @@
 package com.campus.academicunit;
 
+import com.campus.core.Academic_unit;
+
 import java.util.ArrayList;
 
-class Lab {
+class Lab extends Academic_unit {
 
     private static int idCounter = 0;
-    private boolean isAvailable;
     private final String labNumber;
+    private boolean isAvailable;
     private int capacity;
 
-    //Relations
-    private Lab_Assistant la;
 
+     //Relations
+    private Lab_Assistant la;
+    private ArrayList<Student> students = new ArrayList<>();
+
+
+    //CONSTRUCTORS
 
     public Lab() {
         idCounter++;
@@ -26,7 +32,31 @@ class Lab {
         setLabAssistant(la);
     }
 
-    public void setAvailability(boolean isAvailable) {this.isAvailable = isAvailable;}
+
+    //SETTERS
+
+    public boolean getAvailability() {
+        return isAvailable;
+    }
+
+    public void setAvailability(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
+
+    public void setLab_Assistant(Lab_Assistant la) {
+        this.la = la;
+    }
+
+
+    //GETTERS
+    public String getLabNumber() {
+        return labNumber;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
 
     public void setCapacity(int capacity) {
         if (capacity > 0) {
@@ -36,16 +66,85 @@ class Lab {
         }
     }
 
-    public void setLabAssistant(Lab_Assistant la) {this.la = la;}
+    public Lab_Assistant getLabAssistant() {
+        return la;
+    }
 
-    public boolean getAvailability() {return isAvailable;}
+    public void setLabAssistant(Lab_Assistant la) {
+        this.la = la;
+    }
 
-    public String getLabNumber() {return labNumber;}
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
 
-    public int getCapacity() {return capacity;}
+    @Override
+    public int getNumberOfStudents() {
+        return students.size();
+    }
 
-    public Lab_Assistant getLabAssistant() {return la;}
+
+    //OTHER METHODS
+
+    public void addStudent(Student student) {
+        if (student == null) {
+            System.out.println("Invalid student");
+            return;
+        }
+
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).equals(student)) {
+                System.out.println("Student already exists in this lab");
+                return;
+            }
+        }
+
+        if (students.size() >= capacity) {
+            System.out.println("Maximum capacity reached");
+            return;
+        }
+
+        students.add(student);
+        System.out.println("Student added successfully");
+    }
+
+    public void removeStudent(Student student) {
+        if (student == null) {
+            System.out.println("Invalid student");
+            return;
+        }
+
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).equals(student)) {
+                students.remove(i);
+                System.out.println("Student removed successfully");
+                return;
+            }
+        }
+
+        System.out.println("Student not found in this lab");
+    }
+
+    @Override
+    public double calculateOperationalCost() {
+
+        double operationalSum = 0;
+
+        for (Equipment eq : equipments) {
+            operationalSum += eq.getOperationalCost();
+        }
+
+        return operationalSum + (capacity * 100);
+    }
 
 
+    @Override
+    public String toString() {
+        return "Lab: " + labNumber +
+                " | Capacity: " + capacity +
+                " | Students: " + students.size() +
+                " | Available: " + isAvailable +
+                " | Lab Assistant: " + (la != null ? la.getFirstName() + " " + la.getLastName() : "Not Assigned");
+    }
 
 }

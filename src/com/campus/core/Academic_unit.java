@@ -12,7 +12,7 @@ public class Academic_unit extends Campus_Entity {
     //no of equipments
 
 
-//    @Override
+    @Override
     //Method for calculating operational cost
     public double calculateOperationalCost() {
         double operationalSum = 0;
@@ -26,6 +26,16 @@ public class Academic_unit extends Campus_Entity {
 
         return operationalSum + studentsum;
 
+    }
+
+    //abstract
+    public int getNumberOfStudents() {
+        return numberOfStudents;
+    }
+
+    //abstract
+    public int getNumberofFaculty() {
+        return numberofFaculty;
     }
 
 }
