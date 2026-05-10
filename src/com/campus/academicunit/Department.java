@@ -1,28 +1,25 @@
 package com.campus.academicunit;
 
+import com.campus.Interfaces.Reportable;
+
 import com.campus.core.Academic_unit;
 
 import java.util.*;
 
 
-class Department extends Academic_unit {
-
-    private String departmentName;
-    private Professor headOfDepartment;
+class Department extends Academic_unit implements Reportable {
 
     ArrayList<Faculty> Faculties = new ArrayList<>();
     ArrayList<Course> courses = new ArrayList<>();
+    private String departmentName;
+    private Professor headOfDepartment;
 
 
     public Department() {
-        ID++;
-        departmentId = ID;
 
     }
 
     public Department(String departmentName, Professor headOfDepartment) {
-        ID++;
-        departmentId = ID;
         setHeadOfDepartment(headOfDepartment);
         setDepartmentName(departmentName);
 
@@ -39,4 +36,8 @@ class Department extends Academic_unit {
     public void setHeadOfDepartment(Professor headOfDepartment) {
         this.headOfDepartment = headOfDepartment;
     }
+
+    public String getDepartmentName() {return departmentName;}
+
+    public Professor getHeadOfDepartment() {return headOfDepartment;}
 }

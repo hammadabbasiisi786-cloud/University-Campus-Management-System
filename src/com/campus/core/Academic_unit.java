@@ -11,4 +11,21 @@ public class Academic_unit extends Campus_Entity {
     //Equipment cost and calculation
     //no of equipments
 
+
+//    @Override
+    //Method for calculating operational cost
+    public double calculateOperationalCost() {
+        double operationalSum = 0;
+
+        for (Equipment eq : equipments) {
+            operationalSum += eq.getOperationalCost();
+        }
+
+        double studentsum = 0;
+        studentsum = numberOfStudents * 100;
+
+        return operationalSum + studentsum;
+
+    }
+
 }

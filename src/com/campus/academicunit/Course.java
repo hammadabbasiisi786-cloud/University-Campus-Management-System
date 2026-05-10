@@ -1,8 +1,11 @@
 package com.campus.academicunit;
 
+import com.campus.Interfaces.Notifiable;
+import com.campus.Interfaces.Schedulable;
+
 import java.util.*;
 
-public class Course {
+public class Course implements Schedulable {
 
     private static int idCounter = 0;
     private final String courseId;
@@ -17,6 +20,7 @@ public class Course {
     private ArrayList<Assignment> assignments;
     private ArrayList<Classroom> classrooms;
 
+    //SCHEDULE STRING
     //If a classroom becomes unavailable → system reschedules affected classes
 
     public Course() {
