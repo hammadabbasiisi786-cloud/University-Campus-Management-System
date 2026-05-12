@@ -1,4 +1,4 @@
-package com.campus.Interfaces;
+package com.campus.interfaces;
 
 public interface Notifiable {
 }

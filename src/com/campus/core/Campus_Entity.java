@@ -9,4 +9,12 @@ abstract class Campus_Entity {
 
     public abstract double calculateOperationalCost() ;
 
+    @Override
+    public String toString() {
+        return "-------Campus_Entity------" +
+                "entityID='" + entityID + '\'' +
+                ", entityName='" + entityName + '\'' +
+                ", location='" + location + '\'' +
+                ", status='" + status + '\'';
+    }
 }

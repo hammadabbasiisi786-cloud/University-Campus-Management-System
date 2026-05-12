@@ -1,7 +1,7 @@
 package com.campus.core;
 
 /// ///////////////////////////////////////////////////////////////////////////////////////////////////
-public abstract class Facility extends CampusEntity {
+public abstract class Facility extends Campus_Entity {
     protected double maintenanceCost;
     protected double usageFrequency;
     protected int capacity;
@@ -14,10 +14,31 @@ public abstract class Facility extends CampusEntity {
         this.isOpen = isOpen;
     }
 
+    public String getStatus(){
+        if(!isOpen){
+            return "Closed";
+        }
+        if(capacity<=usageFrequency){
+            return "Capcity is Full, Busy";
+        }
+        return "Open";
+    }
+
     public Facility() {
     }
 
     public double calculateOperationalCost() {
         return maintenanceCost + usageFrequency;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                "\nmaintenanceCost=" + maintenanceCost +
+                ", usageFrequency=" + usageFrequency +
+                ", capacity=" + capacity +
+                ", isOpen=" + isOpen
+                ;
+    }
+
 }
