@@ -1,20 +1,20 @@
 package com.campus.Person;
 
 public class Student {
-    private String name;
     private static int studentcounter = 0;
-    private final int studentID;
+    private final String studentID;
+    private String name;
     private int semester;
 
     public Student() {
         studentcounter++;
-        this.studentID = studentcounter;
+        this.studentID = "FA25-BCS-" + studentcounter;
     }
 
     public Student(String name, int semester) {
         this.name = name;
         studentcounter++;
-        this.studentID = studentcounter;
+        this.studentID = "FA25-BCS-" + studentcounter;
         this.semester = semester;
     }
 
@@ -26,7 +26,7 @@ public class Student {
         this.name = name;
     }
 
-    public int getStudentID() {
+    public String getStudentID() {
         return studentID;
     }
 
