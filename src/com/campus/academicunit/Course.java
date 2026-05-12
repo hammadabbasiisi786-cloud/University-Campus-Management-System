@@ -1,6 +1,9 @@
 package com.campus.academicunit;
 
 import com.campus.Interfaces.Schedulable;
+
+import com.campus.Person.*;
+
 import java.util.*;
 
 public class Course implements Schedulable {
@@ -14,12 +17,10 @@ public class Course implements Schedulable {
     private String time;
 
     //Relations
-    private Professor p;
+    private Teacher t;
     private Classroom c;
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Assignment> assignments = new ArrayList<>();
-    private ArrayList<Classroom> classrooms = new ArrayList<>();//issue how to initialize it???
-
 
     //CONSTRUCTORS
 
@@ -28,12 +29,12 @@ public class Course implements Schedulable {
         this.courseId = "CSC-" + idCounter;
     }
 
-    public Course(String courseName, int creditHour, Professor p, Classroom c, String day, String time) {
+    public Course(String courseName, int creditHour, Teacher t, Classroom c, String day, String time) {
         idCounter++;
         this.courseId = "CSC-" + idCounter;
         setCourseName(courseName);
         setCreditHour(creditHour);
-        setProfessor(p);
+        setProfessor(t);
         this.day = day;
         this.time = time;
         setClassroom(c);
@@ -65,18 +66,22 @@ public class Course implements Schedulable {
         }
     }
 
-    public void setProfessor(Professor p) {
-        this.p = p;
+    public void setProfessor(Teacher p) {
+        this.t = p;
     }
 
     public void setClassroom(Classroom c) {
+        this.c = c;
         if (c.isSlotAvailable(day, time)) {
             c.bookSlot(day, time);
-            this.c = c;
             setMaxcapacity();
         } else {
             System.out.println("Slot not available for " + courseName + ". Finding another slot...");
-            generateSchedule(day, time);
+            String result = generateSchedule(day, time);
+            if(result.equals("No Slot Available")) {
+                this.c = null;
+                System.out.println("Could not assign any classroom to: " + courseName);
+            }
             setMaxcapacity();
         }
     }
@@ -112,7 +117,7 @@ public class Course implements Schedulable {
 
     public String getTime() { return time; }
 
-    public Professor getProfessor() { return p; }
+    public Teacher getTeacher() { return t; }
 
     public Classroom getClassroom() { return c; }
 
@@ -120,7 +125,6 @@ public class Course implements Schedulable {
 
     public ArrayList<Assignment> getAssignments() { return assignments; }
 
-    public ArrayList<Classroom> getClassrooms() { return classrooms; }
 
 
     //OTHER METHODS
@@ -183,37 +187,40 @@ public class Course implements Schedulable {
         System.out.println("Assignment not found");
     }
 
-    public void addClassroom(Classroom classroom) {
-        if (classroom == null) {
-            System.out.println("Invalid classroom");
-            return;
-        }
-        classrooms.add(classroom);
-    }
-
 
     @Override
-    // Rescheduling logic — finds new available slot
     public String generateSchedule(String day, String time) {
+
+        // Guard: department must be set before rescheduling can work
+        if (this.c == null || this.c.getDepartment() == null) {
+            System.out.println("No department assigned to course: " + courseName + ". Cannot reschedule.");
+            return "No Slot Available";
+        }
+
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
         String[] times = {"9-12", "12-2", "2-4"};
 
-        for (String d : days) {
-            for (String t : times) {
-                for (Classroom room : classrooms) {
+        // Loop through every classroom the department owns
+        for (Classroom room : this.c.getDepartment().getDepartmentalClassrooms()) {
+            for (String d : days) {
+                for (String t : times) {
                     if (room.isSlotAvailable(d, t)) {
                         room.bookSlot(d, t);
                         this.c = room;
                         this.day = d;
                         this.time = t;
-                        System.out.println("Course rescheduled to Room " + room.getClassNumber() + " on " + d + " at " + t);
-                        return "Course: " + courseName + " | Room: " + room.getClassNumber() + " | Day: " + d + " | Time: " + t;
+                        System.out.println("Course rescheduled → Room: " + room.getClassNumber()
+                                + " | Day: " + d + " | Time: " + t);
+                        return "Course: " + courseName
+                                + " | Room: " + room.getClassNumber()
+                                + " | Day: " + d
+                                + " | Time: " + t;
                     }
                 }
             }
         }
 
-        System.out.println("No available slot found for " + courseName);
+        System.out.println("No available classroom found in department for: " + courseName);
         return "No Slot Available";
     }
 
@@ -225,7 +232,7 @@ public class Course implements Schedulable {
                 " | Room: " + (c != null ? c.getClassNumber() : "Not Assigned") +
                 " | Day: " + day +
                 " | Time: " + time +
-                " | Professor: " + p.getFirstName() + " " + p.getLastName();
+                " | Teacher: " + t.getName();
     }
 
 

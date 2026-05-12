@@ -1,30 +1,37 @@
 package com.campus.academicunit;
 
 import com.campus.Interfaces.Reportable;
+import com.campus.Person.*;
 import com.campus.core.Academic_unit;
+
 import java.util.*;
 
 class Department extends Academic_unit implements Reportable {
 
-    private Professor headOfDepartment;
+    private Teacher headOfDepartment;
 
     //Relations
-    private ArrayList<Faculty> faculties = new ArrayList<>();
+    private ArrayList<Teacher> teachers = new ArrayList<>();
     private ArrayList<Course> courses = new ArrayList<>();
-
+    private ArrayList<Classroom> departmentalClassrooms = new ArrayList<>();
+    private ArrayList<Lab> deparmentalLabs = new ArrayList<>();
 
     //CONSTRUCTORS
 
     public Department() {
     }
 
-    public Department(String departmentName, Professor headOfDepartment) {
+    public Department(String departmentName, Teacher headOfDepartment) {
         this.entityName = departmentName;
         setHeadOfDepartment(headOfDepartment);
     }
 
 
     //SETTERS
+
+    public String getDepartmentName() {
+        return entityName;
+    }
 
     public void setDepartmentName(String departmentName) {
         if (departmentName == null || departmentName.isEmpty()) {
@@ -34,30 +41,54 @@ class Department extends Academic_unit implements Reportable {
         }
     }
 
-    public void setHeadOfDepartment(Professor headOfDepartment) {
-        this.headOfDepartment = headOfDepartment;
-    }
-
 
     //GETTERS
 
-    public String getDepartmentName() {
-        return entityName;
+    public Teacher getHeadOfDepartment() {
+        return headOfDepartment;
     }
 
-    public Professor getHeadOfDepartment() {
-        return headOfDepartment;
+    public void setHeadOfDepartment(Teacher headOfDepartment) {
+        this.headOfDepartment = headOfDepartment;
     }
 
     public ArrayList<Course> getCourses() {
         return courses;
     }
 
-    public ArrayList<Faculty> getFaculties() {
-        return faculties;
+    public ArrayList<Teacher> getTeachers() {
+        return teachers;
     }
 
 
+    public void removeClassroom(Classroom classroom) {
+        if (classroom == null) {
+            System.out.println("Invalid classroom");
+            return;
+        }
+        for (int i = 0; i < departmentalClassrooms.size(); i++) {
+            if (departmentalClassrooms.get(i) == classroom) {
+                departmentalClassrooms.remove(i);
+                System.out.println("Classroom removed successfully");
+                return;
+            }
+        }
+        System.out.println("Classroom not found in this department");
+    }
+
+    public ArrayList<Classroom> getDepartmentalClassrooms() {
+        return departmentalClassrooms;
+    }
+
+
+    public void addClassroom(Classroom classroom) {
+        if (classroom == null) {
+            System.out.println("Invalid classroom");
+            return;
+        }
+        classroom.setDepartment(this); // CHANGE: classroom now knows its department
+        departmentalClassrooms.add(classroom);//BIDIRECTIONAL RELATION b/w department and classroom
+    }
     //OTHER METHODS
 
     public void addCourse(Course course) {
@@ -83,22 +114,22 @@ class Department extends Academic_unit implements Reportable {
         System.out.println("Course not found in this department");
     }
 
-    public void addFaculty(Faculty faculty) {
-        if (faculty == null) {
+    public void addTeacher(Teacher teacher) {
+        if (teacher == null) {
             System.out.println("Invalid faculty");
             return;
         }
-        faculties.add(faculty);
+        teachers.add(teacher);
     }
 
-    public void removeFaculty(Faculty faculty) {
+    public void removeFaculty(Teacher faculty) {
         if (faculty == null) {
             System.out.println("Invalid faculty");
             return;
         }
-        for (int i = 0; i < faculties.size(); i++) {
-            if (faculties.get(i) == faculty) {
-                faculties.remove(i);
+        for (int i = 0; i < teachers.size(); i++) {
+            if (teachers.get(i) == faculty) {
+                teachers.remove(i);
                 System.out.println("Faculty removed successfully");
                 return;
             }
@@ -117,7 +148,7 @@ class Department extends Academic_unit implements Reportable {
 
     @Override
     public int getNumberofFaculty() {
-        return faculties.size();
+        return teachers.size();
     }
 
     @Override
@@ -133,13 +164,12 @@ class Department extends Academic_unit implements Reportable {
     }
 
 
-
     //    @Override
     public String generateReport() {
         return "Department: " + entityName +
-                " | HOD: " + headOfDepartment.getFirstName() + " " + headOfDepartment.getLastName() +
+                " | HOD: " + headOfDepartment.getName() +
                 " | Courses: " + courses.size() +
-                " | Faculty: " + faculties.size() +
+                " | Faculty: " + teachers.size() +
                 " | Students: " + getNumberOfStudents() +
                 " | Operational Cost: " + calculateOperationalCost();
     }
@@ -147,9 +177,36 @@ class Department extends Academic_unit implements Reportable {
     @Override
     public String toString() {
         return "Department: " + entityName +
-                " | HOD: " + headOfDepartment.getFirstName() + " " + headOfDepartment.getLastName() +
+                " | HOD: " + headOfDepartment.getName() +
                 " | Courses: " + courses.size() +
                 " | Students: " + getNumberOfStudents();
+    }
+
+
+    public void handleClassroomUnavailable(Classroom classroom) {
+        if (classroom == null) {
+            System.out.println("Invalid classroom");
+            return;
+        }
+
+        System.out.println("Classroom " + classroom.getClassNumber()
+                + " is now unavailable. Rescheduling affected courses...");
+
+        ArrayList<String> affectedSlots = classroom.markUnavailable();
+
+        removeClassroom(classroom);
+
+        for (Course course : courses) {
+            if (course.getClassroom() == classroom) {
+                System.out.println("Rescheduling: " + course.getCourseName());
+
+                String result = course.generateSchedule(course.getDay(), course.getTime());
+
+                if (result.equals("No Slot Available")) {
+                    System.out.println("WARNING: Could not reschedule " + course.getCourseName());
+                }
+            }
+        }
     }
 }
 

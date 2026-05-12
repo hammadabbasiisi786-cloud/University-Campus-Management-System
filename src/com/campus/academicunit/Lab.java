@@ -1,5 +1,7 @@
 package com.campus.academicunit;
 
+import com.campus.Person.*;
+
 import com.campus.core.Academic_unit;
 
 import java.util.ArrayList;
@@ -12,8 +14,8 @@ class Lab extends Academic_unit {
     private int capacity;
 
 
-     //Relations
-    private Lab_Assistant la;
+    //Relations
+    private Teacher teacher;
     private ArrayList<Student> students = new ArrayList<>();
 
 
@@ -24,12 +26,12 @@ class Lab extends Academic_unit {
         this.labNumber = "LAB-" + idCounter;
     }
 
-    public Lab(boolean isAvailable, int capacity, Lab_Assistant la) {
+    public Lab(boolean isAvailable, int capacity, Teacher teacher) {
         idCounter++;
         this.labNumber = "LAB-" + idCounter;
         setAvailability(isAvailable);
         setCapacity(capacity);
-        setLabAssistant(la);
+        setLabAssistant(teacher);
     }
 
 
@@ -42,12 +44,6 @@ class Lab extends Academic_unit {
     public void setAvailability(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
-
-
-    public void setLab_Assistant(Lab_Assistant la) {
-        this.la = la;
-    }
-
 
     //GETTERS
     public String getLabNumber() {
@@ -66,12 +62,16 @@ class Lab extends Academic_unit {
         }
     }
 
-    public Lab_Assistant getLabAssistant() {
-        return la;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setLabAssistant(Lab_Assistant la) {
-        this.la = la;
+    public void setTeacher(Teacher la) {
+        this.teacher = la;
+    }
+
+    public void setLabAssistant(Teacher la) {
+        this.teacher = la;
     }
 
     public ArrayList<Student> getStudents() {
@@ -144,7 +144,7 @@ class Lab extends Academic_unit {
                 " | Capacity: " + capacity +
                 " | Students: " + students.size() +
                 " | Available: " + isAvailable +
-                " | Lab Assistant: " + (la != null ? la.getFirstName() + " " + la.getLastName() : "Not Assigned");
+                " | Lab Assistant: " + (teacher != null ? teacher.getName() : "Not Assigned");
     }
 
 }
