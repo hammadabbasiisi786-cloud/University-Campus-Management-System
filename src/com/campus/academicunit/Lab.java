@@ -125,26 +125,20 @@ class Lab extends Academic_unit {
         System.out.println("Student not found in this lab");
     }
 
-    @Override
-    public double calculateOperationalCost() {
-
-        double operationalSum = 0;
-
-        for (Equipment eq : equipments) {
-            operationalSum += eq.getOperationalCost();
-        }
-
-        return operationalSum + (capacity * 100);
-    }
 
 
     @Override
     public String toString() {
-        return "Lab: " + labNumber +
-                " | Capacity: " + capacity +
-                " | Students: " + students.size() +
-                " | Available: " + isAvailable +
-                " | Lab Assistant: " + (teacher != null ? teacher.getName() : "Not Assigned");
+        return "Lab: " + labNumber + " | Capacity: " + capacity + " | Students: " + students.size() + " | Available: " + isAvailable + " | Lab Assistant: " + (teacher != null ? teacher.getName() : "Not Assigned");
+    }
+
+    @Override
+    public double calculateOperationalCost() {
+        double operationalCost = 0;
+        for(Equipment eq : equipments) {
+            operationalCost += eq.getOperationalCost();
+        }
+        return operationalCost ;
     }
 
 }

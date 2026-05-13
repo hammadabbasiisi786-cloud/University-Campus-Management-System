@@ -61,15 +61,11 @@ class Classroom extends Academic_unit {
 
     }
 
-    public double calculateOperationalCost() {
 
-        double operationalSum = 0;
 
-        for (Equipment eq : equipments) {
-            operationalSum += eq.getOperationalCost();
-        }
-
-        return operationalSum + (capacity * 100);
+    @Override
+    public int getNumberOfStudents() {
+        return capacity;
     }
 
     public ArrayList<String> markUnavailable() {
@@ -78,6 +74,16 @@ class Classroom extends Academic_unit {
         occupiedSlots.clear(); // free all slots since room is gone
         return affectedSlots;  // department uses this to find affected courses
     }
+
+    @Override
+    public double calculateOperationalCost() {
+        double operationalCost = 0;
+        for(Equipment eq : equipments) {
+            operationalCost += eq.getOperationalCost();
+        }
+        return operationalCost ;
+    }
+
 
 
 }
