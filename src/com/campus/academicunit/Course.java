@@ -42,8 +42,8 @@ public class Course implements Schedulable {
     }
 
 
-    //SETTERS
 
+    //SETTERS
     public void setCourseName(String courseName) {
         if (courseName == null || courseName.isEmpty()) {
             System.out.println("Invalid Course Name Entered!!!!");
@@ -195,6 +195,8 @@ public class Course implements Schedulable {
         if (this.c == null || this.c.getDepartment() == null) {
             System.out.println("No department assigned to course: " + courseName + ". Cannot reschedule.");
             return "No Slot Available";
+
+            
         }
 
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};

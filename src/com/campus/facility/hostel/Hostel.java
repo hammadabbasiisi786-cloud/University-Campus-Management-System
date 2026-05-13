@@ -1,21 +1,19 @@
 package com.campus.facility.hostel;
 
-//import com.campus.academicunit.Student;
+import com.campus.Person.*;
 import com.campus.core.Facility;
 
 import java.util.ArrayList;
-
-import com.campus.academicunit.*;
 
 public class Hostel extends Facility {
     private static int totalHostels =0 ;
     private int totalRooms;
     private int occupiedRooms;
-    //private ArrayList<Student> residents;
+    private ArrayList<Student> residents;
     private String wardenName;
     private String openingHours;
     private String contact;
-    private String hostelType
+    private String hostelType;
 
     public Hostel(double usageFrequency, double maintenanceCost, int capacity, boolean isOpen, int totalRooms, int occupiedRooms, String wardenName, String openingHours, String contact, String hostelType) {
         super(usageFrequency, maintenanceCost, capacity, isOpen);
@@ -43,25 +41,25 @@ public class Hostel extends Facility {
             System.out.println("Rooms added: " + count +"| Total rooms: " + totalRooms );
         }
     }
-//    public boolean addStudent(Student student){
-//        if(!isFull()){
-//            System.out.println("No Vacancy!");
-//        }
-//        if(findResident(student.getStudentID())) !=null){
-//            System.out.println(student.getName() + " is already a resident");
-//            return false;
-//        }
-//        return true;
-//    }
+    public boolean addStudent(Student student){
+        if(!isFull()){
+            System.out.println("No Vacancy!");
+        }
+        if(findResident(student.getStudentID())) !=null){
+            System.out.println(student.getName() + " is already a resident");
+            return false;
+        }
+        return true;
+    }
     //////////////////////////////////////
-    //public boolean addStudent(Student student){
-//    public Student findResident(String studentID) {
-//        for (Student s : residents) {
-//            if (s.getStudentID().equals(studentID)) {
-//                return s;
-//            }
-//        }
-//        return null;
-//    }
+
+    public Student findResident(String id) {
+        for (Student s : residents) {
+            if (s.getStudentID().equals(id)) {
+                return s;
+            }
+        }
+        return null;
+    }
 }
 
