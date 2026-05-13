@@ -4,12 +4,10 @@ import com.campus.academicunit.Equipment;
 
 import java.util.ArrayList;
 
-public class Academic_unit extends Campus_Entity {
-    protected int numberOfStudents;
-    protected int numberofFaculty;
-    protected ArrayList<Equipment> equipments;
-    //Equipment cost and calculation
-    //no of equipments
+public abstract class Academic_unit extends Campus_Entity {
+//    protected int numberOfStudents;
+////    protected int numberofFaculty;
+    protected ArrayList<Equipment> equipments = new ArrayList<>();//didnt need this becaue department already have equipmments which are of class and lab
 
 
     @Override
@@ -29,13 +27,6 @@ public class Academic_unit extends Campus_Entity {
     }
 
     //abstract
-    public int getNumberOfStudents() {
-        return numberOfStudents;
-    }
-
-    //abstract
-    public int getNumberofFaculty() {
-        return numberofFaculty;
-    }
+    public abstract int getNumberOfStudents();
 
 }

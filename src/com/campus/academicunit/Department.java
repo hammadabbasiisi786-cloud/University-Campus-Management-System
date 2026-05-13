@@ -137,41 +137,56 @@ class Department extends Academic_unit implements Reportable {
         System.out.println("Faculty not found in this department");
     }
 
+
+
     @Override
-    public int getNumberOfStudents() {
-        int noOfStudents = 0;
-        for (Course tempcourse : courses) {
-            noOfStudents += tempcourse.getStudents().size();
+    public void generateReport() {
+        String separator = "==================================================";
+        String subSeparator = "--------------------------------------------------";
+
+        System.out.println(separator);
+        System.out.println("            DEPARTMENTAL ACADEMIC REPORT          ");
+        System.out.println(separator);
+
+        // Basic Information
+        System.out.printf("%-20s: %s\n", "Department Name", entityName);
+        System.out.printf("%-20s: %s\n", "Head of Dept", (headOfDepartment != null ? headOfDepartment.getName() : "Not Assigned"));
+        System.out.println(subSeparator);
+
+        // Academic Statistics
+        System.out.println("STATISTICS OVERVIEW:");
+        System.out.printf(" - Total Faculty:    %d\n", teachers.size());
+        System.out.printf(" - Total Courses:    %d\n", courses.size());
+        System.out.printf(" - Total Students:   %d\n", getNumberOfStudents());
+        System.out.printf(" - Classrooms/Labs:  %d/%d\n", departmentalClassrooms.size(), deparmentalLabs.size());
+        System.out.println(subSeparator);
+
+        // Faculty Roster (Brief List)
+        System.out.println("FACULTY MEMBERS:");
+        if (teachers.isEmpty()) {
+            System.out.println(" [No faculty assigned]");
+        } else {
+            for (Teacher t : teachers) {
+                System.out.println(" • " + t.getName() + " (" + t.getQualification() + ")");
+            }
         }
-        return noOfStudents;
-    }
+        System.out.println(subSeparator);
 
-    @Override
-    public int getNumberofFaculty() {
-        return teachers.size();
-    }
-
-    @Override
-    public double calculateOperationalCost() {
-
-        double operationalSum = 0;
-
-        for (Equipment eq : equipments) {
-            operationalSum += eq.getOperationalCost();
+        // Course List
+        System.out.println("ACTIVE COURSES:");
+        if (courses.isEmpty()) {
+            System.out.println(" [No courses currently offered]");
+        } else {
+            for (Course c : courses) {
+                // Assuming Course has a getName() or getCourseName() method
+                System.out.println(" □ " + c.getCourseName());
+            }
         }
 
-        return operationalSum + (getNumberOfStudents() * 100);
-    }
-
-
-    //    @Override
-    public String generateReport() {
-        return "Department: " + entityName +
-                " | HOD: " + headOfDepartment.getName() +
-                " | Courses: " + courses.size() +
-                " | Faculty: " + teachers.size() +
-                " | Students: " + getNumberOfStudents() +
-                " | Operational Cost: " + calculateOperationalCost();
+        // Financial Summary
+        System.out.println(subSeparator);
+        System.out.printf("TOTAL OPERATIONAL COST: $%,.2f\n", calculateOperationalCost());
+        System.out.println(separator);
     }
 
     @Override
@@ -199,14 +214,69 @@ class Department extends Academic_unit implements Reportable {
         for (Course course : courses) {
             if (course.getClassroom() == classroom) {
                 System.out.println("Rescheduling: " + course.getCourseName());
-
-                String result = course.generateSchedule(course.getDay(), course.getTime());
+                String result = course.generateSchedule();
 
                 if (result.equals("No Slot Available")) {
                     System.out.println("WARNING: Could not reschedule " + course.getCourseName());
                 }
             }
         }
+    }
+
+
+
+
+    public int getNumberOfStudents() {
+        ArrayList<String> tempcurrentIDs = new ArrayList<>();
+        int numberOfStudents = 0;
+
+        for (Course course : courses) {
+            ArrayList<Student> tempstudentarray = course.getStudents();
+
+            for (Student student : tempstudentarray) {
+                String studentID = student.getStudentID();
+                if (!(tempcurrentIDs.contains(studentID))) {
+                    tempcurrentIDs.add(studentID);
+                }
+            }
+        }
+        return numberOfStudents = tempcurrentIDs.size();
+
+    }
+
+
+
+
+    @Override
+    public double calculateOperationalCost() {
+        double totalSum =0;
+
+
+        if (equipments != null) {
+            for (Equipment eq : equipments) {
+                totalSum += eq.getOperationalCost();
+            }
+        }
+
+
+        if (equipments != null) {
+            for (Classroom room : departmentalClassrooms) {
+                totalSum += room.calculateOperationalCost();
+            }
+        }
+
+
+        if (equipments != null) {
+            for (Lab room : deparmentalLabs) {
+                totalSum += room.calculateOperationalCost();
+            }
+        }
+
+        int students = getNumberOfStudents();
+
+        double operationalCost = totalSum + (students * 100);
+
+        return operationalCost;
     }
 }
 

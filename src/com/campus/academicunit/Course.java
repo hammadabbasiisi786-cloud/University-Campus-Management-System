@@ -77,7 +77,7 @@ public class Course implements Schedulable {
             setMaxcapacity();
         } else {
             System.out.println("Slot not available for " + courseName + ". Finding another slot...");
-            String result = generateSchedule(day, time);
+            String result = generateSchedule();
             if(result.equals("No Slot Available")) {
                 this.c = null;
                 System.out.println("Could not assign any classroom to: " + courseName);
@@ -189,7 +189,7 @@ public class Course implements Schedulable {
 
 
     @Override
-    public String generateSchedule(String day, String time) {
+    public String generateSchedule() {
 
         // Guard: department must be set before rescheduling can work
         if (this.c == null || this.c.getDepartment() == null) {

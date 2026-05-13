@@ -1,5 +1,5 @@
-package com.campus.interfaces;
+package com.campus.Interfaces;
 
 public interface Reportable {
-    String generateReport();
+    public void generateReport();
 }
