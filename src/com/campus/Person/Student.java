@@ -9,6 +9,7 @@ public class Student implements Serializable {
     private final String studentID;
     private String name;
     private int semester;
+    private String role = "STUDENT";
 
     // CONSTRUCTORS
     public Student() {
@@ -48,6 +49,7 @@ public class Student implements Serializable {
     public String getStudentID() { return studentID; }
     public String getName() { return name; }
     public int getSemester() { return semester; }
+    public String getRole() { return role; }
 
     // TO-STRING
     @Override

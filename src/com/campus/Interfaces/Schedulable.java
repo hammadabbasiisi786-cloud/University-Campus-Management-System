@@ -2,5 +2,6 @@ package com.campus.Interfaces;
 
 public interface Schedulable {
 
-    public String generateSchedule();
+    // Contract: implementing classes must define how they generate and return a schedule
+    String generateSchedule();
 }

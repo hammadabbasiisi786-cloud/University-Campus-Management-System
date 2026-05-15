@@ -1,9 +1,14 @@
 package com.campus.Person;
 
-public class Admin {
+import com.campus.Interfaces.Notifiable;
+
+import java.io.Serializable;
+
+public class Admin implements Notifiable, Serializable {
 
     // FIELDS
     private String name;
+    private String role = "ADMIN";
 
     // CONSTRUCTORS
     public Admin() {}
@@ -23,8 +28,10 @@ public class Admin {
         }
     }
 
+
     // GETTERS
     public String getName() { return name; }
+    public String getRole() { return role; }
 
     // TO-STRING
     @Override
@@ -34,5 +41,10 @@ public class Admin {
                         "  Name : %s",
                 name
         );
+    }
+
+    @Override
+    public void sendNotification(String message) {
+
     }
 }

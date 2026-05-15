@@ -3,9 +3,10 @@ package com.campus;
 import com.campus.core.Campus_Entity;
 import com.campus.core.ServiceUnit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CampusZone {
+public class CampusZone implements Serializable {
 
     // FIELDS
     private String zoneName;

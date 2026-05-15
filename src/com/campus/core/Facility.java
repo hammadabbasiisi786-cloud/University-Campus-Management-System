@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public abstract class Facility extends Campus_Entity {
 
     // FIELDS
+    protected static int totalFacilityUsage = 0;
     protected double maintenanceCost;
     protected double usageFrequency;
     protected int capacity;
@@ -13,6 +14,7 @@ public abstract class Facility extends Campus_Entity {
     // CONSTRUCTORS
     public Facility() {
         super();
+        totalFacilityUsage++;
     }
 
     public Facility(String entityID, String entityName, String location, String status, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen) {
@@ -22,6 +24,7 @@ public abstract class Facility extends Campus_Entity {
         this.usageFrequency = usageFrequency;
         this.capacity = capacity;
         this.isOpen = isOpen;
+        totalFacilityUsage++;
     }
 
     // SETTERS
@@ -35,6 +38,7 @@ public abstract class Facility extends Campus_Entity {
     public double getUsageFrequency() { return usageFrequency; }
     public int getCapacity() { return capacity; }
     public boolean isOpen() { return isOpen; }
+    public int getTotalFacilityUsage() { return totalFacilityUsage; }
 
     // OTHER METHODS
 

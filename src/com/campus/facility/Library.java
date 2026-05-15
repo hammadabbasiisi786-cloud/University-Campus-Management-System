@@ -98,15 +98,35 @@ public class Library extends Facility implements Reportable {
     @Override
     public void generateReport() {
         int issuedBooks = books.size() - getAvailableBooks().size();
-        System.out.println("======== Library Report ========");
-        System.out.println("Total Books     : " + books.size());
-        System.out.println("Available Books : " + getAvailableBooks().size());
-        System.out.println("Issued Books    : " + issuedBooks);
-        System.out.println("Status          : " + getStatus());
-        System.out.println("Timings         : " + timings);
-        System.out.println("Visitors        : " + usageFrequency);
-        System.out.printf( "Total Cost      : %.2f%n", calculateOperationalCost());
-        System.out.println("================================");
+
+        System.out.println("==================================================");
+        System.out.println("               LIBRARY REPORT                     ");
+        System.out.println("==================================================");
+
+        System.out.printf("%-20s: %s\n", "Library Name", entityName);
+        System.out.printf("%-20s: %s\n", "Status",       getStatus());
+        System.out.printf("%-20s: %s\n", "Timings",      timings);
+        System.out.println("--------------------------------------------------");
+
+        System.out.println("STATISTICS OVERVIEW:");
+        System.out.printf(" - Total Books:      %d\n", books.size());
+        System.out.printf(" - Available Books:  %d\n", getAvailableBooks().size());
+        System.out.printf(" - Issued Books:     %d\n", issuedBooks);
+        System.out.printf(" - Visitors:         %.0f\n", usageFrequency);
+        System.out.println("--------------------------------------------------");
+
+        System.out.println("AVAILABLE BOOKS:");
+        if (getAvailableBooks().isEmpty()) {
+            System.out.println(" [No books currently available]");
+        } else {
+            for (Book b : getAvailableBooks()) {
+                System.out.println(" □ " + b.getTitle() + " — " + b.getAuthor());
+            }
+        }
+        System.out.println("--------------------------------------------------");
+
+        System.out.printf("TOTAL OPERATIONAL COST: $%,.2f\n", calculateOperationalCost());
+        System.out.println("==================================================");
     }
 
     // TO-STRING

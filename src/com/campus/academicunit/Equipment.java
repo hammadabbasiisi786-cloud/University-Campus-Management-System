@@ -1,6 +1,8 @@
 package com.campus.academicunit;
 
-public class Equipment {
+import java.io.Serializable;
+
+public class Equipment implements Serializable {
 
     // FIELDS
     private String type;

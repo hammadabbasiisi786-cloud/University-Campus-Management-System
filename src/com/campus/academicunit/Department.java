@@ -191,24 +191,21 @@ public class Department extends Academic_Unit implements Reportable {
     // Prints a full formatted academic report for this department including faculty, courses, and financials
     @Override
     public void generateReport() {
-        String separator    = "==================================================";
-        String subSeparator = "--------------------------------------------------";
-
-        System.out.println(separator);
+        System.out.println("==================================================");
         System.out.println("            DEPARTMENTAL ACADEMIC REPORT          ");
-        System.out.println(separator);
+        System.out.println("==================================================");
 
         System.out.printf("%-20s: %s\n", "Department Name", entityName);
         System.out.printf("%-20s: %s\n", "Head of Dept",
                 (headOfDepartment != null ? headOfDepartment.getName() : "Not Assigned"));
-        System.out.println(subSeparator);
+        System.out.println("--------------------------------------------------");
 
         System.out.println("STATISTICS OVERVIEW:");
         System.out.printf(" - Total Faculty:    %d\n", teachers.size());
         System.out.printf(" - Total Courses:    %d\n", courses.size());
         System.out.printf(" - Total Students:   %d\n", getNumberOfStudents());
         System.out.printf(" - Classrooms/Labs:  %d/%d\n", departmentalClassrooms.size(), departmentalLabs.size());
-        System.out.println(subSeparator);
+        System.out.println("--------------------------------------------------");
 
         System.out.println("FACULTY MEMBERS:");
         if (teachers.isEmpty()) {
@@ -218,7 +215,7 @@ public class Department extends Academic_Unit implements Reportable {
                 System.out.println(" • " + t.getName() + " (" + t.getQualification() + ")");
             }
         }
-        System.out.println(subSeparator);
+        System.out.println("--------------------------------------------------");
 
         System.out.println("ACTIVE COURSES:");
         if (courses.isEmpty()) {
@@ -228,10 +225,10 @@ public class Department extends Academic_Unit implements Reportable {
                 System.out.println(" □ " + c.getCourseName());
             }
         }
+        System.out.println("--------------------------------------------------");
 
-        System.out.println(subSeparator);
         System.out.printf("TOTAL OPERATIONAL COST: $%,.2f\n", calculateOperationalCost());
-        System.out.println(separator);
+        System.out.println("==================================================");
     }
 
     // TO-STRING

@@ -1,6 +1,10 @@
 package com.campus.academicunit;
 
-public class Assignment {
+import com.campus.Interfaces.Schedulable;
+
+import java.io.*;
+
+public class Assignment implements Serializable{
 
     // FIELDS
     private int assignmentNumber;

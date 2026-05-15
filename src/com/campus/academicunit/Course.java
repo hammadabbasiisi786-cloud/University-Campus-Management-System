@@ -3,9 +3,10 @@ package com.campus.academicunit;
 import com.campus.Interfaces.Schedulable;
 import com.campus.Person.*;
 
+import java.io.*;
 import java.util.*;
 
-public class Course implements Schedulable {
+public class Course implements Schedulable ,Serializable {
 
     // FIELDS
     private static int idCounter = 0;
@@ -111,7 +112,9 @@ public class Course implements Schedulable {
     public Classroom getClassroom() { return classroom; }
     public ArrayList<Student> getStudents() { return students; }
     public ArrayList<Assignment> getAssignments() { return assignments; }
-
+    public int getTotalCourses(){
+        return idCounter;
+    }
     // OTHER METHODS
 
     // Adds a student to the course if not already enrolled and capacity allows

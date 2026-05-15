@@ -1,11 +1,14 @@
 package com.campus.Person;
 
-public class Teacher {
+import java.io.*;
+
+public class Teacher implements Serializable {
 
     // FIELDS
     private String name;
     private double salary;
     private String qualification;
+    private String role = "TEACHER";
 
     // CONSTRUCTORS
     public Teacher() {}
@@ -49,6 +52,7 @@ public class Teacher {
     public String getName() { return name; }
     public double getSalary() { return salary; }
     public String getQualification() { return qualification; }
+    public String getRole() { return role; }
 
     // TO-STRING
     @Override

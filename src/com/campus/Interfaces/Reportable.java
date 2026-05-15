@@ -1,5 +1,7 @@
 package com.campus.Interfaces;
 
 public interface Reportable {
-    public void generateReport();
+
+    // Contract: implementing classes must define how they generate and display their report
+    void generateReport();
 }
