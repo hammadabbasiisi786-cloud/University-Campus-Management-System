@@ -13,6 +13,7 @@ public class Department extends Academic_Unit implements Reportable {
     // FIELDS
     private Teacher headOfDepartment;
     private ArrayList<Lab> departmentalLabs = new ArrayList<>();
+    private CampusRepository<Lab> repoLab = new  CampusRepository<>();
     private CampusRepository<Course> repoCourse = new CampusRepository<>();
     private CampusRepository<Teacher> repoTeacher = new CampusRepository<>();
     private CampusRepository<Classroom> repoClassroom = new CampusRepository<>();
@@ -88,7 +89,7 @@ public class Department extends Academic_Unit implements Reportable {
     public ArrayList<Teacher> getTeachers() { return repoTeacher.getAll(); }
     public ArrayList<Course> getCourses() { return repoCourse.getAll(); }
     public ArrayList<Classroom> getDepartmentalClassrooms() { return repoClassroom.getAll(); }
-    public ArrayList<Lab> getDepartmentalLabs() { return departmentalLabs; }
+    public ArrayList<Lab> getDepartmentalLabs() { return repoLab.getAll(); }
 
     // OTHER METHODS
 

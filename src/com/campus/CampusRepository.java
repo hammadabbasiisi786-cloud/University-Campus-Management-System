@@ -84,6 +84,11 @@ public class CampusRepository <T extends Serializable> implements Serializable {
         return items;
     }
 
+
+    public void clear() {
+        items.clear();
+    }
+
     // TO-STRING
     @Override
     public String toString() {

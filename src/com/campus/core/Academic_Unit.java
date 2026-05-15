@@ -1,5 +1,6 @@
 package com.campus.core;
 
+import com.campus.CampusRepository;
 import com.campus.academicunit.Equipment;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public abstract class Academic_Unit extends Campus_Entity  {
 
     // FIELDS
-    protected ArrayList<Equipment> equipments = new ArrayList<>();
+    CampusRepository<Equipment> repoEquipment = new CampusRepository<>();
 
     // CONSTRUCTORS
     public Academic_Unit() {
@@ -20,16 +21,16 @@ public abstract class Academic_Unit extends Campus_Entity  {
     }
 
     // SETTERS
-    public void setEquipments(ArrayList<Equipment> equipments) {
+    public void setEquipments(CampusRepository<Equipment> equipments) {
         if (equipments == null) {
             System.out.println("Equipment list cannot be null");
         } else {
-            this.equipments = equipments;
+            repoEquipment = equipments;
         }
     }
 
     // GETTERS
-    public ArrayList<Equipment> getEquipments() { return equipments; }
+    public ArrayList<Equipment> getEquipments() { return repoEquipment.getAll(); }
 
     // OTHER METHODS
     // Defines the contract for how many students are enrolled in this specific academic unit
@@ -45,7 +46,7 @@ public abstract class Academic_Unit extends Campus_Entity  {
         return String.format(
                 "%s\n" +
                         "  Equipment Count : %d",
-                super.toString(), equipments.size()
+                super.toString(), repoEquipment.getAll().size()
         );
     }
 }

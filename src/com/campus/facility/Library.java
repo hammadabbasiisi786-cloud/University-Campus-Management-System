@@ -76,7 +76,7 @@ public class Library extends Facility implements Reportable {
         for (Book b : repoBook.getAll()) {
             if (b.getISBN().equals(bookID) && b.getAvailablity()) {
                 b.issueBook();
-                setUsageFrequency(usageFrequency + 1);
+                setUsageFrequency(getUsageFrequency() + 1);
                 System.out.println("Book issued: " + b.getTitle());
                 return true;
             }

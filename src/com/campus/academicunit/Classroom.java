@@ -1,5 +1,6 @@
 package com.campus.academicunit;
 
+import com.campus.CampusRepository;
 import com.campus.core.Academic_Unit;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class Classroom extends Academic_Unit  {
     private final String classNumber;
     private int capacity;
     private boolean available = true;
-    private ArrayList<String> occupiedSlots = new ArrayList<>();
+    private CampusRepository<String> repoOccupiedSlots = new  CampusRepository<>();
     private Department department;
 
     // CONSTRUCTORS
@@ -40,11 +41,11 @@ public class Classroom extends Academic_Unit  {
     public void setAvailable(boolean available) {
         this.available = available;
     }
-    public void setOccupiedSlots(ArrayList<String> occupiedSlots) {
+    public void setOccupiedSlots(CampusRepository<String> occupiedSlots) {
         if (occupiedSlots == null) {
             System.out.println("Occupied slots list cannot be null");
         } else {
-            this.occupiedSlots = occupiedSlots;
+            repoOccupiedSlots = occupiedSlots;
         }
     }
     public void setDepartment(Department department) {
@@ -59,7 +60,7 @@ public class Classroom extends Academic_Unit  {
     public String getClassNumber() { return classNumber; }
     public int getCapacity() { return capacity; }
     public boolean isAvailable() { return available; }
-    public ArrayList<String> getOccupiedSlots() { return occupiedSlots; }
+    public ArrayList<String> getOccupiedSlots() { return repoOccupiedSlots.getAll(); }
     public Department getDepartment() { return department; }
 
     // OTHER METHODS
@@ -67,13 +68,13 @@ public class Classroom extends Academic_Unit  {
     // Checks whether a specific day-time slot is free for booking in this classroom
     public boolean isSlotAvailable(String day, String time) {
         String schedule = day + "-" + time;
-        return !occupiedSlots.contains(schedule);
+        return !repoOccupiedSlots.contains(schedule);
     }
 
     // Books a specific day-time slot by adding it to the occupied slots list
     public void bookSlot(String day, String time) {
         String schedule = day + "-" + time;
-        occupiedSlots.add(schedule);
+        repoOccupiedSlots.add(schedule);
     }
 
     // Returns classroom capacity as a proxy for the number of students it can hold
@@ -85,8 +86,8 @@ public class Classroom extends Academic_Unit  {
     // Marks classroom as unavailable, clears all booked slots, and returns the affected slots
     public ArrayList<String> markUnavailable() {
         setAvailable(false);
-        ArrayList<String> affectedSlots = new ArrayList<>(occupiedSlots);
-        occupiedSlots.clear();
+        ArrayList<String> affectedSlots = new ArrayList<>(repoOccupiedSlots.getAll());
+        repoOccupiedSlots.clear();
         return affectedSlots;
     }
 
