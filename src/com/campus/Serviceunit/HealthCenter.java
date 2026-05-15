@@ -1,0 +1,55 @@
+package com.campus.Serviceunit;
+
+import com.campus.Interfaces.Notifiable;
+import com.campus.core.ServiceUnit;
+
+import java.io.Serializable;
+
+public class HealthCenter extends ServiceUnit implements Notifiable, Serializable {
+
+    // FIELDS
+    private int availableBeds;
+    private int noOfDoctors;
+
+    // CONSTRUCTORS
+    public HealthCenter() {
+        super();
+    }
+
+    public HealthCenter(String entityID, String name, String location, int noOfStaff, int serviceHours, double baseHourlyRate, int availableBeds, int noOfDoctors) {
+        super(entityID, name, location, noOfStaff, serviceHours, baseHourlyRate);
+        this.availableBeds = availableBeds;
+        this.noOfDoctors = noOfDoctors;
+    }
+
+    // SETTERS
+    public void setAvailableBeds(int availableBeds) { this.availableBeds = availableBeds; }
+    public void setNoOfDoctors(int noOfDoctors) { this.noOfDoctors = noOfDoctors; }
+
+    // GETTERS
+    public int getAvailableBeds() { return availableBeds; }
+    public int getNoOfDoctors() { return noOfDoctors; }
+
+    // OTHER METHODS
+
+    // Sends an emergency alert to on-call doctors and prepares available beds for response
+    @Override
+    public void sendNotification(String message) {
+        System.out.println("[Health Center Notification]");
+        System.out.println("Alert: " + message);
+        System.out.println("Response: Alerting " + noOfDoctors + " on-call doctors. Preparing " + availableBeds + " beds.");
+    }
+
+    // TO-STRING
+    @Override
+    public String toString() {
+        return String.format(
+                "%s\n" +
+                        "  Available Beds : %d\n" +
+                        "  Doctors        : %d",
+                super.toString(),
+                availableBeds,
+                noOfDoctors
+        );
+    }
+}

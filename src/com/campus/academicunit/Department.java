@@ -2,37 +2,36 @@ package com.campus.academicunit;
 
 import com.campus.Interfaces.Reportable;
 import com.campus.Person.*;
-import com.campus.core.Academic_unit;
+import com.campus.core.Academic_Unit;
 
 import java.util.*;
 
-class Department extends Academic_unit implements Reportable {
+public class Department extends Academic_Unit implements Reportable {
 
+    // FIELDS
     private Teacher headOfDepartment;
-
-    //Relations
     private ArrayList<Teacher> teachers = new ArrayList<>();
     private ArrayList<Course> courses = new ArrayList<>();
     private ArrayList<Classroom> departmentalClassrooms = new ArrayList<>();
-    private ArrayList<Lab> deparmentalLabs = new ArrayList<>();
+    private ArrayList<Lab> departmentalLabs = new ArrayList<>();
 
-    //CONSTRUCTORS
-
+    // CONSTRUCTORS
     public Department() {
+        super();
     }
 
     public Department(String departmentName, Teacher headOfDepartment) {
+        super();
         this.entityName = departmentName;
         setHeadOfDepartment(headOfDepartment);
     }
 
-
-    //SETTERS
-
-    public String getDepartmentName() {
-        return entityName;
+    public Department(String entityID, String entityName, String location, Teacher headOfDepartment) {
+        super(entityID, entityName, location);
+        this.headOfDepartment = headOfDepartment;
     }
 
+    // SETTERS
     public void setDepartmentName(String departmentName) {
         if (departmentName == null || departmentName.isEmpty()) {
             System.out.println("Invalid Department Name Entered!!!!");
@@ -40,57 +39,61 @@ class Department extends Academic_unit implements Reportable {
             this.entityName = departmentName;
         }
     }
+    public void setHeadOfDepartment(Teacher headOfDepartment) { this.headOfDepartment = headOfDepartment; }
+    public void setTeachers(ArrayList<Teacher> teachers) { this.teachers = teachers; }
+    public void setCourses(ArrayList<Course> courses) { this.courses = courses; }
+    public void setDepartmentalClassrooms(ArrayList<Classroom> departmentalClassrooms) { this.departmentalClassrooms = departmentalClassrooms; }
+    public void setDepartmentalLabs(ArrayList<Lab> departmentalLabs) { this.departmentalLabs = departmentalLabs; }
 
+    // GETTERS
+    public String getDepartmentName() { return entityName; }
+    public Teacher getHeadOfDepartment() { return headOfDepartment; }
+    public ArrayList<Teacher> getTeachers() { return teachers; }
+    public ArrayList<Course> getCourses() { return courses; }
+    public ArrayList<Classroom> getDepartmentalClassrooms() { return departmentalClassrooms; }
+    public ArrayList<Lab> getDepartmentalLabs() { return departmentalLabs; }
 
-    //GETTERS
+    // OTHER METHODS
 
-    public Teacher getHeadOfDepartment() {
-        return headOfDepartment;
-    }
+    // Returns the total number of unique students enrolled across all courses in this department
+    @Override
+    public int getNumberOfStudents() {
+        ArrayList<String> countedIDs = new ArrayList<>();
 
-    public void setHeadOfDepartment(Teacher headOfDepartment) {
-        this.headOfDepartment = headOfDepartment;
-    }
-
-    public ArrayList<Course> getCourses() {
-        return courses;
-    }
-
-    public ArrayList<Teacher> getTeachers() {
-        return teachers;
-    }
-
-
-    public void removeClassroom(Classroom classroom) {
-        if (classroom == null) {
-            System.out.println("Invalid classroom");
-            return;
-        }
-        for (int i = 0; i < departmentalClassrooms.size(); i++) {
-            if (departmentalClassrooms.get(i) == classroom) {
-                departmentalClassrooms.remove(i);
-                System.out.println("Classroom removed successfully");
-                return;
+        for (Course course : courses) {
+            for (Student student : course.getStudents()) {
+                String studentID = student.getStudentID();
+                if (!countedIDs.contains(studentID)) {
+                    countedIDs.add(studentID);
+                }
             }
         }
-        System.out.println("Classroom not found in this department");
+        return countedIDs.size();
     }
 
-    public ArrayList<Classroom> getDepartmentalClassrooms() {
-        return departmentalClassrooms;
-    }
+    // Calculates total operational cost by summing equipment, classroom, lab costs and a per-student fee
+    @Override
+    public double calculateOperationalCost() {
+        double totalCost = 0;
 
-
-    public void addClassroom(Classroom classroom) {
-        if (classroom == null) {
-            System.out.println("Invalid classroom");
-            return;
+        for (Equipment eq : equipments) {
+            totalCost += eq.getOperationalCost();
         }
-        classroom.setDepartment(this); // CHANGE: classroom now knows its department
-        departmentalClassrooms.add(classroom);//BIDIRECTIONAL RELATION b/w department and classroom
-    }
-    //OTHER METHODS
 
+        for (Classroom room : departmentalClassrooms) {
+            totalCost += room.calculateOperationalCost();
+        }
+
+        for (Lab room : departmentalLabs) {
+            totalCost += room.calculateOperationalCost();
+        }
+
+        totalCost += getNumberOfStudents() * 100;
+
+        return totalCost;
+    }
+
+    // Adds a course to this department's course list
     public void addCourse(Course course) {
         if (course == null) {
             System.out.println("Invalid course");
@@ -99,6 +102,7 @@ class Department extends Academic_unit implements Reportable {
         courses.add(course);
     }
 
+    // Removes a course from this department's course list
     public void removeCourse(Course course) {
         if (course == null) {
             System.out.println("Invalid course");
@@ -114,6 +118,7 @@ class Department extends Academic_unit implements Reportable {
         System.out.println("Course not found in this department");
     }
 
+    // Adds a teacher to this department's faculty list
     public void addTeacher(Teacher teacher) {
         if (teacher == null) {
             System.out.println("Invalid faculty");
@@ -122,6 +127,7 @@ class Department extends Academic_unit implements Reportable {
         teachers.add(teacher);
     }
 
+    // Removes a teacher from this department's faculty list
     public void removeFaculty(Teacher faculty) {
         if (faculty == null) {
             System.out.println("Invalid faculty");
@@ -137,67 +143,33 @@ class Department extends Academic_unit implements Reportable {
         System.out.println("Faculty not found in this department");
     }
 
-
-
-    @Override
-    public void generateReport() {
-        String separator = "==================================================";
-        String subSeparator = "--------------------------------------------------";
-
-        System.out.println(separator);
-        System.out.println("            DEPARTMENTAL ACADEMIC REPORT          ");
-        System.out.println(separator);
-
-        // Basic Information
-        System.out.printf("%-20s: %s\n", "Department Name", entityName);
-        System.out.printf("%-20s: %s\n", "Head of Dept", (headOfDepartment != null ? headOfDepartment.getName() : "Not Assigned"));
-        System.out.println(subSeparator);
-
-        // Academic Statistics
-        System.out.println("STATISTICS OVERVIEW:");
-        System.out.printf(" - Total Faculty:    %d\n", teachers.size());
-        System.out.printf(" - Total Courses:    %d\n", courses.size());
-        System.out.printf(" - Total Students:   %d\n", getNumberOfStudents());
-        System.out.printf(" - Classrooms/Labs:  %d/%d\n", departmentalClassrooms.size(), deparmentalLabs.size());
-        System.out.println(subSeparator);
-
-        // Faculty Roster (Brief List)
-        System.out.println("FACULTY MEMBERS:");
-        if (teachers.isEmpty()) {
-            System.out.println(" [No faculty assigned]");
-        } else {
-            for (Teacher t : teachers) {
-                System.out.println(" • " + t.getName() + " (" + t.getQualification() + ")");
-            }
+    // Adds a classroom to the department and sets the bidirectional relationship
+    public void addClassroom(Classroom classroom) {
+        if (classroom == null) {
+            System.out.println("Invalid classroom");
+            return;
         }
-        System.out.println(subSeparator);
-
-        // Course List
-        System.out.println("ACTIVE COURSES:");
-        if (courses.isEmpty()) {
-            System.out.println(" [No courses currently offered]");
-        } else {
-            for (Course c : courses) {
-                // Assuming Course has a getName() or getCourseName() method
-                System.out.println(" □ " + c.getCourseName());
-            }
-        }
-
-        // Financial Summary
-        System.out.println(subSeparator);
-        System.out.printf("TOTAL OPERATIONAL COST: $%,.2f\n", calculateOperationalCost());
-        System.out.println(separator);
+        classroom.setDepartment(this);
+        departmentalClassrooms.add(classroom);
     }
 
-    @Override
-    public String toString() {
-        return "Department: " + entityName +
-                " | HOD: " + headOfDepartment.getName() +
-                " | Courses: " + courses.size() +
-                " | Students: " + getNumberOfStudents();
+    // Removes a classroom from this department's classroom list
+    public void removeClassroom(Classroom classroom) {
+        if (classroom == null) {
+            System.out.println("Invalid classroom");
+            return;
+        }
+        for (int i = 0; i < departmentalClassrooms.size(); i++) {
+            if (departmentalClassrooms.get(i) == classroom) {
+                departmentalClassrooms.remove(i);
+                System.out.println("Classroom removed successfully");
+                return;
+            }
+        }
+        System.out.println("Classroom not found in this department");
     }
 
-
+    // Marks a classroom as unavailable, removes it, and attempts to reschedule any affected courses
     public void handleClassroomUnavailable(Classroom classroom) {
         if (classroom == null) {
             System.out.println("Invalid classroom");
@@ -207,8 +179,7 @@ class Department extends Academic_unit implements Reportable {
         System.out.println("Classroom " + classroom.getClassNumber()
                 + " is now unavailable. Rescheduling affected courses...");
 
-        ArrayList<String> affectedSlots = classroom.markUnavailable();
-
+        classroom.markUnavailable();
         removeClassroom(classroom);
 
         for (Course course : courses) {
@@ -223,60 +194,70 @@ class Department extends Academic_unit implements Reportable {
         }
     }
 
+    // Prints a full formatted academic report for this department including faculty, courses, and financials
+    @Override
+    public void generateReport() {
+        String separator    = "==================================================";
+        String subSeparator = "--------------------------------------------------";
 
+        System.out.println(separator);
+        System.out.println("            DEPARTMENTAL ACADEMIC REPORT          ");
+        System.out.println(separator);
 
+        System.out.printf("%-20s: %s\n", "Department Name", entityName);
+        System.out.printf("%-20s: %s\n", "Head of Dept",
+                (headOfDepartment != null ? headOfDepartment.getName() : "Not Assigned"));
+        System.out.println(subSeparator);
 
-    public int getNumberOfStudents() {
-        ArrayList<String> tempcurrentIDs = new ArrayList<>();
-        int numberOfStudents = 0;
+        System.out.println("STATISTICS OVERVIEW:");
+        System.out.printf(" - Total Faculty:    %d\n", teachers.size());
+        System.out.printf(" - Total Courses:    %d\n", courses.size());
+        System.out.printf(" - Total Students:   %d\n", getNumberOfStudents());
+        System.out.printf(" - Classrooms/Labs:  %d/%d\n", departmentalClassrooms.size(), departmentalLabs.size());
+        System.out.println(subSeparator);
 
-        for (Course course : courses) {
-            ArrayList<Student> tempstudentarray = course.getStudents();
-
-            for (Student student : tempstudentarray) {
-                String studentID = student.getStudentID();
-                if (!(tempcurrentIDs.contains(studentID))) {
-                    tempcurrentIDs.add(studentID);
-                }
+        System.out.println("FACULTY MEMBERS:");
+        if (teachers.isEmpty()) {
+            System.out.println(" [No faculty assigned]");
+        } else {
+            for (Teacher t : teachers) {
+                System.out.println(" • " + t.getName() + " (" + t.getQualification() + ")");
             }
         }
-        return numberOfStudents = tempcurrentIDs.size();
+        System.out.println(subSeparator);
 
+        System.out.println("ACTIVE COURSES:");
+        if (courses.isEmpty()) {
+            System.out.println(" [No courses currently offered]");
+        } else {
+            for (Course c : courses) {
+                System.out.println(" □ " + c.getCourseName());
+            }
+        }
+
+        System.out.println(subSeparator);
+        System.out.printf("TOTAL OPERATIONAL COST: $%,.2f\n", calculateOperationalCost());
+        System.out.println(separator);
     }
 
-
-
-
+    // TO-STRING
     @Override
-    public double calculateOperationalCost() {
-        double totalSum =0;
-
-
-        if (equipments != null) {
-            for (Equipment eq : equipments) {
-                totalSum += eq.getOperationalCost();
-            }
-        }
-
-
-        if (equipments != null) {
-            for (Classroom room : departmentalClassrooms) {
-                totalSum += room.calculateOperationalCost();
-            }
-        }
-
-
-        if (equipments != null) {
-            for (Lab room : deparmentalLabs) {
-                totalSum += room.calculateOperationalCost();
-            }
-        }
-
-        int students = getNumberOfStudents();
-
-        double operationalCost = totalSum + (students * 100);
-
-        return operationalCost;
+    public String toString() {
+        return String.format(
+                "%s\n" +
+                        "  Head of Dept  : %s\n" +
+                        "  Teachers      : %d\n" +
+                        "  Courses       : %d\n" +
+                        "  Students      : %d\n" +
+                        "  Classrooms    : %d\n" +
+                        "  Labs          : %d",
+                super.toString(),
+                (headOfDepartment != null ? headOfDepartment.getName() : "Not Assigned"),
+                teachers.size(),
+                courses.size(),
+                getNumberOfStudents(),
+                departmentalClassrooms.size(),
+                departmentalLabs.size()
+        );
     }
 }
-

@@ -2,7 +2,7 @@ package com.campus.facility.library;
 
 import com.campus.Person.*;
 import com.campus.core.Facility;
-import com.campus.interfaces.Reportable;
+import com.campus.Interfaces.Reportable;
 
 import java.util.ArrayList;
 

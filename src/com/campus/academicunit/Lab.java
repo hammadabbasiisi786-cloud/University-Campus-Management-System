@@ -1,32 +1,29 @@
 package com.campus.academicunit;
 
 import com.campus.Person.*;
-
-import com.campus.core.Academic_unit;
+import com.campus.core.Academic_Unit;
 
 import java.util.ArrayList;
 
-class Lab extends Academic_unit {
+public class Lab extends Academic_Unit {
 
+    // FIELDS
     private static int idCounter = 0;
     private final String labNumber;
     private boolean isAvailable;
     private int capacity;
-
-
-    //Relations
     private Teacher teacher;
     private ArrayList<Student> students = new ArrayList<>();
 
-
-    //CONSTRUCTORS
-
+    // CONSTRUCTORS
     public Lab() {
+        super();
         idCounter++;
         this.labNumber = "LAB-" + idCounter;
     }
 
-    public Lab(boolean isAvailable, int capacity, Teacher teacher) {
+    public Lab(String entityID, String entityName, String location, boolean isAvailable, int capacity, Teacher teacher) {
+        super(entityID, entityName, location);
         idCounter++;
         this.labNumber = "LAB-" + idCounter;
         setAvailability(isAvailable);
@@ -34,26 +31,8 @@ class Lab extends Academic_unit {
         setLabAssistant(teacher);
     }
 
-
-    //SETTERS
-
-    public boolean getAvailability() {
-        return isAvailable;
-    }
-
-    public void setAvailability(boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
-
-    //GETTERS
-    public String getLabNumber() {
-        return labNumber;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
+    // SETTERS
+    public void setAvailability(boolean isAvailable) { this.isAvailable = isAvailable; }
     public void setCapacity(int capacity) {
         if (capacity > 0) {
             this.capacity = capacity;
@@ -61,59 +40,51 @@ class Lab extends Academic_unit {
             System.out.println("Capacity must be greater than 0");
         }
     }
+    public void setTeacher(Teacher teacher) { this.teacher = teacher; }
+    public void setLabAssistant(Teacher teacher) { this.teacher = teacher; }
+    public void setStudents(ArrayList<Student> students) { this.students = students; }
 
-    public Teacher getTeacher() {
-        return teacher;
-    }
+    // GETTERS
+    public String getLabNumber() { return labNumber; }
+    public int getCapacity() { return capacity; }
+    public boolean isAvailable() { return isAvailable; }
+    public Teacher getTeacher() { return teacher; }
+    public ArrayList<Student> getStudents() { return students; }
 
-    public void setTeacher(Teacher la) {
-        this.teacher = la;
-    }
+    // OTHER METHODS
 
-    public void setLabAssistant(Teacher la) {
-        this.teacher = la;
-    }
-
-    public ArrayList<Student> getStudents() {
-        return students;
-    }
-
+    // Returns the number of students currently enrolled in this lab
     @Override
     public int getNumberOfStudents() {
         return students.size();
     }
 
-
-    //OTHER METHODS
-
+    // Adds a student to the lab if not already present and capacity allows
     public void addStudent(Student student) {
         if (student == null) {
             System.out.println("Invalid student");
             return;
         }
-
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).equals(student)) {
                 System.out.println("Student already exists in this lab");
                 return;
             }
         }
-
         if (students.size() >= capacity) {
             System.out.println("Maximum capacity reached");
             return;
         }
-
         students.add(student);
         System.out.println("Student added successfully");
     }
 
+    // Removes a student from the lab if they are found in the list
     public void removeStudent(Student student) {
         if (student == null) {
             System.out.println("Invalid student");
             return;
         }
-
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).equals(student)) {
                 students.remove(i);
@@ -121,24 +92,35 @@ class Lab extends Academic_unit {
                 return;
             }
         }
-
         System.out.println("Student not found in this lab");
     }
 
-
-
-    @Override
-    public String toString() {
-        return "Lab: " + labNumber + " | Capacity: " + capacity + " | Students: " + students.size() + " | Available: " + isAvailable + " | Lab Assistant: " + (teacher != null ? teacher.getName() : "Not Assigned");
-    }
-
+    // Calculates operational cost by summing the cost of all equipment in this lab
     @Override
     public double calculateOperationalCost() {
         double operationalCost = 0;
-        for(Equipment eq : equipments) {
+        for (Equipment eq : equipments) {
             operationalCost += eq.getOperationalCost();
         }
-        return operationalCost ;
+        return operationalCost;
     }
 
+    // TO-STRING
+    @Override
+    public String toString() {
+        return String.format(
+                "%s\n" +
+                        "  Lab Number    : %s\n" +
+                        "  Capacity      : %d\n" +
+                        "  Available     : %s\n" +
+                        "  Students      : %d\n" +
+                        "  Lab Assistant : %s",
+                super.toString(),
+                labNumber,
+                capacity,
+                (isAvailable ? "Yes" : "No"),
+                students.size(),
+                (teacher != null ? teacher.getName() : "Not Assigned")
+        );
+    }
 }

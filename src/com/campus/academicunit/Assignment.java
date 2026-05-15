@@ -1,7 +1,8 @@
 package com.campus.academicunit;
 
-class Assignment {
+public class Assignment {
 
+    // FIELDS
     private int assignmentNumber;
     private String title;
     private String issueDate;
@@ -9,9 +10,8 @@ class Assignment {
     private int totalMarks;
     private double obtainedMarks;
 
-    public Assignment() {
-
-    }
+    // CONSTRUCTORS
+    public Assignment() {}
 
     public Assignment(int assignmentNumber, String title, String issueDate, String dueDate, int totalMarks, double obtainedMarks) {
         setAssignmentNumber(assignmentNumber);
@@ -22,67 +22,72 @@ class Assignment {
         setObtainedMarks(obtainedMarks);
     }
 
+    // SETTERS
+
+    // Assignment number must be greater than 0 to be valid
     public void setAssignmentNumber(int assignmentNumber) {
-        if(assignmentNumber>1){
+        if (assignmentNumber > 0) {
             this.assignmentNumber = assignmentNumber;
-        }else{
-            System.out.println("Please enter a valid number");
+        } else {
+            System.out.println("Please enter a valid assignment number");
         }
     }
 
+    // Title must not be null or empty
     public void setTitle(String title) {
-        if(title == null || title.isEmpty()){
+        if (title == null || title.isEmpty()) {
             System.out.println("Please enter a valid title");
-        }else {
+        } else {
             this.title = title;
         }
     }
 
-    public void setIssueDate(String issueDate) {
-        this.issueDate = issueDate;
-    }
+    public void setIssueDate(String issueDate) { this.issueDate = issueDate; }
+    public void setDueDate(String dueDate) { this.dueDate = dueDate; }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
-    }
-
+    // Total marks must be greater than 0 to be valid
     public void setTotalMarks(int totalMarks) {
-        if(totalMarks>0){
+        if (totalMarks > 0) {
             this.totalMarks = totalMarks;
-        }else {
-            System.out.println("Please enter a valid number");
+        } else {
+            System.out.println("Please enter a valid number for total marks");
         }
     }
 
+    // Obtained marks must be non-negative and must not exceed total marks
     public void setObtainedMarks(double obtainedMarks) {
-        if(obtainedMarks<totalMarks){
+        if (obtainedMarks >= 0 && obtainedMarks <= totalMarks) {
             this.obtainedMarks = obtainedMarks;
-        }else {
-            System.out.println("Please enter a valid number");
+        } else {
+            System.out.println("Please enter a valid number for obtained marks");
         }
     }
 
-    public int getAssignmentNumber() {
-        return assignmentNumber;
-    }
+    // GETTERS
+    public int getAssignmentNumber() { return assignmentNumber; }
+    public String getTitle() { return title; }
+    public String getIssueDate() { return issueDate; }
+    public String getDueDate() { return dueDate; }
+    public int getTotalMarks() { return totalMarks; }
+    public double getObtainedMarks() { return obtainedMarks; }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getIssueDate() {
-        return issueDate;
-    }
-
-    public String getDueDate() {
-        return dueDate;
-    }
-
-    public int getTotalMarks() {
-        return totalMarks;
-    }
-
-    public double getObtainedMarks() {
-        return obtainedMarks;
+    // TO-STRING
+    @Override
+    public String toString() {
+        return String.format(
+                "=== Assignment ===\n" +
+                        "  Number         : %d\n" +
+                        "  Title          : %s\n" +
+                        "  Issue Date     : %s\n" +
+                        "  Due Date       : %s\n" +
+                        "  Total Marks    : %d\n" +
+                        "  Obtained Marks : %.2f",
+                assignmentNumber,
+                title,
+                issueDate,
+                dueDate,
+                totalMarks,
+                obtainedMarks
+        );
     }
 }
