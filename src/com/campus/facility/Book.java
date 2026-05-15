@@ -1,16 +1,17 @@
-package com.campus.facility.library;
+package com.campus.facility;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     protected String ISBN;
     protected String title;
     protected String author;
     protected String publisher;
-    protected double cost;
+
     protected int quantity;
     protected boolean isAvailable;
 
-    public Book(double cost, String publisher, String author, String title, String ISBN, int quantity,boolean isAvailable) {
-        this.cost = cost;
+    public Book(double costPerBook, String publisher, String author, String title, String ISBN, int quantity,boolean isAvailable) {
         this.publisher = publisher;
         this.author = author;
         this.title = title;
@@ -24,14 +25,12 @@ public class Book {
 
     public boolean getAvailablity(){return isAvailable;}
     public String getISBN() {return ISBN;}
-    public double getCost() {return cost;}
     public String getPublisher() {return publisher;}
     public String getAuthor() {return author;}
     public int getQuantity() {return quantity;}
     public String getTitle() {return title;}
 
     public void setISBN(String ISBN) {this.ISBN = ISBN;}
-    public void setCost(double cost) {this.cost = cost;}
     public void setPublisher(String publisher) {this.publisher = publisher;}
     public void setAuthor(String author) {this.author = author;}
     public void setTitle(String title) {this.title = title;}
@@ -40,12 +39,11 @@ public class Book {
     @Override
     public String toString() {
         return "------Book------" +
-                "ISBN='" + ISBN + '\'' +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", cost=" + cost +
-                ", quantity=" + quantity +
-                ", isAvailable=" + isAvailable ;
+                "\nISBN='" + ISBN +
+                "\ntitle='" + title +
+                "\nauthor='" + author +
+                "\npublisher='" + publisher +
+                "\nquantity=" + quantity +
+                "\nisAvailable=" + isAvailable ;
     }
 }

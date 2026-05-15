@@ -1,6 +1,8 @@
 package com.campus.Person;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable {
     private static int studentcounter = 0;
     private final String studentID;
     private String name;

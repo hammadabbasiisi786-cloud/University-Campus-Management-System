@@ -1,15 +1,20 @@
 package com.campus.core;
 
-/// ///////////////////////////////////////////////////////////////////////////////////////////////////
+import com.campus.Person.Student;
+import com.campus.academicunit.Equipment;
+
+import java.util.ArrayList;
+
 public abstract class Facility extends Campus_Entity {
     protected double maintenanceCost;
     protected double usageFrequency;
     protected int capacity;
     protected boolean isOpen;
 
-    public Facility(double usageFrequency, double maintenanceCost, int capacity, boolean isOpen) {
-        this.usageFrequency = usageFrequency;
+    public Facility(String entityID, String entityName, String location, String status, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen) {
+        super(entityID, entityName, location, status);
         this.maintenanceCost = maintenanceCost;
+        this.usageFrequency = usageFrequency;
         this.capacity = capacity;
         this.isOpen = isOpen;
     }
@@ -19,7 +24,7 @@ public abstract class Facility extends Campus_Entity {
             return "Closed";
         }
         if(capacity<=usageFrequency){
-            return "Capcity is Full, Busy";
+            return "Capacity is Full, Busy";
         }
         return "Open";
     }
@@ -40,5 +45,4 @@ public abstract class Facility extends Campus_Entity {
                 ", isOpen=" + isOpen
                 ;
     }
-
 }

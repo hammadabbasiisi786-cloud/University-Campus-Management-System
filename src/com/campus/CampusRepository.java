@@ -1,45 +1,65 @@
 package com.campus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-
-interface Identifiable{
-    public String getID();
-}
-public class CampusRepository <T extends Identifiable>{
+public class CampusRepository <T extends Serializable> implements Serializable {
     protected ArrayList<T> items;
-    public String repositoryName;
+    protected T item;
 
-    public CampusRepository(String repositoryName){
-        this.repositoryName = repositoryName;
+
+    public CampusRepository() {
+
         this.items = new ArrayList<>();
     }
-    public CampusRepository(){
-        this.repositoryName = "CampusRepository";
-        this.items = new ArrayList<>();
-    }
-    public boolean contains(String id) {
-        for (T item : items) {
-            if (item.getID().equals(id)){ return true;}
-        }
-        return false;
-    }
-    public boolean add(T item){
 
+
+    public boolean contains(T item) {
         if(item == null){
-            System.out.println("Item is null, Cannot add a Null value");
             return false;
         }
-        if(contains(item.getID())){
-            System.out.println("Item"+ item.getID()+ "already exists in " +  repositoryName);
+        return items.contains(item);
+    }
+
+    public boolean add(T item) {
+        if (item == null) {
+            System.out.println("Invalid Input.");
+            return false;
+        }else if(items.contains(item)){
+            System.out.println("Already exists." );
             return false;
         }
-        System.out.println(item.getID() + " added to " + repositoryName);
+        items.add(item);
+        System.out.println("Added." );
         return true;
     }
 
-    public void remove(String id){
-        for(T item : items){
-            if(item.getID().equals(id)){}
+    public boolean remove(T item) {
+        if (item == null) {
+            System.out.println("Invalid Input");
+            return false;
+        }else if(!items.contains(item)){
+            System.out.println("Not Found");
+            return false;
+        }
+        items.remove(item);
+        System.out.printf("Removed ");
+        return false;
+    }
+
+    public boolean search(T item) {
+        if(item == null) {
+            System.out.println("Invalid Input");
+            return false;
+        }else if(!items.contains(item)){
+            System.out.println("Not Found");
+        }
+        System.out.println("Found");
+        return true;
+    }
+
+    public void displayAll(){
+        for (T item : items) {
+            System.out.println(item.toString());
         }
     }
 }
