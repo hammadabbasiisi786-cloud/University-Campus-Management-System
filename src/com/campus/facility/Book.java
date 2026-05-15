@@ -17,12 +17,12 @@ public class Book implements Serializable {
     public Book() {}
 
     public Book(String ISBN, String title, String author, String publisher, int quantity, boolean isAvailable) {
-        this.ISBN = ISBN;
-        this.title = title;
-        this.author = author;
-        this.publisher = publisher;
-        this.quantity = quantity;
-        this.isAvailable = isAvailable;
+        setISBN(ISBN);
+        setTitle(title);
+        setAuthor(author);
+        setPublisher(publisher);
+        setQuantity(quantity);
+        setAvailability(isAvailable);
     }
 
     // SETTERS

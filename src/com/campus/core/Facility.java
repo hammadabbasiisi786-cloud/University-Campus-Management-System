@@ -20,6 +20,7 @@ public abstract class Facility extends Campus_Entity  {
 
     public Facility(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen) {
         super(entityID, entityName, location);
+        totalFacilityUsage++;
         setMaintenanceCost(maintenanceCost);
         setUsageFrequency(usageFrequency);
         setCapacity(capacity);

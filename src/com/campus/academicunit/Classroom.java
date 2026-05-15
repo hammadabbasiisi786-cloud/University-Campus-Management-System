@@ -1,7 +1,7 @@
 package com.campus.academicunit;
 
 import com.campus.CampusRepository;
-import com.campus.core.Academic_Unit;
+import com.campus.core.*;
 
 import java.util.ArrayList;
 
@@ -95,7 +95,7 @@ public class Classroom extends Academic_Unit  {
     @Override
     public double calculateOperationalCost() {
         double operationalCost = 0;
-        for (Equipment eq : equipments) {
+        for (Equipment eq : repoEquipment.getAll()) {
             operationalCost += eq.getOperationalCost();
         }
         operationalCost += getNumberOfStudents() * 50;
@@ -116,7 +116,7 @@ public class Classroom extends Academic_Unit  {
                 classNumber,
                 capacity,
                 (available ? "Yes" : "No"),
-                occupiedSlots.size(),
+                repoOccupiedSlots.size(),
                 (department != null ? department.getDepartmentName() : "Unassigned")
         );
     }

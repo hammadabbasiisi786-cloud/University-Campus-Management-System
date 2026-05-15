@@ -99,4 +99,7 @@ public class CampusRepository <T extends Serializable> implements Serializable {
         );
     }
 
+    public int size() {
+        return items.size();
+    }
 }

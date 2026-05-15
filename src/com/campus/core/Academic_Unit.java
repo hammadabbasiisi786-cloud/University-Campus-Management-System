@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public abstract class Academic_Unit extends Campus_Entity  {
 
     // FIELDS
-    CampusRepository<Equipment> repoEquipment = new CampusRepository<>();
+    protected CampusRepository<Equipment> repoEquipment = new CampusRepository<>();
 
     // CONSTRUCTORS
     public Academic_Unit() {

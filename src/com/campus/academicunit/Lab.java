@@ -98,7 +98,7 @@ public class Lab extends Academic_Unit {
     @Override
     public double calculateOperationalCost() {
         double operationalCost = 0;
-        for (Equipment eq : equipments) {
+        for (Equipment eq : repoEquipment.getAll()) {
             operationalCost += eq.getOperationalCost();
         }
         operationalCost += getNumberOfStudents() * 50;

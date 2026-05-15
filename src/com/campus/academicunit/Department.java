@@ -12,8 +12,7 @@ public class Department extends Academic_Unit implements Reportable {
 
     // FIELDS
     private Teacher headOfDepartment;
-    private ArrayList<Lab> departmentalLabs = new ArrayList<>();
-    private CampusRepository<Lab> repoLab = new  CampusRepository<>();
+    private CampusRepository<Lab> repoLab = new CampusRepository<>();
     private CampusRepository<Course> repoCourse = new CampusRepository<>();
     private CampusRepository<Teacher> repoTeacher = new CampusRepository<>();
     private CampusRepository<Classroom> repoClassroom = new CampusRepository<>();
@@ -79,17 +78,34 @@ public class Department extends Academic_Unit implements Reportable {
         if (departmentalLabs == null) {
             System.out.println("Labs list cannot be null");
         } else {
-            this.departmentalLabs = departmentalLabs;
+            repoLab.setItems(departmentalLabs);
         }
     }
 
     // GETTERS
-    public String getDepartmentName() { return entityName; }
-    public Teacher getHeadOfDepartment() { return headOfDepartment; }
-    public ArrayList<Teacher> getTeachers() { return repoTeacher.getAll(); }
-    public ArrayList<Course> getCourses() { return repoCourse.getAll(); }
-    public ArrayList<Classroom> getDepartmentalClassrooms() { return repoClassroom.getAll(); }
-    public ArrayList<Lab> getDepartmentalLabs() { return repoLab.getAll(); }
+    public String getDepartmentName() {
+        return entityName;
+    }
+
+    public Teacher getHeadOfDepartment() {
+        return headOfDepartment;
+    }
+
+    public ArrayList<Teacher> getTeachers() {
+        return repoTeacher.getAll();
+    }
+
+    public ArrayList<Course> getCourses() {
+        return repoCourse.getAll();
+    }
+
+    public ArrayList<Classroom> getDepartmentalClassrooms() {
+        return repoClassroom.getAll();
+    }
+
+    public ArrayList<Lab> getDepartmentalLabs() {
+        return repoLab.getAll();
+    }
 
     // OTHER METHODS
 
@@ -115,7 +131,7 @@ public class Department extends Academic_Unit implements Reportable {
     public double calculateOperationalCost() {
         double totalCost = 0;
 
-        for (Equipment eq : equipments) {
+        for (Equipment eq : repoEquipment.getAll()) {
             totalCost += eq.getOperationalCost();
         }
 
@@ -123,7 +139,7 @@ public class Department extends Academic_Unit implements Reportable {
             totalCost += room.calculateOperationalCost();
         }
 
-        for (Lab room : departmentalLabs) {
+        for (Lab room : repoLab.getAll()) {
             totalCost += room.calculateOperationalCost();
         }
 
@@ -163,6 +179,16 @@ public class Department extends Academic_Unit implements Reportable {
     // Removes a classroom from this department's classroom list
     public void removeClassroom(Classroom classroom) {
         repoClassroom.remove(classroom);
+    }
+
+    // Adds a lab to the department
+    public void addLab(Lab lab) {
+        repoLab.add(lab);
+    }
+
+    // Removes a lab from the department
+    public void removeLab(Lab lab) {
+        repoLab.remove(lab);
     }
 
     // Marks a classroom as unavailable, removes it, and attempts to reschedule any
@@ -211,7 +237,7 @@ public class Department extends Academic_Unit implements Reportable {
         System.out.printf(" - Total Faculty:    %d\n", repoTeacher.getAll().size());
         System.out.printf(" - Total Courses:    %d\n", repoCourse.getAll().size());
         System.out.printf(" - Total Students:   %d\n", getNumberOfStudents());
-        System.out.printf(" - Classrooms/Labs:  %d/%d\n", repoClassroom.getAll().size(), departmentalLabs.size());
+        System.out.printf(" - Classrooms/Labs:  %d/%d\n", repoClassroom.getAll().size(), repoLab.getAll().size());
         System.out.println(subSeparator);
 
         System.out.println("FACULTY MEMBERS:");
@@ -255,6 +281,6 @@ public class Department extends Academic_Unit implements Reportable {
                 repoCourse.getAll().size(),
                 getNumberOfStudents(),
                 repoClassroom.getAll().size(),
-                departmentalLabs.size());
+                repoLab.getAll().size());
     }
 }

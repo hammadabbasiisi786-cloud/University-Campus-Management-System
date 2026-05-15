@@ -17,7 +17,7 @@ public class CampusZone implements Serializable {
     public CampusZone() {
     }
 
-    public CampusZone(String zoneName, String zoneType) {
+    public CampusZone(String zoneName) {
         setZoneName(zoneName);
     }
 

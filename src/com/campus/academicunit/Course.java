@@ -74,6 +74,10 @@ public class Course implements Schedulable, Serializable {
 
     // Assigns a classroom to this course and books the slot; finds another slot if unavailable
     public void setClassroom(Classroom classroom) {
+        if (classroom == null) {
+            System.out.println("Classroom cannot be null");
+            return;
+        }
         this.classroom = classroom;
         if (classroom.isSlotAvailable(day, time)) {
             classroom.bookSlot(day, time);
