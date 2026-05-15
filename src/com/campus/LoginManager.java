@@ -1,11 +1,12 @@
 package com.campus;
 
-import com.campus.Person.*;
+import com.campus.Person.Admin;
+import com.campus.Person.Student;
+import com.campus.Person.Teacher;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LoginManager implements Serializable {
+public class LoginManager {
 
     // FIELDS
     private ArrayList<String> credentials = new ArrayList<>();  // stores "username:password"

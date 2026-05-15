@@ -13,9 +13,9 @@ public class Department extends Academic_Unit implements Reportable {
     // FIELDS
     private Teacher headOfDepartment;
     private ArrayList<Lab> departmentalLabs = new ArrayList<>();
-    private final CampusRepository<Course> repoCourse = new CampusRepository<>();
-    private final CampusRepository<Teacher> repoTeacher = new CampusRepository<>();
-    private final CampusRepository<Classroom> repoClassroom = new CampusRepository<>();
+    private CampusRepository<Course> repoCourse = new CampusRepository<>();
+    private CampusRepository<Teacher> repoTeacher = new CampusRepository<>();
+    private CampusRepository<Classroom> repoClassroom = new CampusRepository<>();
 
     // CONSTRUCTORS
     public Department() {
