@@ -3,14 +3,13 @@ package com.campus;
 import com.campus.core.Facility;
 import com.campus.core.ServiceUnit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CampusZone {
+public class CampusZone implements Serializable {
 
     // FIELDS
     private String zoneName;
-    private ArrayList<Facility> facilities = new ArrayList<>();
-    private ArrayList<ServiceUnit> serviceUnits = new ArrayList<>();
     private CampusRepository<Facility> repoFacility = new CampusRepository<>();
     private CampusRepository<ServiceUnit> repoServiceUnit = new CampusRepository<>();
 
@@ -24,7 +23,7 @@ public class CampusZone {
 
     // SETTERS
     public void setZoneName(String zoneName) {
-        if (zoneName == null && zoneName.isEmpty()) {
+        if (zoneName == null || zoneName.isEmpty()) {
             System.out.println("Invalid Zone Name Entered!!!!");
         } else {
             this.zoneName = zoneName;
@@ -35,7 +34,7 @@ public class CampusZone {
         if (facilities == null) {
             System.out.println("Facilities list cannot be null");
         } else {
-            this.facilities = facilities;
+            repoFacility.setItems(facilities);
         }
     }
 
@@ -43,14 +42,14 @@ public class CampusZone {
         if (serviceUnits == null) {
             System.out.println("Service units list cannot be null");
         } else {
-            this.serviceUnits = serviceUnits;
+            repoServiceUnit.setItems(serviceUnits);
         }
     }
 
     // GETTERS
     public String getZoneName() { return zoneName; }
-    public ArrayList<Facility> getFacilities() { return facilities; }
-    public ArrayList<ServiceUnit> getServiceUnits() { return serviceUnits; }
+    public ArrayList<Facility> getFacilities() { return repoFacility.getAll(); }
+    public ArrayList<ServiceUnit> getServiceUnits() { return repoServiceUnit.getAll(); }
 
     // OTHER METHODS
 
@@ -83,8 +82,8 @@ public class CampusZone {
                         "  Facilities   : %d\n" +
                         "  Services     : %d",
                 zoneName,
-                facilities.size(),
-                serviceUnits.size()
+                repoFacility.getAll().size(),
+                repoServiceUnit.getAll().size()
         );
     }
 }

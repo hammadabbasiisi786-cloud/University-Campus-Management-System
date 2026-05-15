@@ -3,9 +3,10 @@ package com.campus.Serviceunit;
 import com.campus.Interfaces.Notifiable;
 import com.campus.core.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SecurityService extends ServiceUnit implements Notifiable {
+public class SecurityService extends ServiceUnit implements Notifiable, Serializable {
 
     // FIELDS
     private int numberOfPatrolCars;

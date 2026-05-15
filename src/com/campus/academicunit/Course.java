@@ -19,10 +19,8 @@ public class Course implements Schedulable, Serializable {
     private String time;
     private Teacher teacher;
     private Classroom classroom;
-    private ArrayList<Student> students = new ArrayList<>();
-    private ArrayList<Assignment> assignments = new ArrayList<>();
     private CampusRepository<Student> repoStudent = new CampusRepository<>();
-    private CampusRepository<Assignment> repoAssignment = new CampusRepository<Assignment>();
+    private CampusRepository<Assignment> repoAssignment = new CampusRepository<>();
 
     // CONSTRUCTORS
     public Course() {
@@ -52,7 +50,7 @@ public class Course implements Schedulable, Serializable {
     }
 
     public void setCreditHour(int creditHour) {
-        if (creditHour < 0 && creditHour > 4) {
+        if (creditHour <= 0 || creditHour > 4) {
             System.out.println("Invalid Credit Hour Entered!!!!");
         } else {
             this.creditHour = creditHour;
@@ -111,13 +109,13 @@ public class Course implements Schedulable, Serializable {
         if (students == null) {
             System.out.println("Student list cannot be null");
         } else {
-            this.students = students;
+            repoStudent.setItems(students);
         }
     }
 
     public void setAssignments(ArrayList<Assignment> assignments) {
         if (assignments != null) {
-            this.assignments = assignments;
+            repoAssignment.setItems(assignments);
         } else {
             System.out.println("Assignment list cannot be null");
         }
@@ -132,14 +130,18 @@ public class Course implements Schedulable, Serializable {
     public String getTime() { return time; }
     public Teacher getTeacher() { return teacher; }
     public Classroom getClassroom() { return classroom; }
-    public ArrayList<Student> getStudents() { return students; }
-    public ArrayList<Assignment> getAssignments() { return assignments; }
-    public int getTotalCourses() {return idCounter;}
+    public ArrayList<Student> getStudents() { return repoStudent.getAll(); }
+    public ArrayList<Assignment> getAssignments() { return repoAssignment.getAll(); }
+    public static int getTotalCourses() {return idCounter;}
 
     // OTHER METHODS
 
     // Adds a student to the course if not already enrolled and capacity allows
     public void addStudent(Student student) {
+        if (repoStudent.getAll().size() >= maxCapacity) {
+            System.out.println("Maximum Capacity Reached!!!");
+            return;
+        }
         repoStudent.add(student);
     }
 
@@ -148,7 +150,8 @@ public class Course implements Schedulable, Serializable {
         repoStudent.remove(student);
     }
 
-    public void searchStudent(Student student){
+    // Searches for a student in the course
+    public void searchStudent(Student student) {
         repoStudent.search(student);
     }
 
@@ -162,7 +165,7 @@ public class Course implements Schedulable, Serializable {
         repoAssignment.remove(assignment);
     }
 
-    //
+    // Searches for an assignment in the course
     public void searchAssignment(Assignment assignment) {
         repoAssignment.search(assignment);
     }
@@ -221,7 +224,7 @@ public class Course implements Schedulable, Serializable {
                 (classroom != null ? classroom.getClassNumber() : "Not Assigned"),
                 day,
                 time,
-                students.size(),
+                repoStudent.getAll().size(),
                 maxCapacity
         );
     }

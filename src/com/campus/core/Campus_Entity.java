@@ -11,7 +11,9 @@ public abstract class Campus_Entity implements Serializable {
     protected String status = "Active";
 
     // CONSTRUCTORS
-    public Campus_Entity() {}
+    public Campus_Entity() {
+    }
+
 
     public Campus_Entity(String entityID, String entityName, String location) {
         setEntityID(entityID);
@@ -21,7 +23,7 @@ public abstract class Campus_Entity implements Serializable {
 
     // SETTERS
     public void setEntityID(String entityID) {
-        if (entityID == null && entityID.isEmpty()) {
+        if (entityID == null || entityID.isEmpty()) {
             System.out.println("Invalid Entity ID Entered!!!!");
         } else {
             this.entityID = entityID;
@@ -29,7 +31,7 @@ public abstract class Campus_Entity implements Serializable {
     }
 
     public void setEntityName(String entityName) {
-        if (entityName == null && entityName.isEmpty()) {
+        if (entityName == null || entityName.isEmpty()) {
             System.out.println("Invalid Entity Name Entered!!!!");
         } else {
             this.entityName = entityName;
@@ -37,7 +39,7 @@ public abstract class Campus_Entity implements Serializable {
     }
 
     public void setLocation(String location) {
-        if (location == null && location.isEmpty()) {
+        if (location == null || location.isEmpty()) {
             System.out.println("Invalid Location Entered!!!!");
         } else {
             this.location = location;
@@ -45,7 +47,7 @@ public abstract class Campus_Entity implements Serializable {
     }
 
     public void setStatus(String status) {
-        if (status == null && status.isEmpty()) {
+        if (status == null || status.isEmpty()) {
             System.out.println("Invalid Status Entered!!!!");
         } else {
             this.status = status;
@@ -53,13 +55,25 @@ public abstract class Campus_Entity implements Serializable {
     }
 
     // GETTERS
-    public String getEntityID() { return entityID; }
-    public String getEntityName() { return entityName; }
-    public String getLocation() { return location; }
-    public String getStatus() { return status; }
+    public String getEntityID() {
+        return entityID;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 
     // OTHER METHODS
-    // Defines the contract for how each specific campus unit calculates its operational expenses
+    // Defines the contract for how each specific campus unit calculates its
+    // operational expenses
     public abstract double calculateOperationalCost();
 
     // TO-STRING
@@ -71,7 +85,6 @@ public abstract class Campus_Entity implements Serializable {
                         "  Name     : %s\n" +
                         "  Location : %s\n" +
                         "  Status   : %s",
-                entityID, entityName, location, status
-        );
+                entityID, entityName, location, status);
     }
 }

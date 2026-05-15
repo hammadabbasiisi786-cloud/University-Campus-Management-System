@@ -1,11 +1,9 @@
 package com.campus.core;
 
-import com.campus.Person.Student;
-import com.campus.academicunit.Equipment;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Facility extends Campus_Entity {
+public abstract class Facility extends Campus_Entity  {
 
     // FIELDS
     protected static int totalFacilityUsage = 0;

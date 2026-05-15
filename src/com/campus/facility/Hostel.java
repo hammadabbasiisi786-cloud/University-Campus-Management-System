@@ -4,9 +4,10 @@ import com.campus.CampusRepository;
 import com.campus.Person.*;
 import com.campus.core.Facility;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Hostel extends Facility {
+public class Hostel extends Facility  {
 
     // FIELDS
     private static int totalHostels = 0;
@@ -53,7 +54,7 @@ public class Hostel extends Facility {
     }
 
     public void setOccupiedRooms(int occupiedRooms) {
-        if (occupiedRooms < 0 && occupiedRooms > totalRooms) {
+        if (occupiedRooms < 0 || occupiedRooms > totalRooms) {
             System.out.println("Invalid occupied rooms count");
         } else {
             this.occupiedRooms = occupiedRooms;
@@ -61,7 +62,7 @@ public class Hostel extends Facility {
     }
 
     public void setWardenName(String wardenName) {
-        if (wardenName == null && wardenName.isEmpty()) {
+        if (wardenName == null || wardenName.isEmpty()) {
             System.out.println("Invalid Warden Name entered");
         } else {
             this.wardenName = wardenName;
@@ -69,7 +70,7 @@ public class Hostel extends Facility {
     }
 
     public void setOpeningHours(String openingHours) {
-        if (openingHours == null && openingHours.isEmpty()) {
+        if (openingHours == null || openingHours.isEmpty()) {
             System.out.println("Invalid opening hours entered");
         } else {
             this.openingHours = openingHours;
@@ -77,7 +78,7 @@ public class Hostel extends Facility {
     }
 
     public void setContact(String contact) {
-        if (contact == null && contact.isEmpty()) {
+        if (contact == null || contact.isEmpty()) {
             System.out.println("Invalid contact information entered");
         } else {
             this.contact = contact;
@@ -93,7 +94,7 @@ public class Hostel extends Facility {
     }
 
     public void setHostelType(String hostelType) {
-        if (hostelType == null && hostelType.isEmpty()) {
+        if (hostelType == null || hostelType.isEmpty()) {
             System.out.println("Invalid hostel type entered");
         } else {
             this.hostelType = hostelType;

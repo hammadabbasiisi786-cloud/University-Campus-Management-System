@@ -1,9 +1,11 @@
 package com.campus.core;
 
 import com.campus.academicunit.Equipment;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Academic_Unit extends Campus_Entity {
+public abstract class Academic_Unit extends Campus_Entity  {
 
     // FIELDS
     protected ArrayList<Equipment> equipments = new ArrayList<>();

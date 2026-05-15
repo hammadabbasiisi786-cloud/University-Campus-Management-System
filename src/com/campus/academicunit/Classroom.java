@@ -4,7 +4,7 @@ import com.campus.core.Academic_Unit;
 
 import java.util.ArrayList;
 
-public class Classroom extends Academic_Unit {
+public class Classroom extends Academic_Unit  {
 
     // FIELDS
     private static int idCounter = 0;
@@ -90,13 +90,14 @@ public class Classroom extends Academic_Unit {
         return affectedSlots;
     }
 
-    // Calculates operational cost by summing the cost of all equipment in this classroom
+    // Calculates operational cost based on equipment and student capacity (per spec: students + equipment)
     @Override
     public double calculateOperationalCost() {
         double operationalCost = 0;
         for (Equipment eq : equipments) {
             operationalCost += eq.getOperationalCost();
         }
+        operationalCost += getNumberOfStudents() * 50;
         return operationalCost;
     }
 

@@ -4,6 +4,7 @@ import com.campus.CampusRepository;
 import com.campus.core.Facility;
 import com.campus.Interfaces.Reportable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Library extends Facility implements Reportable {

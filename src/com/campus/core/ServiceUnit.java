@@ -2,7 +2,7 @@ package com.campus.core;
 
 import java.io.Serializable;
 
-public abstract class ServiceUnit extends Campus_Entity implements Serializable {
+public abstract class ServiceUnit extends Campus_Entity {
 
     // FIELDS
     protected int serviceHours;

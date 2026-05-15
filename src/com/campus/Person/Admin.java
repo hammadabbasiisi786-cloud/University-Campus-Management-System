@@ -43,8 +43,10 @@ public class Admin implements Notifiable, Serializable {
         );
     }
 
+    // Receives and displays an admin notification
     @Override
     public void sendNotification(String message) {
-
+        System.out.println("[Admin Notification] To: " + name);
+        System.out.println("Message: " + message);
     }
 }

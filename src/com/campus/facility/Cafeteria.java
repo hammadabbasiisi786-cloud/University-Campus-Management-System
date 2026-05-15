@@ -5,7 +5,7 @@ import com.campus.core.Facility;
 
 import java.util.ArrayList;
 
-public class Cafeteria extends Facility {
+public class Cafeteria extends Facility  {
 
     // FIELDS
     private int staffCount;
@@ -55,7 +55,7 @@ public class Cafeteria extends Facility {
     }
 
     public void setTiming(String timing) {
-        if (timing == null && timing.isEmpty()) {
+        if (timing == null || timing.isEmpty()) {
             System.out.println("Invalid timing entered");
         } else {
             this.timing = timing;

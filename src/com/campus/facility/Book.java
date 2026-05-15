@@ -27,7 +27,7 @@ public class Book implements Serializable {
 
     // SETTERS
     public void setISBN(String ISBN) {
-        if (ISBN == null && ISBN.isEmpty()) {
+        if (ISBN == null || ISBN.isEmpty()) {
             System.out.println("Invalid ISBN Entered!!!!");
         } else {
             this.ISBN = ISBN;
@@ -35,7 +35,7 @@ public class Book implements Serializable {
     }
 
     public void setPublisher(String publisher) {
-        if (publisher == null && publisher.isEmpty()) {
+        if (publisher == null || publisher.isEmpty()) {
             System.out.println("Invalid Publisher Entered!!!!");
         } else {
             this.publisher = publisher;
@@ -43,7 +43,7 @@ public class Book implements Serializable {
     }
 
     public void setAuthor(String author) {
-        if (author == null && author.isEmpty()) {
+        if (author == null || author.isEmpty()) {
             System.out.println("Invalid Author Entered!!!!");
         } else {
             this.author = author;
@@ -51,7 +51,7 @@ public class Book implements Serializable {
     }
 
     public void setTitle(String title) {
-        if (title == null && title.isEmpty()) {
+        if (title == null || title.isEmpty()) {
             System.out.println("Invalid Title Entered!!!!");
         } else {
             this.title = title;

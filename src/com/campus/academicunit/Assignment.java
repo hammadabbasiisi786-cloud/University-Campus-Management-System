@@ -53,7 +53,7 @@ public class Assignment implements Serializable {
     }
 
     public void setDueDate(String dueDate) {
-        if (dueDate == null && dueDate.isEmpty()) {
+        if (dueDate == null || dueDate.isEmpty()) {
             System.out.println("Please enter a valid due date");
         } else {
             this.dueDate = dueDate;

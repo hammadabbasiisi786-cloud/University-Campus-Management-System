@@ -14,7 +14,6 @@ public class Lab extends Academic_Unit {
     private boolean isAvailable;
     private int capacity;
     private Teacher teacher;
-    private ArrayList<Student> students = new ArrayList<>();
     private CampusRepository<Student> repoStudent = new CampusRepository<>();
 
     // CONSTRUCTORS
@@ -62,7 +61,7 @@ public class Lab extends Academic_Unit {
         if (students == null) {
             System.out.println("Student list cannot be null");
         } else {
-            this.students = students;
+            repoStudent.setItems(students);
         }
     }
 
@@ -71,19 +70,19 @@ public class Lab extends Academic_Unit {
     public int getCapacity() { return capacity; }
     public boolean isAvailable() { return isAvailable; }
     public Teacher getTeacher() { return teacher; }
-    public ArrayList<Student> getStudents() { return students; }
+    public ArrayList<Student> getStudents() { return repoStudent.getAll(); }
 
     // OTHER METHODS
 
     // Returns the number of students currently enrolled in this lab
     @Override
     public int getNumberOfStudents() {
-        return students.size();
+        return repoStudent.getAll().size();
     }
 
     // Adds a student to the lab if not already present and capacity allows
     public void addStudent(Student student) {
-        if (students.size() >= capacity) {
+        if (repoStudent.getAll().size() >= capacity) {
             System.out.println("Maximum capacity reached");
             return;
         }
@@ -95,13 +94,14 @@ public class Lab extends Academic_Unit {
         repoStudent.remove(student);
     }
 
-    // Calculates operational cost by summing the cost of all equipment in this lab
+    // Calculates operational cost based on equipment and students (per spec: students + equipment)
     @Override
     public double calculateOperationalCost() {
         double operationalCost = 0;
         for (Equipment eq : equipments) {
             operationalCost += eq.getOperationalCost();
         }
+        operationalCost += getNumberOfStudents() * 50;
         return operationalCost;
     }
 
@@ -119,7 +119,7 @@ public class Lab extends Academic_Unit {
                 labNumber,
                 capacity,
                 (isAvailable ? "Yes" : "No"),
-                students.size(),
+                repoStudent.getAll().size(),
                 (teacher != null ? teacher.getName() : "Not Assigned")
         );
     }
