@@ -20,12 +20,6 @@ public class Department extends Academic_Unit implements Reportable {
         super();
     }
 
-    public Department(String departmentName, Teacher headOfDepartment) {
-        super();
-        this.entityName = departmentName;
-        setHeadOfDepartment(headOfDepartment);
-    }
-
     public Department(String entityID, String entityName, String location, Teacher headOfDepartment) {
         super(entityID, entityName, location);
         this.headOfDepartment = headOfDepartment;

@@ -1,45 +1,66 @@
 package com.campus.Person;
 
 public class Teacher {
+
+    // FIELDS
     private String name;
     private double salary;
     private String qualification;
 
-    public Teacher() {
-    }
+    // CONSTRUCTORS
+    public Teacher() {}
 
     public Teacher(String name, double salary, String qualification) {
-        this.name = name;
-        this.salary = salary;
-        this.qualification = qualification;
+        setName(name);
+        setSalary(salary);
+        setQualification(qualification);
     }
 
-    public String getName() {
-        return name;
-    }
+    // SETTERS
 
+    // Name must not be null or empty
     public void setName(String name) {
-        this.name = name;
+        if (name == null || name.isEmpty()) {
+            System.out.println("Invalid name entered");
+        } else {
+            this.name = name;
+        }
     }
 
-    public double getSalary() {
-        return salary;
-    }
-
+    // Salary must be greater than 0
     public void setSalary(double salary) {
-        this.salary = salary;
+        if (salary > 0) {
+            this.salary = salary;
+        } else {
+            System.out.println("Invalid salary entered");
+        }
     }
 
-    public String getQualification() {
-        return qualification;
-    }
-
+    // Qualification must not be null or empty
     public void setQualification(String qualification) {
-        this.qualification = qualification;
+        if (qualification == null || qualification.isEmpty()) {
+            System.out.println("Invalid qualification entered");
+        } else {
+            this.qualification = qualification;
+        }
     }
 
+    // GETTERS
+    public String getName() { return name; }
+    public double getSalary() { return salary; }
+    public String getQualification() { return qualification; }
+
+    // TO-STRING
     @Override
     public String toString() {
-        return "Teacher [Name: " + name + ", Salary: " + salary + ", Qualification: " + qualification + "]";
+        return String.format(
+                "=== Teacher ===\n" +
+                        "  Name          : %s\n" +
+                        "  Salary        : %.2f\n" +
+                        "  Qualification : %s",
+                name,
+                salary,
+                qualification
+        );
     }
 }

@@ -3,45 +3,63 @@ package com.campus.Person;
 import java.io.Serializable;
 
 public class Student implements Serializable {
-    private static int studentcounter = 0;
+
+    // FIELDS
+    private static int studentCounter = 0;
     private final String studentID;
     private String name;
     private int semester;
 
+    // CONSTRUCTORS
     public Student() {
-        studentcounter++;
-        this.studentID = "FA25-BCS-" + studentcounter;
+        studentCounter++;
+        this.studentID = "FA25-BCS-" + studentCounter;
     }
 
     public Student(String name, int semester) {
-        this.name = name;
-        studentcounter++;
-        this.studentID = "FA25-BCS-" + studentcounter;
-        this.semester = semester;
+        studentCounter++;
+        this.studentID = "FA25-BCS-" + studentCounter;
+        setName(name);
+        setSemester(semester);
     }
 
-    public String getName() {
-        return name;
-    }
+    // SETTERS
 
+    // Name must not be null or empty
     public void setName(String name) {
-        this.name = name;
+        if (name == null || name.isEmpty()) {
+            System.out.println("Invalid name entered");
+        } else {
+            this.name = name;
+        }
     }
 
-    public String getStudentID() {
-        return studentID;
-    }
-
-    public int getSemester() {
-        return semester;
-    }
-
+    // Semester must be between 1 and 8
     public void setSemester(int semester) {
-        this.semester = semester;
+        if (semester < 1 || semester > 8) {
+            System.out.println("Invalid semester entered");
+        } else {
+            this.semester = semester;
+        }
     }
 
+    // GETTERS
+    public static int getStudentCounter() { return studentCounter; }
+    public String getStudentID() { return studentID; }
+    public String getName() { return name; }
+    public int getSemester() { return semester; }
+
+    // TO-STRING
     @Override
     public String toString() {
-        return "Student [Name: " + name + ", ID: " + studentID + ", Semester: " + semester + "]";
+        return String.format(
+                "=== Student ===\n" +
+                        "  ID       : %s\n" +
+                        "  Name     : %s\n" +
+                        "  Semester : %d",
+                studentID,
+                name,
+                semester
+        );
     }
 }
