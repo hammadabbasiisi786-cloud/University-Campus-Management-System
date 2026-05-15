@@ -18,7 +18,13 @@ public abstract class Academic_Unit extends Campus_Entity {
     }
 
     // SETTERS
-    public void setEquipments(ArrayList<Equipment> equipments) { this.equipments = equipments; }
+    public void setEquipments(ArrayList<Equipment> equipments) {
+        if (equipments == null) {
+            System.out.println("Equipment list cannot be null");
+        } else {
+            this.equipments = equipments;
+        }
+    }
 
     // GETTERS
     public ArrayList<Equipment> getEquipments() { return equipments; }

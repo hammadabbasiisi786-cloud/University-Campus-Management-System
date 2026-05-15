@@ -16,15 +16,35 @@ public abstract class ServiceUnit extends Campus_Entity implements Serializable 
 
     public ServiceUnit(String entityID, String name, String location, int noOfStaff, int serviceHours, double baseHourlyRate) {
         super(entityID, name, location);
-        this.noOfStaff = noOfStaff;
-        this.serviceHours = serviceHours;
-        this.baseHourlyRate = baseHourlyRate;
+        setStaffCount(noOfStaff);
+        setServiceHours(serviceHours);
+        setBaseHourlyRate(baseHourlyRate);
     }
 
     // SETTERS
-    public void setStaffCount(int noOfStaff) { this.noOfStaff = noOfStaff; }
-    public void setServiceHours(int serviceHours) { this.serviceHours = serviceHours; }
-    public void setBaseHourlyRate(double baseHourlyRate) { this.baseHourlyRate = baseHourlyRate; }
+    public void setStaffCount(int noOfStaff) {
+        if (noOfStaff < 0) {
+            System.out.println("Staff count cannot be negative");
+        } else {
+            this.noOfStaff = noOfStaff;
+        }
+    }
+
+    public void setServiceHours(int serviceHours) {
+        if (serviceHours < 0) {
+            System.out.println("Service hours cannot be negative");
+        } else {
+            this.serviceHours = serviceHours;
+        }
+    }
+
+    public void setBaseHourlyRate(double baseHourlyRate) {
+        if (baseHourlyRate < 0) {
+            System.out.println("Base hourly rate cannot be negative");
+        } else {
+            this.baseHourlyRate = baseHourlyRate;
+        }
+    }
 
     // GETTERS
     public int getStaffCount() { return noOfStaff; }

@@ -26,7 +26,7 @@ public class Classroom extends Academic_Unit {
         idCounter++;
         this.classNumber = "Class-" + idCounter;
         setCapacity(capacity);
-        this.available = available;
+        setAvailable(available);
     }
 
     // SETTERS
@@ -37,9 +37,23 @@ public class Classroom extends Academic_Unit {
             System.out.println("Capacity must be greater than 0");
         }
     }
-    public void setAvailable(boolean available) { this.available = available; }
-    public void setOccupiedSlots(ArrayList<String> occupiedSlots) { this.occupiedSlots = occupiedSlots; }
-    public void setDepartment(Department department) { this.department = department; }
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+    public void setOccupiedSlots(ArrayList<String> occupiedSlots) {
+        if (occupiedSlots == null) {
+            System.out.println("Occupied slots list cannot be null");
+        } else {
+            this.occupiedSlots = occupiedSlots;
+        }
+    }
+    public void setDepartment(Department department) {
+        if (department == null) {
+            System.out.println("Department cannot be null");
+        } else {
+            this.department = department;
+        }
+    }
 
     // GETTERS
     public String getClassNumber() { return classNumber; }
@@ -70,7 +84,7 @@ public class Classroom extends Academic_Unit {
 
     // Marks classroom as unavailable, clears all booked slots, and returns the affected slots
     public ArrayList<String> markUnavailable() {
-        this.available = false;
+        setAvailable(false);
         ArrayList<String> affectedSlots = new ArrayList<>(occupiedSlots);
         occupiedSlots.clear();
         return affectedSlots;

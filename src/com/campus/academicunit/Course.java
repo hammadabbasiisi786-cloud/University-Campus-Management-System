@@ -1,12 +1,13 @@
 package com.campus.academicunit;
 
+import com.campus.CampusRepository;
 import com.campus.Interfaces.Schedulable;
 import com.campus.Person.*;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.*;
 
-public class Course implements Schedulable ,Serializable {
+public class Course implements Schedulable, Serializable {
 
     // FIELDS
     private static int idCounter = 0;
@@ -20,6 +21,8 @@ public class Course implements Schedulable ,Serializable {
     private Classroom classroom;
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Assignment> assignments = new ArrayList<>();
+    private CampusRepository<Student> repoStudent = new CampusRepository<>();
+    private CampusRepository<Assignment> repoAssignment = new CampusRepository<Assignment>();
 
     // CONSTRUCTORS
     public Course() {
@@ -33,8 +36,8 @@ public class Course implements Schedulable ,Serializable {
         setCourseName(courseName);
         setCreditHour(creditHour);
         setProfessor(teacher);
-        this.day = day;
-        this.time = time;
+        setDay(day);
+        setTime(time);
         setClassroom(classroom);
         setMaxCapacity();
     }
@@ -49,7 +52,7 @@ public class Course implements Schedulable ,Serializable {
     }
 
     public void setCreditHour(int creditHour) {
-        if (creditHour < 0 || creditHour > 4) {
+        if (creditHour < 0 && creditHour > 4) {
             System.out.println("Invalid Credit Hour Entered!!!!");
         } else {
             this.creditHour = creditHour;
@@ -63,7 +66,13 @@ public class Course implements Schedulable ,Serializable {
         }
     }
 
-    public void setProfessor(Teacher teacher) { this.teacher = teacher; }
+    public void setProfessor(Teacher teacher) {
+        if (teacher == null) {
+            System.out.println("Teacher cannot be null");
+        } else {
+            this.teacher = teacher;
+        }
+    }
 
     // Assigns a classroom to this course and books the slot; finds another slot if unavailable
     public void setClassroom(Classroom classroom) {
@@ -98,8 +107,21 @@ public class Course implements Schedulable ,Serializable {
         }
     }
 
-    public void setStudents(ArrayList<Student> students) { this.students = students; }
-    public void setAssignments(ArrayList<Assignment> assignments) { this.assignments = assignments; }
+    public void setStudents(ArrayList<Student> students) {
+        if (students == null) {
+            System.out.println("Student list cannot be null");
+        } else {
+            this.students = students;
+        }
+    }
+
+    public void setAssignments(ArrayList<Assignment> assignments) {
+        if (assignments != null) {
+            this.assignments = assignments;
+        } else {
+            System.out.println("Assignment list cannot be null");
+        }
+    }
 
     // GETTERS
     public String getCourseId() { return courseId; }
@@ -112,69 +134,37 @@ public class Course implements Schedulable ,Serializable {
     public Classroom getClassroom() { return classroom; }
     public ArrayList<Student> getStudents() { return students; }
     public ArrayList<Assignment> getAssignments() { return assignments; }
-    public int getTotalCourses(){
-        return idCounter;
-    }
+    public int getTotalCourses() {return idCounter;}
+
     // OTHER METHODS
 
     // Adds a student to the course if not already enrolled and capacity allows
     public void addStudent(Student student) {
-        if (student == null) {
-            System.out.println("Invalid student");
-            return;
-        }
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).equals(student)) {
-                System.out.println("Student already exists in this course");
-                return;
-            }
-        }
-        if (students.size() >= maxCapacity) {
-            System.out.println("Maximum Capacity Reached!!!");
-            return;
-        }
-        students.add(student);
+        repoStudent.add(student);
     }
 
     // Removes a student from the course if they are found in the list
     public void removeStudent(Student student) {
-        if (student == null) {
-            System.out.println("Invalid student");
-            return;
-        }
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).equals(student)) {
-                students.remove(i);
-                System.out.println("Student removed successfully");
-                return;
-            }
-        }
-        System.out.println("Student not found in this course");
+        repoStudent.remove(student);
+    }
+
+    public void searchStudent(Student student){
+        repoStudent.search(student);
     }
 
     // Adds an assignment to this course's assignment list
     public void addAssignment(Assignment assignment) {
-        if (assignment == null) {
-            System.out.println("Invalid assignment");
-            return;
-        }
-        assignments.add(assignment);
+        repoAssignment.add(assignment);
     }
 
     // Removes an assignment from this course's assignment list
     public void removeAssignment(Assignment assignment) {
-        if (assignment == null) {
-            System.out.println("Invalid assignment");
-            return;
-        }
-        for (int i = 0; i < assignments.size(); i++) {
-            if (assignments.get(i) == assignment) {
-                assignments.remove(i);
-                System.out.println("Assignment removed successfully");
-                return;
-            }
-        }
-        System.out.println("Assignment not found");
+        repoAssignment.remove(assignment);
+    }
+
+    //
+    public void searchAssignment(Assignment assignment) {
+        repoAssignment.search(assignment);
     }
 
     // Attempts to find and book an available classroom slot from the department's classrooms
@@ -194,8 +184,8 @@ public class Course implements Schedulable ,Serializable {
                     if (room.isSlotAvailable(d, t)) {
                         room.bookSlot(d, t);
                         this.classroom = room;
-                        this.day = d;
-                        this.time = t;
+                        setDay(d);
+                        setTime(t);
                         System.out.println("Course rescheduled → Room: " + room.getClassNumber()
                                 + " | Day: " + d + " | Time: " + t);
                         return "Course: " + courseName

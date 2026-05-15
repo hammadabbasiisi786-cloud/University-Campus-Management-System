@@ -21,16 +21,46 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
 
     public TransportService(String entityID, String name, String location, int noOfStaff, int serviceHours, double baseHourlyRate, int numberOfBuses, String routeName) {
         super(entityID, name, location, noOfStaff, serviceHours, baseHourlyRate);
-        this.numberOfBuses = numberOfBuses;
-        this.routeName = routeName;
+        setNumberOfBuses(numberOfBuses);
+        setRouteName(routeName);
     }
 
     // SETTERS
-    public void setNumberOfBuses(int numberOfBuses) { this.numberOfBuses = numberOfBuses; }
-    public void setRouteName(String routeName) { this.routeName = routeName; }
-    public void setIsPeakHour(boolean isPeakHour) { this.isPeakHour = isPeakHour; }
-    public void setCurrentTime(String currentTime) { this.currentTime = currentTime; }
-    public void setPeakTime(String[] peakTime) { this.peakTime = peakTime; }
+    public void setNumberOfBuses(int numberOfBuses) {
+        if (numberOfBuses >= 0) {
+            this.numberOfBuses = numberOfBuses;
+        } else {
+            System.out.println("Number of buses cannot be negative");
+        }
+    }
+
+    public void setRouteName(String routeName) {
+        if (routeName != null && !routeName.isEmpty()) {
+            this.routeName = routeName;
+        } else {
+            System.out.println("Invalid Route Name Entered!!!!");
+        }
+    }
+
+    public void setIsPeakHour(boolean isPeakHour) {
+        this.isPeakHour = isPeakHour;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        if (currentTime != null && !currentTime.isEmpty()) {
+            this.currentTime = currentTime;
+        } else {
+            System.out.println("Invalid Current Time Entered!!!!");
+        }
+    }
+
+    public void setPeakTime(String[] peakTime) {
+        if (peakTime != null) {
+            this.peakTime = peakTime;
+        } else {
+            System.out.println("Peak time array cannot be null");
+        }
+    }
 
     // GETTERS
     public int getNumberOfBuses() { return numberOfBuses; }
@@ -43,7 +73,7 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
 
     // Checks if the given time matches a peak hour and updates the route and service mode accordingly
     public void updateServiceByTime(String timeInput) {
-        this.currentTime = timeInput;
+        setCurrentTime(timeInput);
         boolean matchFound = false;
 
         for (String pTime : peakTime) {
@@ -53,7 +83,7 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
             }
         }
 
-        this.isPeakHour = matchFound;
+        setIsPeakHour(matchFound);
 
         String scheduleUpdate = generateSchedule();
 
@@ -67,10 +97,10 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
     @Override
     public String generateSchedule() {
         if (isPeakHour) {
-            this.routeName = "Express-Way";
+            setRouteName("Express-Way");
             return "Route adjusted to Express-Way for peak traffic.";
         } else {
-            this.routeName = "Park Road (Standard)";
+            setRouteName("Park Road (Standard)");
             return "Route reset to Park Road (Standard).";
         }
     }

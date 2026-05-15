@@ -14,16 +14,43 @@ public abstract class Campus_Entity implements Serializable {
     public Campus_Entity() {}
 
     public Campus_Entity(String entityID, String entityName, String location) {
-        this.entityID = entityID;
-        this.entityName = entityName;
-        this.location = location;
+        setEntityID(entityID);
+        setEntityName(entityName);
+        setLocation(location);
     }
 
     // SETTERS
-    public void setEntityID(String entityID) { this.entityID = entityID; }
-    public void setEntityName(String entityName) { this.entityName = entityName; }
-    public void setLocation(String location) { this.location = location; }
-    public void setStatus(String status) { this.status = status; }
+    public void setEntityID(String entityID) {
+        if (entityID == null && entityID.isEmpty()) {
+            System.out.println("Invalid Entity ID Entered!!!!");
+        } else {
+            this.entityID = entityID;
+        }
+    }
+
+    public void setEntityName(String entityName) {
+        if (entityName == null && entityName.isEmpty()) {
+            System.out.println("Invalid Entity Name Entered!!!!");
+        } else {
+            this.entityName = entityName;
+        }
+    }
+
+    public void setLocation(String location) {
+        if (location == null && location.isEmpty()) {
+            System.out.println("Invalid Location Entered!!!!");
+        } else {
+            this.location = location;
+        }
+    }
+
+    public void setStatus(String status) {
+        if (status == null && status.isEmpty()) {
+            System.out.println("Invalid Status Entered!!!!");
+        } else {
+            this.status = status;
+        }
+    }
 
     // GETTERS
     public String getEntityID() { return entityID; }

@@ -3,8 +3,7 @@ package com.campus;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CampusRepository<T extends Serializable> implements Serializable {
-
+public class CampusRepository <T extends Serializable> implements Serializable {
     // FIELDS
     protected ArrayList<T> items;
 
@@ -80,6 +79,11 @@ public class CampusRepository<T extends Serializable> implements Serializable {
         }
     }
 
+    //return String
+    public ArrayList<T> getAll(){
+        return items;
+    }
+
     // TO-STRING
     @Override
     public String toString() {
@@ -89,4 +93,5 @@ public class CampusRepository<T extends Serializable> implements Serializable {
                 items.size()
         );
     }
+
 }

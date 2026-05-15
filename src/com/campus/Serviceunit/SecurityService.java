@@ -20,14 +20,37 @@ public class SecurityService extends ServiceUnit implements Notifiable {
 
     public SecurityService(String entityID, String name, String location, int noOfStaff, int serviceHours, double baseHourlyRate, int numberOfPatrolCars) {
         super(entityID, name, location, noOfStaff, serviceHours, baseHourlyRate);
-        this.numberOfPatrolCars = numberOfPatrolCars;
+        setNumberOfPatrolCars(numberOfPatrolCars);
     }
 
     // SETTERS
-    public void setNumberOfPatrolCars(int numberOfPatrolCars) { this.numberOfPatrolCars = numberOfPatrolCars; }
-    public void setEmergencyMode(boolean emergencyMode) { this.emergencyMode = emergencyMode; }
-    public void setCurrentEmergencyStatus(String currentEmergencyStatus) { this.currentEmergencyStatus = currentEmergencyStatus; }
-    public void setEmergencyContacts(ArrayList<Notifiable> emergencyContacts) { this.emergencyContacts = emergencyContacts; }
+    public void setNumberOfPatrolCars(int numberOfPatrolCars) {
+        if (numberOfPatrolCars >= 0) {
+            this.numberOfPatrolCars = numberOfPatrolCars;
+        } else {
+            System.out.println("Number of patrol cars cannot be negative");
+        }
+    }
+
+    public void setEmergencyMode(boolean emergencyMode) {
+        this.emergencyMode = emergencyMode;
+    }
+
+    public void setCurrentEmergencyStatus(String currentEmergencyStatus) {
+        if (currentEmergencyStatus != null && !currentEmergencyStatus.isEmpty()) {
+            this.currentEmergencyStatus = currentEmergencyStatus;
+        } else {
+            System.out.println("Invalid emergency status entered");
+        }
+    }
+
+    public void setEmergencyContacts(ArrayList<Notifiable> emergencyContacts) {
+        if (emergencyContacts != null) {
+            this.emergencyContacts = emergencyContacts;
+        } else {
+            System.out.println("Emergency contacts list cannot be null");
+        }
+    }
 
     // GETTERS
     public int getNumberOfPatrolCars() { return numberOfPatrolCars; }
@@ -46,8 +69,8 @@ public class SecurityService extends ServiceUnit implements Notifiable {
 
     // Activates emergency mode and notifies all registered emergency contacts with the given message
     public void handleEmergencySituation(String message) {
-        this.emergencyMode = true;
-        this.currentEmergencyStatus = "EMERGENCY";
+        setEmergencyMode(true);
+        setCurrentEmergencyStatus("EMERGENCY");
 
         System.out.println("--- SECURITY PROTOCOL ACTIVATED ---");
 

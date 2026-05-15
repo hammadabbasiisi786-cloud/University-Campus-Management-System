@@ -12,7 +12,6 @@ public class Hostel extends Facility {
     private static int totalHostels = 0;
     private int totalRooms;
     private int occupiedRooms;
-    private ArrayList<Student> residents = new ArrayList<>();
     private String wardenName;
     private String openingHours;
     private String contact;
@@ -20,48 +19,98 @@ public class Hostel extends Facility {
     private String hostelType;
     private CampusRepository<Student> repo = new CampusRepository<>();
 
-    // CONSTRUCTORS
     public Hostel() {
-        super();
+        totalHostels++;
     }
 
-    public Hostel(String entityID, String entityName, String location, String status, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int totalRooms, int occupiedRooms, String wardenName, String openingHours, String contact, double utilitiesPerRoom, String hostelType) {
-        super(entityID, entityName, location, status, maintenanceCost, usageFrequency, capacity, isOpen);
-        this.totalRooms = totalRooms;
-        this.occupiedRooms = occupiedRooms;
-        this.wardenName = wardenName;
-        this.openingHours = openingHours;
-        this.contact = contact;
-        this.utilitiesPerRoom = utilitiesPerRoom;
-        this.hostelType = hostelType;
+    public Hostel(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int totalRooms, int occupiedRooms, String wardenName, String openingHours, String contact, double utilitiesPerRoom, String hostelType) {
+        super(entityID, entityName, location, maintenanceCost, usageFrequency, capacity, isOpen);
+        setTotalRooms(totalRooms);
+        setOccupiedRooms(occupiedRooms);
+        setWardenName(wardenName);
+        setOpeningHours(openingHours);
+        setContact(contact);
+        setUtilitiesPerRoom(utilitiesPerRoom);
+        setHostelType(hostelType);
         totalHostels++;
     }
 
     // SETTERS
-    public static void setTotalHostels(int totalHostels) { Hostel.totalHostels = totalHostels; }
-    public void setTotalRooms(int totalRooms) { this.totalRooms = totalRooms; }
-    public void setOccupiedRooms(int occupiedRooms) { this.occupiedRooms = occupiedRooms; }
-    public void setResidents(ArrayList<Student> residents) { this.residents = residents; }
-    public void setWardenName(String wardenName) { this.wardenName = wardenName; }
-    public void setOpeningHours(String openingHours) { this.openingHours = openingHours; }
-    public void setContact(String contact) { this.contact = contact; }
-    public void setUtilitiesPerRoom(double utilitiesPerRoom) { this.utilitiesPerRoom = utilitiesPerRoom; }
-    public void setHostelType(String hostelType) { this.hostelType = hostelType; }
+    public static void setTotalHostels(int totalHostels) {
+        if (totalHostels < 0) {
+            System.out.println("Total hostels cannot be negative");
+        } else {
+            Hostel.totalHostels = totalHostels;
+        }
+    }
+
+    public void setTotalRooms(int totalRooms) {
+        if (totalRooms < 0) {
+            System.out.println("Total rooms cannot be negative");
+        } else {
+            this.totalRooms = totalRooms;
+        }
+    }
+
+    public void setOccupiedRooms(int occupiedRooms) {
+        if (occupiedRooms < 0 && occupiedRooms > totalRooms) {
+            System.out.println("Invalid occupied rooms count");
+        } else {
+            this.occupiedRooms = occupiedRooms;
+        }
+    }
+
+    public void setWardenName(String wardenName) {
+        if (wardenName == null && wardenName.isEmpty()) {
+            System.out.println("Invalid Warden Name entered");
+        } else {
+            this.wardenName = wardenName;
+        }
+    }
+
+    public void setOpeningHours(String openingHours) {
+        if (openingHours == null && openingHours.isEmpty()) {
+            System.out.println("Invalid opening hours entered");
+        } else {
+            this.openingHours = openingHours;
+        }
+    }
+
+    public void setContact(String contact) {
+        if (contact == null && contact.isEmpty()) {
+            System.out.println("Invalid contact information entered");
+        } else {
+            this.contact = contact;
+        }
+    }
+
+    public void setUtilitiesPerRoom(double utilitiesPerRoom) {
+        if (utilitiesPerRoom < 0) {
+            System.out.println("Utilities cost cannot be negative");
+        } else {
+            this.utilitiesPerRoom = utilitiesPerRoom;
+        }
+    }
+
+    public void setHostelType(String hostelType) {
+        if (hostelType == null && hostelType.isEmpty()) {
+            System.out.println("Invalid hostel type entered");
+        } else {
+            this.hostelType = hostelType;
+        }
+    }
 
     // GETTERS
     public static int getTotalHostels() { return totalHostels; }
     public int getTotalRooms() { return totalRooms; }
     public int getOccupiedRooms() { return occupiedRooms; }
-    public ArrayList<Student> getResidents() { return residents; }
     public String getWardenName() { return wardenName; }
     public String getOpeningHours() { return openingHours; }
     public String getContact() { return contact; }
-    public double getUtilitiesPerRoom() { return utilitiesPerRoom; }
     public String getHostelType() { return hostelType; }
+    public double getUtilitiesPerRoom() { return utilitiesPerRoom; }
 
     // OTHER METHODS
-
-    // Calculates operational cost by adding parent cost with per-room utility charges for all occupied rooms
     @Override
     public double calculateOperationalCost() {
         return super.calculateOperationalCost() + (occupiedRooms * utilitiesPerRoom);
@@ -95,7 +144,10 @@ public class Hostel extends Facility {
         repo.search(student);
     }
 
-    // TO-STRING
+    public ArrayList<Student> getResidents() {
+        return repo.getAll();
+    }
+
     @Override
     public String toString() {
         return String.format(

@@ -18,13 +18,26 @@ public class HealthCenter extends ServiceUnit implements Notifiable, Serializabl
 
     public HealthCenter(String entityID, String name, String location, int noOfStaff, int serviceHours, double baseHourlyRate, int availableBeds, int noOfDoctors) {
         super(entityID, name, location, noOfStaff, serviceHours, baseHourlyRate);
-        this.availableBeds = availableBeds;
-        this.noOfDoctors = noOfDoctors;
+        setAvailableBeds(availableBeds);
+        setNoOfDoctors(noOfDoctors);
     }
 
     // SETTERS
-    public void setAvailableBeds(int availableBeds) { this.availableBeds = availableBeds; }
-    public void setNoOfDoctors(int noOfDoctors) { this.noOfDoctors = noOfDoctors; }
+    public void setAvailableBeds(int availableBeds) {
+        if (availableBeds >= 0) {
+            this.availableBeds = availableBeds;
+        } else {
+            System.out.println("Available beds cannot be negative");
+        }
+    }
+
+    public void setNoOfDoctors(int noOfDoctors) {
+        if (noOfDoctors >= 0) {
+            this.noOfDoctors = noOfDoctors;
+        } else {
+            System.out.println("Number of doctors cannot be negative");
+        }
+    }
 
     // GETTERS
     public int getAvailableBeds() { return availableBeds; }

@@ -1,10 +1,8 @@
 package com.campus.academicunit;
 
-import com.campus.Interfaces.Schedulable;
+import java.io.Serializable;
 
-import java.io.*;
-
-public class Assignment implements Serializable{
+public class Assignment implements Serializable {
 
     // FIELDS
     private int assignmentNumber;
@@ -46,8 +44,21 @@ public class Assignment implements Serializable{
         }
     }
 
-    public void setIssueDate(String issueDate) { this.issueDate = issueDate; }
-    public void setDueDate(String dueDate) { this.dueDate = dueDate; }
+    public void setIssueDate(String issueDate) {
+        if (issueDate != null && !issueDate.isEmpty()) {
+            this.issueDate = issueDate;
+        } else {
+            System.out.println("Please enter a valid issue date");
+        }
+    }
+
+    public void setDueDate(String dueDate) {
+        if (dueDate == null && dueDate.isEmpty()) {
+            System.out.println("Please enter a valid due date");
+        } else {
+            this.dueDate = dueDate;
+        }
+    }
 
     // Total marks must be greater than 0 to be valid
     public void setTotalMarks(int totalMarks) {

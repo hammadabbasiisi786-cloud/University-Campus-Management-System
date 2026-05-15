@@ -8,50 +8,82 @@ import java.util.ArrayList;
 public class Cafeteria extends Facility {
 
     // FIELDS
-    protected ArrayList<String> menu = new ArrayList<>();
-    protected int staffCount;
-    protected double staffSalary;
-    protected double ingredientCost;
-    protected String timing;
-    protected static int totalCafeteria = 0;
-    protected CampusRepository<String> repo = new CampusRepository<>();
+    private int staffCount;
+    private double staffSalary;
+    private double ingredientCost;
+    private String timing;
+    private static int totalCafeteria = 0;
+    private CampusRepository<String> repoMenu = new CampusRepository<>();
 
-    // CONSTRUCTORS
     public Cafeteria() {
         super();
-    }
-
-    public Cafeteria(String entityID, String entityName, String location, String status, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int staffCount, double staffSalary, double ingredientCost, String timing) {
-        super(entityID, entityName, location, status, maintenanceCost, usageFrequency, capacity, isOpen);
-        this.staffCount = staffCount;
-        this.staffSalary = staffSalary;
-        this.ingredientCost = ingredientCost;
-        this.timing = timing;
         totalCafeteria++;
     }
 
+    public Cafeteria(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int staffCount, double staffSalary, double ingredientCost, String timing, CampusRepository<String> repoMenu) {
+        super(entityID, entityName, location, maintenanceCost, usageFrequency, capacity, isOpen);
+        totalCafeteria++;
+        setStaffCount(staffCount);
+        setStaffSalary(staffSalary);
+        setIngredientCost(ingredientCost);
+        setTiming(timing);
+    }
+
     // SETTERS
-    public void setMenu(ArrayList<String> menu) { this.menu = menu; }
-    public void setStaffCount(int staffCount) { this.staffCount = staffCount; }
-    public void setStaffSalary(double staffSalary) { this.staffSalary = staffSalary; }
-    public void setIngredientCost(double ingredientCost) { this.ingredientCost = ingredientCost; }
-    public void setTiming(String timing) { this.timing = timing; }
-    public static void setTotalCafeteria(int totalCafeteria) { Cafeteria.totalCafeteria = totalCafeteria; }
+    public void setStaffCount(int staffCount) {
+        if (staffCount < 0) {
+            System.out.println("Staff count cannot be negative");
+        } else {
+            this.staffCount = staffCount;
+        }
+    }
+
+    public void setStaffSalary(double staffSalary) {
+        if (staffSalary < 0) {
+            System.out.println("Staff salary cannot be negative");
+        } else {
+            this.staffSalary = staffSalary;
+        }
+    }
+
+    public void setIngredientCost(double ingredientCost) {
+        if (ingredientCost < 0) {
+            System.out.println("Ingredient cost cannot be negative");
+        } else {
+            this.ingredientCost = ingredientCost;
+        }
+    }
+
+    public void setTiming(String timing) {
+        if (timing == null && timing.isEmpty()) {
+            System.out.println("Invalid timing entered");
+        } else {
+            this.timing = timing;
+        }
+    }
+
+    public void setRepo(CampusRepository<String> repoMenu) {
+        if (repoMenu == null) {
+            System.out.println("Repository cannot be null");
+        } else {
+            this.repoMenu = repoMenu;
+        }
+    }
 
     // GETTERS
-    public ArrayList<String> getMenu() { return menu; }
-    public int getStaffCount() { return staffCount; }
-    public double getStaffSalary() { return staffSalary; }
-    public double getIngredientCost() { return ingredientCost; }
-    public String getTiming() { return timing; }
-    public static int getTotalCafeteria() { return totalCafeteria; }
-
-    // OTHER METHODS
+    public ArrayList<String> getMenu() {
+        return repoMenu.getAll();
+    }
+    public int getStaffCount() {return staffCount;}
+    public double getStaffSalary() {return staffSalary;}
+    public double getIngredientCost() {return ingredientCost;}
+    public String getTiming() {return timing;}
+    public static int getTotalCafeteria() {return totalCafeteria;}
 
     // Increases staff count by the given number
     public void addStaff(int count) {
         if (count > 0) {
-            this.staffCount += count;
+            setStaffCount(staffCount + count);
             System.out.println("Staff added. Total staff: " + staffCount);
         } else {
             System.out.println("Invalid staff count entered");
@@ -61,7 +93,7 @@ public class Cafeteria extends Facility {
     // Decreases staff count by the given number if enough staff exist
     public void removeStaff(int count) {
         if (count > 0 && count <= staffCount) {
-            this.staffCount -= count;
+            setStaffCount(staffCount - count);
             System.out.println("Staff removed. Total staff: " + staffCount);
         } else {
             System.out.println("Invalid staff count entered");
@@ -70,28 +102,26 @@ public class Cafeteria extends Facility {
 
     // Adds a menu item to the cafeteria's menu repository
     public void addMenu(String menuItem) {
-        repo.add(menuItem);
+        repoMenu.add(menuItem);
     }
 
     // Removes a menu item from the cafeteria's menu repository
     public void removeMenu(String menuItem) {
-        repo.remove(menuItem);
+        repoMenu.remove(menuItem);
     }
 
     // Searches for a menu item in the cafeteria's menu repository
     public void searchMenu(String menuItem) {
-        repo.search(menuItem);
+        repoMenu.search(menuItem);
     }
 
-    // Calculates operational cost by adding parent cost with staff salary and ingredient expenses
     @Override
-    public double calculateOperationalCost() {
+    public double calculateOperationalCost(){
         return super.calculateOperationalCost() + (staffCount * staffSalary) + ingredientCost;
     }
 
-    // TO-STRING
     @Override
-    public String toString() {
+    public String toString(){
         return String.format(
                 "%s\n" +
                         "  Staff Count     : %d\n" +
@@ -105,7 +135,7 @@ public class Cafeteria extends Facility {
                 staffSalary,
                 ingredientCost,
                 timing,
-                menu.size(),
+                repoMenu.getAll().size(),
                 getStatus()
         );
     }

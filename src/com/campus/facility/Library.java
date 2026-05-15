@@ -9,61 +9,73 @@ import java.util.ArrayList;
 public class Library extends Facility implements Reportable {
 
     // FIELDS
-    protected ArrayList<Book> books = new ArrayList<>();
-    protected String timings;
-    protected double costPerBook;
-    private CampusRepository<Book> repo = new CampusRepository<>();
+    private String timings;
+    private double costPerBook;
+    private CampusRepository<Book> repoBook = new CampusRepository<>();
 
     // CONSTRUCTORS
     public Library() {
         super();
     }
 
-    public Library(ArrayList<Book> books) {
-        super();
-        this.books = books;
-    }
-
-    public Library(String entityID, String entityName, String location, String status, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, ArrayList<Book> books, String timings, double costPerBook) {
-        super(entityID, entityName, location, status, maintenanceCost, usageFrequency, capacity, isOpen);
-        this.books = books;
-        this.timings = timings;
-        this.costPerBook = costPerBook;
+    public Library(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, String timings, double costPerBook) {
+        super(entityID, entityName, location, maintenanceCost, usageFrequency, capacity, isOpen);
+        setTimings(timings);
+        setCostPerBook(costPerBook);
     }
 
     // SETTERS
-    public void setBooks(ArrayList<Book> books) { this.books = books; }
-    public void setTimings(String timings) { this.timings = timings; }
-    public void setCostPerBook(double costPerBook) { this.costPerBook = costPerBook; }
+    public void setTimings(String timings) {
+        if (timings != null && !timings.isEmpty()) {
+            this.timings = timings;
+        } else {
+            System.out.println("Invalid timings entered");
+        }
+    }
+
+    public void setCostPerBook(double costPerBook) {
+        if (costPerBook >= 0) {
+            this.costPerBook = costPerBook;
+        } else {
+            System.out.println("Cost per book cannot be negative");
+        }
+    }
 
     // GETTERS
-    public ArrayList<Book> getBooks() { return books; }
-    public String getTimings() { return timings; }
-    public double getCostPerBook() { return costPerBook; }
+    public String getTimings() {
+        return timings;
+    }
+    public double getCostPerBook() {
+        return costPerBook;
+    }
 
     // OTHER METHODS
+    @Override
+    public double calculateOperationalCost() {
+        return super.calculateOperationalCost() + (getBooksCount() * this.costPerBook);
+    }
 
     // Adds a book to the library's repository
     public void addBook(Book book) {
-        repo.add(book);
+        repoBook.add(book);
     }
 
     // Removes a book from the library's repository
     public void removeBook(Book book) {
-        repo.remove(book);
+        repoBook.remove(book);
     }
 
     // Searches for a book in the library's repository
     public void searchBook(Book book) {
-        repo.search(book);
+        repoBook.search(book);
     }
 
     // Issues a book by ISBN if it is available, and increments usage frequency
     public boolean issueBook(String bookID) {
-        for (Book b : books) {
-            if (b.getISBN().equals(bookID) && b.getAvailability()) {
+        for (Book b : repoBook.getAll()) {
+            if (b.getISBN().equals(bookID) && b.getAvailablity()) {
                 b.issueBook();
-                usageFrequency++;
+                setUsageFrequency(usageFrequency + 1);
                 System.out.println("Book issued: " + b.getTitle());
                 return true;
             }
@@ -75,29 +87,21 @@ public class Library extends Facility implements Reportable {
     // Returns a list of all books currently available for issuing
     public ArrayList<Book> getAvailableBooks() {
         ArrayList<Book> available = new ArrayList<>();
-        for (Book b : books) {
-            if (b.getAvailability()) {
+        for (Book b : repoBook.getAll()) {
+            if (b.getAvailablity()) {
                 available.add(b);
             }
         }
         return available;
     }
 
-    // Returns the total number of books in the library
-    public int getBooksCount() {
-        return books.size();
+    public double getBooksCount() {
+        return repoBook.getAll().size();
     }
 
-    // Calculates operational cost by adding parent cost with per-book cost across all books
-    @Override
-    public double calculateOperationalCost() {
-        return super.calculateOperationalCost() + (getBooksCount() * this.costPerBook);
-    }
-
-    // Prints a full formatted report of the library's books, availability, and financials
     @Override
     public void generateReport() {
-        int issuedBooks = books.size() - getAvailableBooks().size();
+        int issuedBooks = repoBook.getAll().size() - getAvailableBooks().size();
 
         System.out.println("==================================================");
         System.out.println("               LIBRARY REPORT                     ");
@@ -109,7 +113,7 @@ public class Library extends Facility implements Reportable {
         System.out.println("--------------------------------------------------");
 
         System.out.println("STATISTICS OVERVIEW:");
-        System.out.printf(" - Total Books:      %d\n", books.size());
+        System.out.printf(" - Total Books:      %d\n", repoBook.getAll().size());
         System.out.printf(" - Available Books:  %d\n", getAvailableBooks().size());
         System.out.printf(" - Issued Books:     %d\n", issuedBooks);
         System.out.printf(" - Visitors:         %.0f\n", usageFrequency);
@@ -129,7 +133,6 @@ public class Library extends Facility implements Reportable {
         System.out.println("==================================================");
     }
 
-    // TO-STRING
     @Override
     public String toString() {
         return String.format(
@@ -141,7 +144,7 @@ public class Library extends Facility implements Reportable {
                 super.toString(),
                 timings,
                 costPerBook,
-                books.size(),
+                repoBook.getAll().size(),
                 getAvailableBooks().size()
         );
     }
