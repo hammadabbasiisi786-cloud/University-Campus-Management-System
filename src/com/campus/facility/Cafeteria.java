@@ -20,7 +20,7 @@ public class Cafeteria extends Facility  {
         totalCafeteria++;
     }
 
-    public Cafeteria(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int staffCount, double staffSalary, double ingredientCost, String timing, CampusRepository<String> repoMenu) {
+    public Cafeteria(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int staffCount, double staffSalary, double ingredientCost, String timing) {
         super(entityID, entityName, location, maintenanceCost, usageFrequency, capacity, isOpen);
         totalCafeteria++;
         setStaffCount(staffCount);
