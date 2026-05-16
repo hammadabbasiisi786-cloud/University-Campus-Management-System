@@ -63,7 +63,6 @@ public class Course implements Schedulable, Serializable {
             this.maxCapacity = classroom.getCapacity();
         }
     }
-
     public void setProfessor(Teacher teacher) {
         if (teacher == null) {
             System.out.println("Teacher cannot be null");
@@ -71,7 +70,6 @@ public class Course implements Schedulable, Serializable {
             this.teacher = teacher;
         }
     }
-
     // Assigns a classroom to this course and books the slot; finds another slot if unavailable
     public void setClassroom(Classroom classroom) {
         if (classroom == null) {
@@ -92,7 +90,6 @@ public class Course implements Schedulable, Serializable {
             setMaxCapacity();
         }
     }
-
     public void setDay(String day) {
         if (day == null || day.isEmpty()) {
             System.out.println("Invalid day entered");
@@ -100,7 +97,6 @@ public class Course implements Schedulable, Serializable {
             this.day = day;
         }
     }
-
     public void setTime(String time) {
         if (time == null || time.isEmpty()) {
             System.out.println("Invalid time entered");
@@ -108,7 +104,6 @@ public class Course implements Schedulable, Serializable {
             this.time = time;
         }
     }
-
     public void setStudents(ArrayList<Student> students) {
         if (students == null) {
             System.out.println("Student list cannot be null");
@@ -116,7 +111,6 @@ public class Course implements Schedulable, Serializable {
             repoStudent.setItems(students);
         }
     }
-
     public void setAssignments(ArrayList<Assignment> assignments) {
         if (assignments != null) {
             repoAssignment.setItems(assignments);
@@ -124,6 +118,7 @@ public class Course implements Schedulable, Serializable {
             System.out.println("Assignment list cannot be null");
         }
     }
+    public static void setIdCounter(int value) { idCounter = value; }
 
     // GETTERS
     public String getCourseId() { return courseId; }

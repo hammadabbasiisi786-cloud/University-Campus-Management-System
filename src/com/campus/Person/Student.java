@@ -34,8 +34,6 @@ public class Student implements Serializable {
             this.name = name;
         }
     }
-
-    // Semester must be between 1 and 8
     public void setSemester(int semester) {
         if (semester < 1 || semester > 8) {
             System.out.println("Invalid semester entered");
@@ -43,6 +41,8 @@ public class Student implements Serializable {
             this.semester = semester;
         }
     }
+    public static void setStudentCounter(int value) { studentCounter = value; }
+
 
     // GETTERS
     public static int getStudentCounter() { return studentCounter; }

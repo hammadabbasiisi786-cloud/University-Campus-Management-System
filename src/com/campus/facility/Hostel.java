@@ -21,6 +21,7 @@ public class Hostel extends Facility  {
     private CampusRepository<Student> repo = new CampusRepository<>();
 
     public Hostel() {
+        super();
         totalHostels++;
     }
 

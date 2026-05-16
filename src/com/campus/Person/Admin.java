@@ -1,19 +1,25 @@
 package com.campus.Person;
 
 import com.campus.Interfaces.Notifiable;
-
 import java.io.Serializable;
 
 public class Admin implements Notifiable, Serializable {
 
     // FIELDS
+    private static int adminCounter = 0;
+    private final String adminID;
     private String name;
     private String role = "ADMIN";
 
     // CONSTRUCTORS
-    public Admin() {}
+    public Admin() {
+        adminCounter++;
+        this.adminID = "COMSATS-ADM-" + adminCounter;
+    }
 
     public Admin(String name) {
+        adminCounter++;
+        this.adminID = "COMSATS-ADM-" + adminCounter;
         setName(name);
     }
 
@@ -27,9 +33,11 @@ public class Admin implements Notifiable, Serializable {
             this.name = name;
         }
     }
-
+    public static void setAdminCounter(int value) { adminCounter = value; }
 
     // GETTERS
+    public static int getAdminCounter() { return adminCounter; }
+    public String getAdminID() { return adminID; }
     public String getName() { return name; }
     public String getRole() { return role; }
 
@@ -38,7 +46,9 @@ public class Admin implements Notifiable, Serializable {
     public String toString() {
         return String.format(
                 "=== Admin ===\n" +
+                        "  ID   : %s\n" +
                         "  Name : %s",
+                adminID,
                 name
         );
     }

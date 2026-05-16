@@ -1,19 +1,26 @@
 package com.campus.Person;
 
-import java.io.*;
+import java.io.Serializable;
 
 public class Teacher implements Serializable {
 
     // FIELDS
+    private static int teacherCounter = 0;
+    private final String teacherID;
     private String name;
     private double salary;
     private String qualification;
     private String role = "TEACHER";
 
     // CONSTRUCTORS
-    public Teacher() {}
+    public Teacher() {
+        teacherCounter++;
+        this.teacherID = "COMSATS-CSC-" + teacherCounter;
+    }
 
     public Teacher(String name, double salary, String qualification) {
+        teacherCounter++;
+        this.teacherID = "COMSATS-CSC-" + teacherCounter;
         setName(name);
         setSalary(salary);
         setQualification(qualification);
@@ -47,8 +54,11 @@ public class Teacher implements Serializable {
             this.qualification = qualification;
         }
     }
+    public static void setTeacherCounter(int value) { teacherCounter = value; }
 
     // GETTERS
+    public static int getTeacherCounter() { return teacherCounter; }
+    public String getTeacherID() { return teacherID; }
     public String getName() { return name; }
     public double getSalary() { return salary; }
     public String getQualification() { return qualification; }
@@ -59,9 +69,11 @@ public class Teacher implements Serializable {
     public String toString() {
         return String.format(
                 "=== Teacher ===\n" +
+                        "  ID            : %s\n" +
                         "  Name          : %s\n" +
                         "  Salary        : %.2f\n" +
                         "  Qualification : %s",
+                teacherID,
                 name,
                 salary,
                 qualification

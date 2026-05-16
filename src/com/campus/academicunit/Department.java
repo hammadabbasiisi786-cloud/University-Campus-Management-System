@@ -172,8 +172,8 @@ public class Department extends Academic_Unit implements Reportable {
     public void addClassroom(Classroom classroom) {
         if (classroom != null) {
             classroom.setDepartment(this);
+            repoClassroom.add(classroom);
         }
-        repoClassroom.add(classroom);
     }
 
     // Removes a classroom from this department's classroom list

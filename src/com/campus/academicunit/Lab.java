@@ -38,13 +38,12 @@ public class Lab extends Academic_Unit {
     }
 
     public void setCapacity(int capacity) {
-        if (capacity < 0) {
+        if (capacity <=0) {
             System.out.println("Capacity must be greater than 0");
         } else {
             this.capacity = capacity;
         }
     }
-
     public void setTeacher(Teacher teacher) {
         if (teacher == null) {
             System.out.println("Teacher cannot be null");
@@ -52,11 +51,9 @@ public class Lab extends Academic_Unit {
             this.teacher = teacher;
         }
     }
-
     public void setLabAssistant(Teacher teacher) {
         setTeacher(teacher);
     }
-
     public void setStudents(ArrayList<Student> students) {
         if (students == null) {
             System.out.println("Student list cannot be null");
@@ -64,6 +61,7 @@ public class Lab extends Academic_Unit {
             repoStudent.setItems(students);
         }
     }
+    public static void setIdCounter(int value) { idCounter = value; }
 
     // GETTERS
     public String getLabNumber() { return labNumber; }
@@ -71,6 +69,7 @@ public class Lab extends Academic_Unit {
     public boolean isAvailable() { return isAvailable; }
     public Teacher getTeacher() { return teacher; }
     public ArrayList<Student> getStudents() { return repoStudent.getAll(); }
+    public static int getIdCounter() { return idCounter; }
 
     // OTHER METHODS
 

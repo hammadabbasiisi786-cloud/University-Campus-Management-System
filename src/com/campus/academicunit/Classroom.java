@@ -55,6 +55,7 @@ public class Classroom extends Academic_Unit  {
             this.department = department;
         }
     }
+    public static void setIdCounter(int value) { idCounter = value; }
 
     // GETTERS
     public String getClassNumber() { return classNumber; }
@@ -62,6 +63,7 @@ public class Classroom extends Academic_Unit  {
     public boolean isAvailable() { return available; }
     public ArrayList<String> getOccupiedSlots() { return repoOccupiedSlots.getAll(); }
     public Department getDepartment() { return department; }
+    public static int getIdCounter() { return idCounter; }
 
     // OTHER METHODS
 

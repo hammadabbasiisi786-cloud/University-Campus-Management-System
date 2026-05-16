@@ -79,6 +79,7 @@ public abstract class Facility extends Campus_Entity  {
         return isOpen;
     }
 
+    @Override
     public double calculateOperationalCost() {
         return maintenanceCost + usageFrequency;
     }

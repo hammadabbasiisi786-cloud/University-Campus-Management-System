@@ -79,7 +79,7 @@ public class Book implements Serializable {
     public void returnBook() { this.isAvailable = true; }
 
     // GETTERS
-    public boolean getAvailablity(){return isAvailable;}
+    public boolean getAvailability(){return isAvailable;}
     public String getISBN() {return ISBN;}
     public String getPublisher() {return publisher;}
     public String getAuthor() {return author;}

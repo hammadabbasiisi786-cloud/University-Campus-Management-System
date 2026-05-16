@@ -4,7 +4,6 @@ import com.campus.CampusRepository;
 import com.campus.core.Facility;
 import com.campus.Interfaces.Reportable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Library extends Facility implements Reportable {
@@ -74,7 +73,7 @@ public class Library extends Facility implements Reportable {
     // Issues a book by ISBN if it is available, and increments usage frequency
     public boolean issueBook(String bookID) {
         for (Book b : repoBook.getAll()) {
-            if (b.getISBN().equals(bookID) && b.getAvailablity()) {
+            if (b.getISBN().equals(bookID) && b.getAvailability()) {
                 b.issueBook();
                 setUsageFrequency(getUsageFrequency() + 1);
                 System.out.println("Book issued: " + b.getTitle());
@@ -89,7 +88,7 @@ public class Library extends Facility implements Reportable {
     public ArrayList<Book> getAvailableBooks() {
         ArrayList<Book> available = new ArrayList<>();
         for (Book b : repoBook.getAll()) {
-            if (b.getAvailablity()) {
+            if (b.getAvailability()) {
                 available.add(b);
             }
         }

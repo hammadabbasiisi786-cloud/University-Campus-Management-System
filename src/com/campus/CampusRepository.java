@@ -16,7 +16,7 @@ public class CampusRepository <T extends Serializable> implements Serializable {
     public void setItems(ArrayList<T> items) { this.items = items; }
 
     // GETTERS
-    public ArrayList<T> getItems() { return items; }
+
 
     // Returns the number of items currently stored in the repository
     public int getSize() { return items.size(); }
@@ -31,6 +31,9 @@ public class CampusRepository <T extends Serializable> implements Serializable {
         return items.contains(item);
     }
 
+    public ArrayList<T> getAll(){
+        return items;
+    }
     // Adds the given item to the repository if it is not null and not already present
     public boolean add(T item) {
         if (item == null) {
@@ -80,9 +83,7 @@ public class CampusRepository <T extends Serializable> implements Serializable {
     }
 
     //return String
-    public ArrayList<T> getAll(){
-        return items;
-    }
+
 
 
     public void clear() {
