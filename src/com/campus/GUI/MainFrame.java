@@ -69,6 +69,8 @@ public class MainFrame extends JFrame {
         CampusMapPanel mapPanel = new CampusMapPanel(dm);
         // AssignmentPanel assignmentPanel = new AssignmentPanel(dm);
         BookPanel bookPanel = new BookPanel(dm);
+        AdminPanel adminPanel = new AdminPanel(dm);
+        CampusZonePanel zonePanel = new CampusZonePanel(dm);
 
         // Add panels to CardLayout with string identifiers
         contentPanel.add(dashboard, "Dashboard");
@@ -83,6 +85,8 @@ public class MainFrame extends JFrame {
         contentPanel.add(mapPanel, "Map");
         // contentPanel.add(assignmentPanel, "Assignments");
         contentPanel.add(bookPanel, "Books");
+        contentPanel.add(adminPanel, "Admin");
+        contentPanel.add(zonePanel, "Zones");
 
         // Simple Role-Based Access logic
         if (role.equals("TEACHER") || role.equals("STUDENT")) {
@@ -91,6 +95,7 @@ public class MainFrame extends JFrame {
             cardLayout.show(contentPanel, "Courses"); // Set default view
         } else {
             // ADMIN
+            addButton("Admin");
             addButton("Dashboard");
             addButton("Students");
             addButton("Teachers");
@@ -98,6 +103,7 @@ public class MainFrame extends JFrame {
             // addButton("Assignments"); // Removed as per user request
             addButton("Departments");
             addButton("Books");
+            addButton("Zones");
             // addButton("Menus"); // Removed as per user request
             addButton("Facilities");
             addButton("Services");

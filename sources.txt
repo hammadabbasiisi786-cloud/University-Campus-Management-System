@@ -19,8 +19,10 @@ C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\facility\IssuedRecord.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\facility\Library.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\FileIO\CounterManager.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\FileIO\DataManager.java
+C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\AdminPanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\BookPanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\CampusMapPanel.java
+C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\CampusZonePanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\ClassroomPanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\CoursePanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\DashboardPanel.java
@@ -29,7 +31,6 @@ C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\FacilityPanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\LabPanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\LoginFrame.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\MainFrame.java
-C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\MenuPanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\ServicePanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\StudentPanel.java
 C:\Users\Hamad\Desktop\Semesterproject\src\com\campus\GUI\TeacherPanel.java
