@@ -122,4 +122,15 @@ public class Lab extends Academic_Unit {
                 (teacher != null ? teacher.getName() : "Not Assigned")
         );
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lab lab = (Lab) o;
+        if (this.getEntityID() == null || lab.getEntityID() == null) {
+            return false;
+        }
+        return this.getEntityID().equals(lab.getEntityID());
+    }
 }

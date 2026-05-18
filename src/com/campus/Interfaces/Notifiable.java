@@ -1,5 +1,7 @@
 package com.campus.Interfaces;
 
-public interface Notifiable {
+import java.io.Serializable;
+
+public interface Notifiable extends Serializable {
     void sendNotification(String message);
 }

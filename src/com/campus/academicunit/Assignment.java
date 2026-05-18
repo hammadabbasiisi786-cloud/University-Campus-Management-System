@@ -1,6 +1,9 @@
 package com.campus.academicunit;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import com.campus.academicunit.Assignment;
 
 public class Assignment implements Serializable {
 
@@ -13,9 +16,11 @@ public class Assignment implements Serializable {
     private double obtainedMarks;
 
     // CONSTRUCTORS
-    public Assignment() {}
+    public Assignment() {
+    }
 
-    public Assignment(int assignmentNumber, String title, String issueDate, String dueDate, int totalMarks, double obtainedMarks) {
+    public Assignment(int assignmentNumber, String title, String issueDate, String dueDate, int totalMarks,
+            double obtainedMarks) {
         setAssignmentNumber(assignmentNumber);
         setTitle(title);
         setIssueDate(issueDate);
@@ -79,12 +84,29 @@ public class Assignment implements Serializable {
     }
 
     // GETTERS
-    public int getAssignmentNumber() { return assignmentNumber; }
-    public String getTitle() { return title; }
-    public String getIssueDate() { return issueDate; }
-    public String getDueDate() { return dueDate; }
-    public int getTotalMarks() { return totalMarks; }
-    public double getObtainedMarks() { return obtainedMarks; }
+    public int getAssignmentNumber() {
+        return assignmentNumber;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public int getTotalMarks() {
+        return totalMarks;
+    }
+
+    public double getObtainedMarks() {
+        return obtainedMarks;
+    }
 
     // TO-STRING
     @Override
@@ -102,7 +124,16 @@ public class Assignment implements Serializable {
                 issueDate,
                 dueDate,
                 totalMarks,
-                obtainedMarks
-        );
+                obtainedMarks);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Assignment that = (Assignment) o;
+        return assignmentNumber == that.assignmentNumber;
     }
 }

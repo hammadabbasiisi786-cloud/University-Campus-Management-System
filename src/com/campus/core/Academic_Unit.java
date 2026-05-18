@@ -33,6 +33,17 @@ public abstract class Academic_Unit extends Campus_Entity  {
     public ArrayList<Equipment> getEquipments() { return repoEquipment.getAll(); }
 
     // OTHER METHODS
+
+    // Adds an equipment item to this academic unit
+    public void addEquipment(Equipment e) {
+        repoEquipment.add(e);
+    }
+
+    // Removes an equipment item from this academic unit
+    public void removeEquipment(Equipment e) {
+        repoEquipment.remove(e);
+    }
+
     // Defines the contract for how many students are enrolled in this specific academic unit
     public abstract int getNumberOfStudents();
 

@@ -54,15 +54,35 @@ public class Teacher implements Serializable {
             this.qualification = qualification;
         }
     }
-    public static void setTeacherCounter(int value) { teacherCounter = value; }
+
+    public static void setTeacherCounter(int value) {
+        teacherCounter = value;
+    }
 
     // GETTERS
-    public static int getTeacherCounter() { return teacherCounter; }
-    public String getTeacherID() { return teacherID; }
-    public String getName() { return name; }
-    public double getSalary() { return salary; }
-    public String getQualification() { return qualification; }
-    public String getRole() { return role; }
+    public static int getTeacherCounter() {
+        return teacherCounter;
+    }
+
+    public String getTeacherID() {
+        return teacherID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public String getRole() {
+        return role;
+    }
 
     // TO-STRING
     @Override
@@ -76,7 +96,16 @@ public class Teacher implements Serializable {
                 teacherID,
                 name,
                 salary,
-                qualification
-        );
+                qualification);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Teacher teacher = (Teacher) o;
+        return teacherID.equals(teacher.teacherID);
     }
 }

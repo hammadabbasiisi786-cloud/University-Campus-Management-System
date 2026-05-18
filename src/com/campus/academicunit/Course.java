@@ -63,6 +63,7 @@ public class Course implements Schedulable, Serializable {
             this.maxCapacity = classroom.getCapacity();
         }
     }
+
     public void setProfessor(Teacher teacher) {
         if (teacher == null) {
             System.out.println("Teacher cannot be null");
@@ -70,7 +71,9 @@ public class Course implements Schedulable, Serializable {
             this.teacher = teacher;
         }
     }
-    // Assigns a classroom to this course and books the slot; finds another slot if unavailable
+
+    // Assigns a classroom to this course and books the slot; finds another slot if
+    // unavailable
     public void setClassroom(Classroom classroom) {
         if (classroom == null) {
             System.out.println("Classroom cannot be null");
@@ -90,6 +93,7 @@ public class Course implements Schedulable, Serializable {
             setMaxCapacity();
         }
     }
+
     public void setDay(String day) {
         if (day == null || day.isEmpty()) {
             System.out.println("Invalid day entered");
@@ -97,6 +101,7 @@ public class Course implements Schedulable, Serializable {
             this.day = day;
         }
     }
+
     public void setTime(String time) {
         if (time == null || time.isEmpty()) {
             System.out.println("Invalid time entered");
@@ -104,6 +109,7 @@ public class Course implements Schedulable, Serializable {
             this.time = time;
         }
     }
+
     public void setStudents(ArrayList<Student> students) {
         if (students == null) {
             System.out.println("Student list cannot be null");
@@ -111,6 +117,7 @@ public class Course implements Schedulable, Serializable {
             repoStudent.setItems(students);
         }
     }
+
     public void setAssignments(ArrayList<Assignment> assignments) {
         if (assignments != null) {
             repoAssignment.setItems(assignments);
@@ -118,20 +125,55 @@ public class Course implements Schedulable, Serializable {
             System.out.println("Assignment list cannot be null");
         }
     }
-    public static void setIdCounter(int value) { idCounter = value; }
+
+    public static void setIdCounter(int value) {
+        idCounter = value;
+    }
 
     // GETTERS
-    public String getCourseId() { return courseId; }
-    public String getCourseName() { return courseName; }
-    public int getCreditHour() { return creditHour; }
-    public int getMaxCapacity() { return maxCapacity; }
-    public String getDay() { return day; }
-    public String getTime() { return time; }
-    public Teacher getTeacher() { return teacher; }
-    public Classroom getClassroom() { return classroom; }
-    public ArrayList<Student> getStudents() { return repoStudent.getAll(); }
-    public ArrayList<Assignment> getAssignments() { return repoAssignment.getAll(); }
-    public static int getTotalCourses() {return idCounter;}
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public int getCreditHour() {
+        return creditHour;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public ArrayList<Student> getStudents() {
+        return repoStudent.getAll();
+    }
+
+    public ArrayList<Assignment> getAssignments() {
+        return repoAssignment.getAll();
+    }
+
+    public static int getTotalCourses() {
+        return idCounter;
+    }
 
     // OTHER METHODS
 
@@ -142,11 +184,13 @@ public class Course implements Schedulable, Serializable {
             return;
         }
         repoStudent.add(student);
+        student.addCourse(this); // Bidirectional relation
     }
 
     // Removes a student from the course if they are found in the list
     public void removeStudent(Student student) {
         repoStudent.remove(student);
+        student.removeCourse(this); // Bidirectional relation
     }
 
     // Searches for a student in the course
@@ -169,7 +213,8 @@ public class Course implements Schedulable, Serializable {
         repoAssignment.search(assignment);
     }
 
-    // Attempts to find and book an available classroom slot from the department's classrooms
+    // Attempts to find and book an available classroom slot from the department's
+    // classrooms
     @Override
     public String generateSchedule() {
         if (this.classroom == null || this.classroom.getDepartment() == null) {
@@ -177,8 +222,8 @@ public class Course implements Schedulable, Serializable {
             return "No Slot Available";
         }
 
-        String[] days  = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-        String[] times = {"9-12", "12-2", "2-4"};
+        String[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+        String[] times = { "9-12", "12-2", "2-4" };
 
         for (Classroom room : this.classroom.getDepartment().getDepartmentalClassrooms()) {
             for (String d : days) {
@@ -192,7 +237,7 @@ public class Course implements Schedulable, Serializable {
                                 + " | Day: " + d + " | Time: " + t);
                         return "Course: " + courseName
                                 + " | Room: " + room.getClassNumber()
-                                + " | Day: "  + d
+                                + " | Day: " + d
                                 + " | Time: " + t;
                     }
                 }
@@ -219,12 +264,21 @@ public class Course implements Schedulable, Serializable {
                 courseId,
                 courseName,
                 creditHour,
-                (teacher   != null ? teacher.getName()        : "Not Assigned"),
+                (teacher != null ? teacher.getName() : "Not Assigned"),
                 (classroom != null ? classroom.getClassNumber() : "Not Assigned"),
                 day,
                 time,
                 repoStudent.getAll().size(),
-                maxCapacity
-        );
+                maxCapacity);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Course course = (Course) o;
+        return courseId.equals(course.courseId);
     }
 }

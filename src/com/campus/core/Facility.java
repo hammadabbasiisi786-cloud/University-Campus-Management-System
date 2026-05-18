@@ -1,55 +1,32 @@
 package com.campus.core;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
-public abstract class Facility extends Campus_Entity  {
+public abstract class Facility extends Campus_Entity {
 
     // FIELDS
-    protected static int totalFacilityUsage = 0;
     protected double maintenanceCost;
-    protected double usageFrequency;
     protected int capacity;
-    protected boolean isOpen;
+    private static int totalFacilityUsage;
 
     // CONSTRUCTORS
     public Facility() {
         super();
-        totalFacilityUsage++;
     }
 
-    public Facility(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen) {
+    public Facility(String entityID, String entityName, String location, String status, double maintenanceCost, int capacity) {
         super(entityID, entityName, location);
-        totalFacilityUsage++;
+        setStatus(status);
         setMaintenanceCost(maintenanceCost);
-        setUsageFrequency(usageFrequency);
         setCapacity(capacity);
-        setOpen(isOpen);
     }
 
-    public String getStatus(){
-        if(!isOpen){
-            return "Closed";
-        }
-        if(capacity<=usageFrequency){
-            return "Capacity is Full, Busy";
-        }
-        return "Open";
-    }
-
+    // SETTERS
     public void setMaintenanceCost(double maintenanceCost) {
         if (maintenanceCost < 0) {
             System.out.println("Maintenance cost cannot be negative");
         } else {
             this.maintenanceCost = maintenanceCost;
-        }
-    }
-
-    public void setUsageFrequency(double usageFrequency) {
-        if (usageFrequency < 0) {
-            System.out.println("Usage frequency cannot be negative");
-        } else {
-            this.usageFrequency = usageFrequency;
         }
     }
 
@@ -61,42 +38,35 @@ public abstract class Facility extends Campus_Entity  {
         }
     }
 
-    public void setOpen(boolean isOpen) {
-        this.isOpen = isOpen;
+    public static void setFacilityCounter(int value) {
+        totalFacilityUsage = value;
     }
 
     // GETTERS
-    public double getMaintenanceCost() {
-        return maintenanceCost;
-    }
-    public double getUsageFrequency() {
-        return usageFrequency;
-    }
-    public int getCapacity() {
-        return capacity;
-    }
-    public boolean isOpen() {
-        return isOpen;
+    public double getMaintenanceCost() { return maintenanceCost; }
+    public int getCapacity()           { return capacity; }
+    public static int getTotalFacilityUsage() { return totalFacilityUsage; }
+
+    // OTHER METHODS
+
+    // Called by child classes whenever their facility is used — increments system-wide counter
+    protected static void incrementFacilityUsage() {
+        totalFacilityUsage++;
     }
 
+    // Base implementation returns maintenanceCost — children override to add their own costs
     @Override
-    public double calculateOperationalCost() {
-        return maintenanceCost + usageFrequency;
-    }
-
+    public abstract double calculateOperationalCost() ;
+    // TO-STRING
     @Override
     public String toString() {
         return String.format(
                 "%s\n" +
                         "  Maintenance Cost : %.2f\n" +
-                        "  Usage Frequency  : %.2f\n" +
-                        "  Capacity         : %d\n" +
-                        "  Open             : %s",
+                        "  Capacity         : %d",
                 super.toString(),
                 maintenanceCost,
-                usageFrequency,
-                capacity,
-                (isOpen ? "Yes" : "No")
+                capacity
         );
     }
 }

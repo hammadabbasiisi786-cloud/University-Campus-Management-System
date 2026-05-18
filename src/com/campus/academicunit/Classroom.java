@@ -5,14 +5,14 @@ import com.campus.core.*;
 
 import java.util.ArrayList;
 
-public class Classroom extends Academic_Unit  {
+public class Classroom extends Academic_Unit {
 
     // FIELDS
     private static int idCounter = 0;
     private final String classNumber;
     private int capacity;
     private boolean available = true;
-    private CampusRepository<String> repoOccupiedSlots = new  CampusRepository<>();
+    private CampusRepository<String> repoOccupiedSlots = new CampusRepository<>();
     private Department department;
 
     // CONSTRUCTORS
@@ -38,9 +38,11 @@ public class Classroom extends Academic_Unit  {
             System.out.println("Capacity must be greater than 0");
         }
     }
+
     public void setAvailable(boolean available) {
         this.available = available;
     }
+
     public void setOccupiedSlots(CampusRepository<String> occupiedSlots) {
         if (occupiedSlots == null) {
             System.out.println("Occupied slots list cannot be null");
@@ -48,6 +50,7 @@ public class Classroom extends Academic_Unit  {
             repoOccupiedSlots = occupiedSlots;
         }
     }
+
     public void setDepartment(Department department) {
         if (department == null) {
             System.out.println("Department cannot be null");
@@ -55,15 +58,35 @@ public class Classroom extends Academic_Unit  {
             this.department = department;
         }
     }
-    public static void setIdCounter(int value) { idCounter = value; }
+
+    public static void setIdCounter(int value) {
+        idCounter = value;
+    }
 
     // GETTERS
-    public String getClassNumber() { return classNumber; }
-    public int getCapacity() { return capacity; }
-    public boolean isAvailable() { return available; }
-    public ArrayList<String> getOccupiedSlots() { return repoOccupiedSlots.getAll(); }
-    public Department getDepartment() { return department; }
-    public static int getIdCounter() { return idCounter; }
+    public String getClassNumber() {
+        return classNumber;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public ArrayList<String> getOccupiedSlots() {
+        return repoOccupiedSlots.getAll();
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public static int getIdCounter() {
+        return idCounter;
+    }
 
     // OTHER METHODS
 
@@ -79,21 +102,30 @@ public class Classroom extends Academic_Unit  {
         repoOccupiedSlots.add(schedule);
     }
 
+    // Releases a previously booked day-time slot
+    public void unbookSlot(String day, String time) {
+        String schedule = day + "-" + time;
+        repoOccupiedSlots.remove(schedule);
+    }
+
     // Returns classroom capacity as a proxy for the number of students it can hold
     @Override
     public int getNumberOfStudents() {
         return capacity;
     }
 
-    // Marks classroom as unavailable, clears all booked slots, and returns the affected slots
+    // Marks classroom as unavailable, clears all booked slots, and returns the
+    // affected slots
     public ArrayList<String> markUnavailable() {
         setAvailable(false);
+        setStatus("Closed");
         ArrayList<String> affectedSlots = new ArrayList<>(repoOccupiedSlots.getAll());
         repoOccupiedSlots.clear();
         return affectedSlots;
     }
 
-    // Calculates operational cost based on equipment and student capacity (per spec: students + equipment)
+    // Calculates operational cost based on equipment and student capacity (per
+    // spec: students + equipment)
     @Override
     public double calculateOperationalCost() {
         double operationalCost = 0;
@@ -119,7 +151,19 @@ public class Classroom extends Academic_Unit  {
                 capacity,
                 (available ? "Yes" : "No"),
                 repoOccupiedSlots.size(),
-                (department != null ? department.getDepartmentName() : "Unassigned")
-        );
+                (department != null ? department.getDepartmentName() : "Unassigned"));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Classroom classroom = (Classroom) o;
+        if (this.getEntityID() == null || classroom.getEntityID() == null) {
+            return false;
+        }
+        return this.getEntityID().equals(classroom.getEntityID());
     }
 }

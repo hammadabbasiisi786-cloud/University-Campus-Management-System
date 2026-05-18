@@ -5,52 +5,31 @@ import com.campus.core.Facility;
 
 import java.util.ArrayList;
 
-public class Cafeteria extends Facility  {
+public class Cafeteria extends Facility {
 
     // FIELDS
-    private int staffCount;
-    private double staffSalary;
-    private double ingredientCost;
+    private int cafeteriaUsage;
+    private int noOfStaff;
     private String timing;
-    private static int totalCafeteria = 0;
     private CampusRepository<String> repoMenu = new CampusRepository<>();
 
+    // CONSTRUCTORS
     public Cafeteria() {
         super();
-        totalCafeteria++;
     }
 
-    public Cafeteria(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int staffCount, double staffSalary, double ingredientCost, String timing) {
-        super(entityID, entityName, location, maintenanceCost, usageFrequency, capacity, isOpen);
-        totalCafeteria++;
-        setStaffCount(staffCount);
-        setStaffSalary(staffSalary);
-        setIngredientCost(ingredientCost);
+    public Cafeteria(String entityID, String entityName, String location, String status, double maintenanceCost, int capacity, int noOfStaff, String timing) {
+        super(entityID, entityName, location, status, maintenanceCost, capacity);
+        setNoOfStaff(noOfStaff);
         setTiming(timing);
     }
 
     // SETTERS
-    public void setStaffCount(int staffCount) {
-        if (staffCount < 0) {
+    public void setNoOfStaff(int noOfStaff) {
+        if (noOfStaff < 0) {
             System.out.println("Staff count cannot be negative");
         } else {
-            this.staffCount = staffCount;
-        }
-    }
-
-    public void setStaffSalary(double staffSalary) {
-        if (staffSalary < 0) {
-            System.out.println("Staff salary cannot be negative");
-        } else {
-            this.staffSalary = staffSalary;
-        }
-    }
-
-    public void setIngredientCost(double ingredientCost) {
-        if (ingredientCost < 0) {
-            System.out.println("Ingredient cost cannot be negative");
-        } else {
-            this.ingredientCost = ingredientCost;
+            this.noOfStaff = noOfStaff;
         }
     }
 
@@ -71,20 +50,16 @@ public class Cafeteria extends Facility  {
     }
 
     // GETTERS
-    public ArrayList<String> getMenu() {
-        return repoMenu.getAll();
-    }
-    public int getStaffCount() {return staffCount;}
-    public double getStaffSalary() {return staffSalary;}
-    public double getIngredientCost() {return ingredientCost;}
-    public String getTiming() {return timing;}
-    public static int getTotalCafeteria() {return totalCafeteria;}
+    public ArrayList<String> getMenu()              { return repoMenu.getAll(); }
+    public int getNoOfStaff()                       { return noOfStaff; }
+    public String getTiming()                       { return timing; }
+    public int getCafeteriaUsage()                  { return cafeteriaUsage; }
 
     // Increases staff count by the given number
     public void addStaff(int count) {
         if (count > 0) {
-            setStaffCount(staffCount + count);
-            System.out.println("Staff added. Total staff: " + staffCount);
+            setNoOfStaff(noOfStaff + count);
+            System.out.println("Staff added. Total staff: " + noOfStaff);
         } else {
             System.out.println("Invalid staff count entered");
         }
@@ -92,9 +67,9 @@ public class Cafeteria extends Facility  {
 
     // Decreases staff count by the given number if enough staff exist
     public void removeStaff(int count) {
-        if (count > 0 && count <= staffCount) {
-            setStaffCount(staffCount - count);
-            System.out.println("Staff removed. Total staff: " + staffCount);
+        if (count > 0 && count <= noOfStaff) {
+            setNoOfStaff(noOfStaff - count);
+            System.out.println("Staff removed. Total staff: " + noOfStaff);
         } else {
             System.out.println("Invalid staff count entered");
         }
@@ -115,28 +90,34 @@ public class Cafeteria extends Facility  {
         repoMenu.search(menuItem);
     }
 
-    @Override
-    public double calculateOperationalCost(){
-        return super.calculateOperationalCost() + (staffCount * staffSalary) + ingredientCost;
+    // Serves an order — increments this cafeteria's usage and the system-wide facility usage
+    public void serveOrder() {
+        cafeteriaUsage++;
+        incrementFacilityUsage();
+        System.out.println("Order served. Cafeteria Usage: " + cafeteriaUsage +
+                " | Total Facility Usage: " + getTotalFacilityUsage());
     }
 
+    // Returns maintenanceCost (from Facility) as the base operational cost
     @Override
-    public String toString(){
+    public double calculateOperationalCost() {
+        return maintenanceCost * cafeteriaUsage;
+    }
+
+    // TO-STRING
+    @Override
+    public String toString() {
         return String.format(
                 "%s\n" +
-                        "  Staff Count     : %d\n" +
-                        "  Staff Salary    : %.2f\n" +
-                        "  Ingredient Cost : %.2f\n" +
-                        "  Timing          : %s\n" +
-                        "  Menu Items      : %d\n" +
-                        "  Status          : %s",
+                        "  No Of Staff      : %d\n" +
+                        "  Timing           : %s\n" +
+                        "  Menu Items       : %d\n" +
+                        "  Cafeteria Usage  : %d",
                 super.toString(),
-                staffCount,
-                staffSalary,
-                ingredientCost,
+                noOfStaff,
                 timing,
                 repoMenu.getAll().size(),
-                getStatus()
+                cafeteriaUsage
         );
     }
 }

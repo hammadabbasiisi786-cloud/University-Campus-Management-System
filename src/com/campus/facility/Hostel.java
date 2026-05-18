@@ -4,48 +4,32 @@ import com.campus.CampusRepository;
 import com.campus.Person.*;
 import com.campus.core.Facility;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Hostel extends Facility  {
+public class Hostel extends Facility {
 
     // FIELDS
-    private static int totalHostels = 0;
+    private int hostelUsage;
     private int totalRooms;
     private int occupiedRooms;
     private String wardenName;
-    private String openingHours;
-    private String contact;
-    private double utilitiesPerRoom;
-    private String hostelType;
-    private CampusRepository<Student> repo = new CampusRepository<>();
+    private String timing;
+    private CampusRepository<Student> repoHostelStudents = new CampusRepository<>();
 
+    // CONSTRUCTORS
     public Hostel() {
         super();
-        totalHostels++;
     }
 
-    public Hostel(String entityID, String entityName, String location, double maintenanceCost, double usageFrequency, int capacity, boolean isOpen, int totalRooms, int occupiedRooms, String wardenName, String openingHours, String contact, double utilitiesPerRoom, String hostelType) {
-        super(entityID, entityName, location, maintenanceCost, usageFrequency, capacity, isOpen);
+    public Hostel(String entityID, String entityName, String location, String status, double maintenanceCost, int capacity, int totalRooms, int occupiedRooms, String wardenName, String timing) {
+        super(entityID, entityName, location, status, maintenanceCost, capacity);
         setTotalRooms(totalRooms);
         setOccupiedRooms(occupiedRooms);
         setWardenName(wardenName);
-        setOpeningHours(openingHours);
-        setContact(contact);
-        setUtilitiesPerRoom(utilitiesPerRoom);
-        setHostelType(hostelType);
-        totalHostels++;
+        setTiming(timing);
     }
 
     // SETTERS
-    public static void setTotalHostels(int totalHostels) {
-        if (totalHostels < 0) {
-            System.out.println("Total hostels cannot be negative");
-        } else {
-            Hostel.totalHostels = totalHostels;
-        }
-    }
-
     public void setTotalRooms(int totalRooms) {
         if (totalRooms < 0) {
             System.out.println("Total rooms cannot be negative");
@@ -70,53 +54,22 @@ public class Hostel extends Facility  {
         }
     }
 
-    public void setOpeningHours(String openingHours) {
-        if (openingHours == null || openingHours.isEmpty()) {
-            System.out.println("Invalid opening hours entered");
+    public void setTiming(String timing) {
+        if (timing == null || timing.isEmpty()) {
+            System.out.println("Invalid timing entered");
         } else {
-            this.openingHours = openingHours;
-        }
-    }
-
-    public void setContact(String contact) {
-        if (contact == null || contact.isEmpty()) {
-            System.out.println("Invalid contact information entered");
-        } else {
-            this.contact = contact;
-        }
-    }
-
-    public void setUtilitiesPerRoom(double utilitiesPerRoom) {
-        if (utilitiesPerRoom < 0) {
-            System.out.println("Utilities cost cannot be negative");
-        } else {
-            this.utilitiesPerRoom = utilitiesPerRoom;
-        }
-    }
-
-    public void setHostelType(String hostelType) {
-        if (hostelType == null || hostelType.isEmpty()) {
-            System.out.println("Invalid hostel type entered");
-        } else {
-            this.hostelType = hostelType;
+            this.timing = timing;
         }
     }
 
     // GETTERS
-    public static int getTotalHostels() { return totalHostels; }
-    public int getTotalRooms() { return totalRooms; }
-    public int getOccupiedRooms() { return occupiedRooms; }
-    public String getWardenName() { return wardenName; }
-    public String getOpeningHours() { return openingHours; }
-    public String getContact() { return contact; }
-    public String getHostelType() { return hostelType; }
-    public double getUtilitiesPerRoom() { return utilitiesPerRoom; }
+    public int getTotalRooms()      { return totalRooms; }
+    public int getOccupiedRooms()   { return occupiedRooms; }
+    public String getWardenName()   { return wardenName; }
+    public String getTiming()       { return timing; }
+    public int getHostelUsage()     { return hostelUsage; }
 
     // OTHER METHODS
-    @Override
-    public double calculateOperationalCost() {
-        return super.calculateOperationalCost() + (occupiedRooms * utilitiesPerRoom);
-    }
 
     // Returns true if all rooms in the hostel are occupied
     public boolean isFull() {
@@ -128,47 +81,64 @@ public class Hostel extends Facility  {
         if (count > 0) {
             totalRooms += count;
             System.out.println("Rooms added: " + count + " | Total rooms: " + totalRooms);
+        } else {
+            System.out.println("Invalid room count entered");
         }
     }
 
-    // Adds a student to the hostel's resident repository
+    // Adds a student to the hostel's resident repository — increments usage counters if successful
     public void addResident(Student student) {
-        repo.add(student);
+        if (isFull()) {
+            System.out.println("Hostel is full. Cannot add more residents.");
+            return;
+        }
+        if (repoHostelStudents.add(student)) {
+            occupiedRooms++;
+            hostelUsage++;
+            incrementFacilityUsage();
+            System.out.println("Resident added. Hostel Usage: " + hostelUsage +
+                    " | Total Facility Usage: " + getTotalFacilityUsage());
+        }
     }
 
     // Removes a student from the hostel's resident repository
     public void removeResident(Student student) {
-        repo.remove(student);
+        if (repoHostelStudents.remove(student)) {
+            if (occupiedRooms > 0) {
+                occupiedRooms--;
+                hostelUsage++;
+                incrementFacilityUsage();
+            }
+        }
     }
 
-    // Searches for a student in the hostel's resident repository
-    public void searchResident(Student student) {
-        repo.search(student);
-    }
-
+    // Returns all residents in the hostel
     public ArrayList<Student> getResidents() {
-        return repo.getAll();
+        return repoHostelStudents.getAll();
     }
 
+    // Returns maintenanceCost multiplied by hostelUsage as operational cost
+    @Override
+    public double calculateOperationalCost() {
+        return maintenanceCost * hostelUsage;
+    }
+
+    // TO-STRING
     @Override
     public String toString() {
         return String.format(
                 "%s\n" +
-                        "  Hostel Type    : %s\n" +
                         "  Total Rooms    : %d\n" +
                         "  Occupied Rooms : %d\n" +
                         "  Warden         : %s\n" +
-                        "  Opening Hours  : %s\n" +
-                        "  Contact        : %s\n" +
-                        "  Utilities/Room : %.2f",
+                        "  Timing         : %s\n" +
+                        "  Hostel Usage   : %d",
                 super.toString(),
-                hostelType,
                 totalRooms,
                 occupiedRooms,
                 wardenName,
-                openingHours,
-                contact,
-                utilitiesPerRoom
+                timing,
+                hostelUsage
         );
     }
 }

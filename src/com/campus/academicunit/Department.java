@@ -206,7 +206,7 @@ public class Department extends Academic_Unit implements Reportable {
         removeClassroom(classroom);
 
         for (Course course : repoCourse.getAll()) {
-            if (course.getClassroom() == classroom) {
+            if (course.getClassroom() != null && course.getClassroom().equals(classroom)) {
                 System.out.println("Rescheduling: " + course.getCourseName());
                 String result = course.generateSchedule();
 

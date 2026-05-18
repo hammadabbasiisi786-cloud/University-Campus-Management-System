@@ -14,7 +14,6 @@ public abstract class Campus_Entity implements Serializable {
     public Campus_Entity() {
     }
 
-
     public Campus_Entity(String entityID, String entityName, String location) {
         setEntityID(entityID);
         setEntityName(entityName);
@@ -47,10 +46,10 @@ public abstract class Campus_Entity implements Serializable {
     }
 
     public void setStatus(String status) {
-        if (status == null || status.isEmpty()) {
-            System.out.println("Invalid Status Entered!!!!");
-        } else {
+        if (status != null && (status.equals("Active") || status.equals("Busy") || status.equals("Closed"))) {
             this.status = status;
+        } else {
+            System.out.println("Invalid Status! Allowed values: Active, Busy, Closed");
         }
     }
 
@@ -86,5 +85,14 @@ public abstract class Campus_Entity implements Serializable {
                         "  Location : %s\n" +
                         "  Status   : %s",
                 entityID, entityName, location, status);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Campus_Entity that = (Campus_Entity) o;
+        if (this.entityID == null || that.entityID == null) return false;
+        return this.entityID.equals(that.entityID);
     }
 }

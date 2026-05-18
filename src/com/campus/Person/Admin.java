@@ -59,4 +59,12 @@ public class Admin implements Notifiable, Serializable {
         System.out.println("[Admin Notification] To: " + name);
         System.out.println("Message: " + message);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Admin admin = (Admin) o;
+        return adminID.equals(admin.adminID);
+    }
 }

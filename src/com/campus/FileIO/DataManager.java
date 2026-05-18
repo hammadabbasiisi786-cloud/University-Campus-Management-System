@@ -280,7 +280,6 @@ public class DataManager {
             return data;
         } catch (IOException e) {
             System.out.println("  Corrupted: " + filepath + " → starting fresh | " + e.getMessage());
-            backupCorruptedFile(filepath);
             return null;
         } catch (ClassNotFoundException e) {
             System.out.println("  Mismatch : " + filepath + " → class changed, starting fresh | " + e.getMessage());
@@ -290,23 +289,19 @@ public class DataManager {
 
     // Saves the current value of all static counters to counters.dat
     private void saveCounters() {
-        // Corrected to CounterManager using all 6 parameters matching its constructor
-        // order:
-        // studentCounter, courseCounter, classroomCounter, labCounter, teacherCounter,
-        // adminCounter
         CounterManager manager = new CounterManager(
                 Student.getStudentCounter(),
                 Course.getTotalCourses(),
                 Classroom.getIdCounter(),
                 Lab.getIdCounter(),
                 Teacher.getTeacherCounter(),
-                Admin.getAdminCounter());
+                Admin.getAdminCounter(),
+                Facility.getTotalFacilityUsage());
         save(manager, COUNTERS_FILE);
     }
 
     // Loads counter values from counters.dat and restores all static counters
     private void loadCounters() {
-        // Corrected to cast to CounterManager and safely restore all 6 values
         CounterManager manager = (CounterManager) load(COUNTERS_FILE);
         if (manager != null) {
             Student.setStudentCounter(manager.getStudentCounter());
@@ -315,22 +310,15 @@ public class DataManager {
             Lab.setIdCounter(manager.getLabCounter());
             Teacher.setTeacherCounter(manager.getTeacherCounter());
             Admin.setAdminCounter(manager.getAdminCounter());
-
+            Facility.setFacilityCounter(manager.getTotalFacilityUsage());
             System.out.println("  Counters restored → Student:" + manager.getStudentCounter()
                     + " Teacher:" + manager.getTeacherCounter()
-                    + " Admin:" + manager.getAdminCounter()
-                    + " Course:" + manager.getCourseCounter()
+                    + " Admin:"   + manager.getAdminCounter()
+                    + " Course:"  + manager.getCourseCounter()
                     + " Classroom:" + manager.getClassroomCounter()
-                    + " Lab:" + manager.getLabCounter());
+                    + " Lab:"     + manager.getLabCounter()
+                    + " Facility:" + manager.getTotalFacilityUsage());
         }
     }
 
-    // Renames a corrupted file with a .bak extension so data is not lost
-    private void backupCorruptedFile(String filepath) {
-        File original = new File(filepath);
-        File backup = new File(filepath + ".bak");
-        if (original.renameTo(backup)) {
-            System.out.println("  Backup   : corrupted file saved as " + filepath + ".bak");
-        }
-    }
 }
