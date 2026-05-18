@@ -13,7 +13,7 @@ public class Library extends Facility implements Reportable {
     private int libraryUsage;
     private String timings;
     private double costPerBook;
-    private CampusRepository<Book> repoBook       = new CampusRepository<>();
+    private CampusRepository<Book> repoBook = new CampusRepository<>();
     private CampusRepository<IssuedRecord> repoIssuedRecords = new CampusRepository<>();
 
     // CONSTRUCTORS
@@ -21,7 +21,8 @@ public class Library extends Facility implements Reportable {
         super();
     }
 
-    public Library(String entityID, String entityName, String location, String status, double maintenanceCost, int capacity, String timings, double costPerBook) {
+    public Library(String entityID, String entityName, String location, String status, double maintenanceCost,
+            int capacity, String timings, double costPerBook) {
         super(entityID, entityName, location, status, maintenanceCost, capacity);
         setTimings(timings);
         setCostPerBook(costPerBook);
@@ -45,82 +46,98 @@ public class Library extends Facility implements Reportable {
     }
 
     // GETTERS
-    public String getTimings()       { return timings; }
-    public double getCostPerBook()   { return costPerBook; }
-    public int getLibraryUsage()     { return libraryUsage; }
+    public String getTimings() {
+        return timings;
+    }
+
+    public double getCostPerBook() {
+        return costPerBook;
+    }
+
+    public int getLibraryUsage() {
+        return libraryUsage;
+    }
+
+    public ArrayList<Book> getAllBooks() {
+        return repoBook.getAll();
+    }
+
+    public ArrayList<IssuedRecord> getAllIssuedRecords() {
+        return repoIssuedRecords.getAll();
+    }
 
     // OTHER METHODS
 
-    // Adds a book to the library's repository
+    // Adds a book to the library — same ISBN cannot be added twice
     public void addBook(Book book) {
         repoBook.add(book);
     }
 
     // Removes a book from the library's repository
     public void removeBook(Book book) {
-        repoBook.remove(book);
+        if (repoBook.remove(book)) {
+            System.out.println("Book removed: " + book.getTitle());
+        } else {
+            System.out.println("Book not found.");
+        }
     }
 
-    // Searches for a book in the library's repository by ISBN
+    // Searches for books by ISBN and prints all matches
     public void searchBook(String ISBN) {
+        boolean found = false;
         for (Book b : repoBook.getAll()) {
             if (b.getISBN().equals(ISBN)) {
-                System.out.println("Found: " + b.getTitle());
-                return;
+                System.out.println("Found: " + b.getTitle() + " — " + b.getAuthor());
+                found = true;
             }
         }
-        System.out.println("Book not found: " + ISBN);
+        if (!found) {
+            System.out.println("Book not found: " + ISBN);
+        }
     }
 
-    // Issues a book by ISBN to a student — records the pair, increments usage counters
+    // Issues a book by ISBN to a student — finds a free copy, records the pair,
+    // increments usage counters
     public boolean issueBook(String ISBN, Student student) {
         for (Book b : repoBook.getAll()) {
-            if (ISBN.equals(b.getISBN()) && b.getAvailability()) {
-                b.issueBook();
-                repoIssuedRecords.add(new IssuedRecord(b, student));
-                libraryUsage++;
-                incrementFacilityUsage();
-                System.out.println("Book issued: " + b.getTitle() +
-                        " | To: " + student.getName() +
-                        " | Remaining copies: " + b.getQuantity() +
-                        " | Library Usage: " + libraryUsage +
-                        " | Total Facility Usage: " + getTotalFacilityUsage());
-                return true;
+            if (ISBN.equals(b.getISBN())) {
+                // Check this copy isn't already issued
+                boolean alreadyIssued = false;
+                for (IssuedRecord r : repoIssuedRecords.getAll()) {
+                    if (r.getBook() == b) {
+                        alreadyIssued = true;
+                        break;
+                    }
+                }
+                if (!alreadyIssued) {
+                    repoIssuedRecords.add(new IssuedRecord(b, student));
+                    libraryUsage++;
+                    incrementFacilityUsage();
+                    System.out.println("Book issued: " + b.getTitle() +
+                            " | To: " + student.getName() +
+                            " | Library Usage: " + libraryUsage +
+                            " | Total Facility Usage: " + getTotalFacilityUsage());
+                    return true;
+                }
             }
         }
-        System.out.println("Book not available: " + ISBN);
+        System.out.println("No available copy found for ISBN: " + ISBN);
         return false;
     }
 
-
-    // Returns a book by ISBN from a specific student — removes their record, restores copy count
+    // Returns a book by ISBN from a specific student — removes their record
     public boolean returnBook(String ISBN, Student student) {
         for (IssuedRecord record : repoIssuedRecords.getAll()) {
             if (record.getBook().getISBN().equals(ISBN) &&
                     record.getStudent().getStudentID().equals(student.getStudentID())) {
-                record.getBook().returnBook();
                 repoIssuedRecords.remove(record);
                 System.out.println("Book returned: " + record.getBook().getTitle() +
-                        " | By: " + student.getName() +
-                        " | Available copies: " + record.getBook().getQuantity());
+                        " | By: " + student.getName());
                 return true;
             }
         }
         System.out.println("No issued record found for this book and student.");
         return false;
-    }
-
-
-
-    // Returns a list of all books currently available for issuing
-    public ArrayList<Book> getAvailableBooks() {
-        ArrayList<Book> available = new ArrayList<>();
-        for (Book b : repoBook.getAll()) {
-            if (b.getAvailability()) {
-                available.add(b);
-            }
-        }
-        return available;
     }
 
     // Returns all currently issued records
@@ -139,23 +156,24 @@ public class Library extends Facility implements Reportable {
         System.out.println("==================================================");
         System.out.println("               LIBRARY REPORT                     ");
         System.out.println("==================================================");
-        System.out.printf("%-20s: %s\n", "Library Name",   entityName);
-        System.out.printf("%-20s: %s\n", "Status",         getStatus());
-        System.out.printf("%-20s: %s\n", "Timings",        timings);
+        System.out.printf("%-20s: %s\n", "Library Name", entityName);
+        System.out.printf("%-20s: %s\n", "Status", getStatus());
+        System.out.printf("%-20s: %s\n", "Timings", timings);
         System.out.println("--------------------------------------------------");
         System.out.println("STATISTICS OVERVIEW:");
         System.out.printf(" - Total Books:      %d\n", repoBook.getAll().size());
-        System.out.printf(" - Available Books:  %d\n", getAvailableBooks().size());
         System.out.printf(" - Issued Books:     %d\n", repoIssuedRecords.getAll().size());
         System.out.printf(" - Library Usage:    %d\n", libraryUsage);
         System.out.println("--------------------------------------------------");
-        System.out.println("AVAILABLE BOOKS:");
-        if (getAvailableBooks().isEmpty()) {
-            System.out.println(" [No books currently available]");
+        System.out.println("ISSUED BOOKS:");
+        if (repoIssuedRecords.getAll().isEmpty()) {
+            System.out.println(" [No books currently issued]");
         } else {
-            for (Book b : getAvailableBooks()) {
-                System.out.println(" □ " + b.getTitle() + " — " + b.getAuthor() +
-                        " (Copies: " + b.getQuantity() + ")");
+            for (IssuedRecord r : repoIssuedRecords.getAll()) {
+                System.out.println(" □ " + r.getBook().getTitle() +
+                        " — " + r.getBook().getAuthor() +
+                        " | Issued to: " + r.getStudent().getName() +
+                        " (" + r.getStudent().getStudentID() + ")");
             }
         }
         System.out.println("--------------------------------------------------");
@@ -168,19 +186,16 @@ public class Library extends Facility implements Reportable {
     public String toString() {
         return String.format(
                 "%s\n" +
-                        "  Timings         : %s\n" +
-                        "  Cost Per Book   : %.2f\n" +
-                        "  Total Books     : %d\n" +
-                        "  Available Books : %d\n" +
-                        "  Issued Books    : %d\n" +
-                        "  Library Usage   : %d",
+                        "  Timings       : %s\n" +
+                        "  Cost Per Book : %.2f\n" +
+                        "  Total Books   : %d\n" +
+                        "  Issued Books  : %d\n" +
+                        "  Library Usage : %d",
                 super.toString(),
                 timings,
                 costPerBook,
                 repoBook.getAll().size(),
-                getAvailableBooks().size(),
                 repoIssuedRecords.getAll().size(),
-                libraryUsage
-        );
+                libraryUsage);
     }
 }

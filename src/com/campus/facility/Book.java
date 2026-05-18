@@ -8,18 +8,15 @@ public class Book implements Serializable {
     protected String ISBN;
     protected String title;
     protected String author;
-    protected int quantity;
-    protected boolean isAvailable;
 
     // CONSTRUCTORS
-    public Book() {}
+    public Book() {
+    }
 
-    public Book(String ISBN, String title, String author, int quantity) {
+    public Book(String ISBN, String title, String author) {
         setISBN(ISBN);
         setTitle(title);
         setAuthor(author);
-        setQuantity(quantity);
-        this.isAvailable = quantity > 0;
     }
 
     // SETTERS
@@ -47,39 +44,17 @@ public class Book implements Serializable {
         }
     }
 
-    public void setQuantity(int quantity) {
-        if (quantity < 0) {
-            System.out.println("Quantity cannot be negative");
-        } else {
-            this.quantity = quantity;
-        }
-    }
-
     // GETTERS
-    public boolean getAvailability() { return isAvailable; }
-    public String getISBN()          { return ISBN; }
-    public String getAuthor()        { return author; }
-    public int getQuantity()         { return quantity; }
-    public String getTitle()         { return title; }
-
-    // OTHER METHODS
-
-    // Issues one copy — decrements quantity, marks unavailable when all copies are gone
-    public void issueBook() {
-        if (quantity > 0) {
-            quantity--;
-            if (quantity == 0) {
-                this.isAvailable = false;
-            }
-        } else {
-            System.out.println("No copies available to issue");
-        }
+    public String getISBN() {
+        return ISBN;
     }
 
-    // Returns one copy — increments quantity, marks available again
-    public void returnBook() {
-        quantity++;
-        this.isAvailable = true;
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     // TO-STRING
@@ -87,23 +62,20 @@ public class Book implements Serializable {
     public String toString() {
         return String.format(
                 "=== Book ===\n" +
-                        "  ISBN      : %s\n" +
-                        "  Title     : %s\n" +
-                        "  Author    : %s\n" +
-                        "  Quantity  : %d\n" +
-                        "  Available : %s",
+                        "  ISBN   : %s\n" +
+                        "  Title  : %s\n" +
+                        "  Author : %s",
                 ISBN,
                 title,
-                author,
-                quantity,
-                (isAvailable ? "Yes" : "No")
-        );
+                author);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Book book = (Book) o;
         return ISBN != null && ISBN.equals(book.ISBN);
     }

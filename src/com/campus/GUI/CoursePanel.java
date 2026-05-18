@@ -24,6 +24,7 @@ public class CoursePanel extends JPanel {
     private JButton removeButton;
     private JButton enrollStudentButton;
     private JButton viewStudentsButton;
+    private JButton viewAssignmentsButton;
     private JButton addAssignmentButton;
     private JButton assignClassroomButton;
     private JButton editButton;
@@ -84,6 +85,7 @@ public class CoursePanel extends JPanel {
         removeButton = new JButton("Remove");
         enrollStudentButton = new JButton("Enroll Student");
         viewStudentsButton = new JButton("View Students");
+        viewAssignmentsButton = new JButton("View Assignments");
         addAssignmentButton = new JButton("Add Assignment");
         assignClassroomButton = new JButton("Assign Classroom");
         editButton = new JButton("Edit Course");
@@ -99,6 +101,7 @@ public class CoursePanel extends JPanel {
         row1.add(removeButton);
         row1.add(enrollStudentButton);
         row1.add(viewStudentsButton);
+        row1.add(viewAssignmentsButton);
         row2.add(addAssignmentButton);
         row2.add(assignClassroomButton);
         row2.add(editButton);
@@ -111,11 +114,28 @@ public class CoursePanel extends JPanel {
 
         add(buttonWrapper, BorderLayout.SOUTH);
 
+        // Role-based UI Restrictions
+        String role = dm.getLoginManager().getLoggedInRole();
+        if ("TEACHER".equals(role) || "STUDENT".equals(role)) {
+            inputPanel.setVisible(false);
+            addButton.setVisible(false);
+            removeButton.setVisible(false);
+            enrollStudentButton.setVisible(false);
+            assignClassroomButton.setVisible(false);
+            editButton.setVisible(false);
+
+            if ("STUDENT".equals(role)) {
+                viewStudentsButton.setVisible(false);
+                addAssignmentButton.setVisible(false);
+            }
+        }
+
         // 4. Connect Buttons to Methods
         addButton.addActionListener(e -> addCourse());
         removeButton.addActionListener(e -> removeCourse());
         enrollStudentButton.addActionListener(e -> enrollStudent());
         viewStudentsButton.addActionListener(e -> viewEnrolledStudents());
+        viewAssignmentsButton.addActionListener(e -> viewAssignments());
         addAssignmentButton.addActionListener(e -> addAssignmentToCourse());
         assignClassroomButton.addActionListener(e -> assignClassroom());
         editButton.addActionListener(e -> editCourse());
@@ -324,6 +344,37 @@ public class CoursePanel extends JPanel {
                     }
                 }
                 JOptionPane.showMessageDialog(this, sb.toString(), "Enrolled Students",
+                        JOptionPane.INFORMATION_MESSAGE);
+                break;
+            }
+        }
+    }
+
+    // Shows all assignments for the selected course
+    private void viewAssignments() {
+        int selectedRow = courseTable.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Select a course first.");
+            return;
+        }
+
+        String courseId = (String) tableModel.getValueAt(selectedRow, 0);
+        for (Course c : dm.getRepoCourses().getAll()) {
+            if (c.getCourseId().equals(courseId)) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("Assignments for ").append(c.getCourseName()).append(":\n");
+                sb.append("--------------------------------------------------\n");
+                if (c.getAssignments().isEmpty()) {
+                    sb.append("No assignments yet.");
+                } else {
+                    for (Assignment a : c.getAssignments()) {
+                        sb.append("Num: ").append(a.getAssignmentNumber())
+                                .append(" | Title: ").append(a.getTitle())
+                                .append(" | Due: ").append(a.getDueDate())
+                                .append("\n");
+                    }
+                }
+                JOptionPane.showMessageDialog(this, sb.toString(), "Assignments",
                         JOptionPane.INFORMATION_MESSAGE);
                 break;
             }
@@ -758,7 +809,17 @@ public class CoursePanel extends JPanel {
     private void refreshTable() {
         tableModel.setRowCount(0);
 
+        String role = dm.getLoginManager().getLoggedInRole();
+        Student loggedInStudent = null;
+        if ("STUDENT".equals(role)) {
+            loggedInStudent = (Student) dm.getLoginManager().getLoggedInUser();
+        }
+
         for (Course c : dm.getRepoCourses().getAll()) {
+            if (loggedInStudent != null && !c.getStudents().contains(loggedInStudent)) {
+                continue; // Skip courses the student is not enrolled in
+            }
+
             String teacherName = c.getTeacher() != null ? c.getTeacher().getName() : "None";
             String className = c.getClassroom() != null ? c.getClassroom().getClassNumber() : "None";
 

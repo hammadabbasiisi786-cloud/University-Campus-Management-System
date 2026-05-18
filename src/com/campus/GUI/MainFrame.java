@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
     public MainFrame(DataManager dm, String role) {
         this.dm = dm;
         this.role = role;
-        
+
         // Setup frame
         setTitle("Smart University Campus Management - Role: " + role);
         setSize(900, 600);
@@ -54,7 +54,7 @@ public class MainFrame extends JFrame {
     }
 
     // OTHER METHODS
-    
+
     private void setupPanelsAndButtons() {
         // Create actual panels
         DashboardPanel dashboard = new DashboardPanel(dm);
@@ -67,9 +67,8 @@ public class MainFrame extends JFrame {
         ClassroomPanel classroomPanel = new ClassroomPanel(dm);
         LabPanel labPanel = new LabPanel(dm);
         CampusMapPanel mapPanel = new CampusMapPanel(dm);
-        AssignmentPanel assignmentPanel = new AssignmentPanel(dm);
+        // AssignmentPanel assignmentPanel = new AssignmentPanel(dm);
         BookPanel bookPanel = new BookPanel(dm);
-        MenuPanel menuPanel = new MenuPanel(dm);
 
         // Add panels to CardLayout with string identifiers
         contentPanel.add(dashboard, "Dashboard");
@@ -82,49 +81,31 @@ public class MainFrame extends JFrame {
         contentPanel.add(classroomPanel, "Classrooms");
         contentPanel.add(labPanel, "Labs");
         contentPanel.add(mapPanel, "Map");
-        contentPanel.add(assignmentPanel, "Assignments");
+        // contentPanel.add(assignmentPanel, "Assignments");
         contentPanel.add(bookPanel, "Books");
-        contentPanel.add(menuPanel, "Menus");
 
         // Simple Role-Based Access logic
-        addButton("Dashboard");
-        
-        if (role.equals("ADMIN") || role.equals("TEACHER")) {
+        if (role.equals("TEACHER") || role.equals("STUDENT")) {
+            addButton("Courses");
             addButton("Students");
-        }
-        
-        if (role.equals("ADMIN")) {
+            cardLayout.show(contentPanel, "Courses"); // Set default view
+        } else {
+            // ADMIN
+            addButton("Dashboard");
+            addButton("Students");
             addButton("Teachers");
-        }
-        
-        // Everyone can see Courses (which will include the Timetable)
-        addButton("Courses");
-        
-        if (role.equals("ADMIN") || role.equals("TEACHER")) {
-            addButton("Assignments");
-        }
-        
-        if (role.equals("ADMIN") || role.equals("STUDENT")) {
+            addButton("Courses");
+            // addButton("Assignments"); // Removed as per user request
             addButton("Departments");
-        }
-        
-        // Everyone can see Books
-        addButton("Books");
-        
-        if (role.equals("ADMIN") || role.equals("STUDENT")) {
-            addButton("Menus");
-        }
-        
-        if (role.equals("ADMIN")) {
+            addButton("Books");
+            // addButton("Menus"); // Removed as per user request
             addButton("Facilities");
             addButton("Services");
             addButton("Classrooms");
             addButton("Labs");
+            addButton("Map");
         }
-        
-        // Everyone can see the Campus Map
-        addButton("Map");
-        
+
         // Add a Logout Button at the bottom
         JButton logoutBtn = new JButton("Logout");
         logoutBtn.setMaximumSize(new Dimension(150, 40));

@@ -212,7 +212,7 @@ public class DepartmentPanel extends JPanel {
         if (newLocation != null && !newLocation.isEmpty()) {
             dept.setLocation(newLocation);
         }
-        String[] statusOptions = { "Active", "Inactive", "Under Review", "Closed" };
+        String[] statusOptions = { "Active", "Busy", "Closed" };
         String newStatus = (String) JOptionPane.showInputDialog(this,
                 "Select status:", "Edit Status",
                 JOptionPane.QUESTION_MESSAGE, null,

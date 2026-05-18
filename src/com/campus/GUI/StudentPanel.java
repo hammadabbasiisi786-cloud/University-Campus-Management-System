@@ -66,6 +66,19 @@ public class StudentPanel extends JPanel {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
+        // Role-based UI Restrictions
+        String role = dm.getLoginManager().getLoggedInRole();
+        if ("TEACHER".equals(role) || "STUDENT".equals(role)) {
+            inputPanel.setVisible(false);
+            addButton.setVisible(false);
+            removeButton.setVisible(false);
+            editButton.setVisible(false);
+            
+            if ("STUDENT".equals(role)) {
+                searchButton.setVisible(false);
+            }
+        }
+
         // 4. Connect Buttons to Methods
         addButton.addActionListener(e -> addStudent());
         removeButton.addActionListener(e -> removeStudent());
@@ -193,7 +206,17 @@ public class StudentPanel extends JPanel {
     private void refreshTable() {
         tableModel.setRowCount(0);
 
+        String role = dm.getLoginManager().getLoggedInRole();
+        Student loggedInStudent = null;
+        if ("STUDENT".equals(role)) {
+            loggedInStudent = (Student) dm.getLoginManager().getLoggedInUser();
+        }
+
         for (Student s : dm.getRepoStudents().getAll()) {
+            if (loggedInStudent != null && !s.getStudentID().equals(loggedInStudent.getStudentID())) {
+                continue; // Skip other students
+            }
+
             tableModel.addRow(new Object[]{
                     s.getStudentID(),
                     s.getName(),

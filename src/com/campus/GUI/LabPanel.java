@@ -310,7 +310,7 @@ public class LabPanel extends JPanel {
             }
         }
 
-        String[] statusOptions = { "Active", "Inactive", "Under Maintenance", "Closed" };
+        String[] statusOptions = { "Active", "Busy", "Closed" };
         String newStatus = (String) JOptionPane.showInputDialog(this,
                 "Select status:",
                 "Edit Status",
