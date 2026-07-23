@@ -259,8 +259,8 @@ On first launch, a default **Admin** account is pre-loaded:
 
 | Field | Value |
 |-------|-------|
-| Username | `admin` |
-| Password | `admin123` |
+| Username | `Hamad` |
+| Password | `123456` |
 
 From the Admin dashboard, you can create Teachers and Students, who can then log in with the credentials you set for them.
 
