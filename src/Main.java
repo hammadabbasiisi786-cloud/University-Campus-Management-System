@@ -1,5 +1,5 @@
-import com.campus.FileIO.DataManager;
-import com.campus.GUI.LoginFrame;
+import com.campus.backend.fileio.DataManager;
+import com.campus.frontend.LoginFrame;
 
 public class Main {
     public static void main(String[] args) {
