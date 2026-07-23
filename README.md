@@ -161,7 +161,16 @@ University-Campus-Management-System/
 │               └── CounterManager.java
 │
 ├── data/                                  # Serialized data files (.dat)
-├── Final Class Diagram.drawio.png
+│
+├── assets/
+│   └── screenshots/                       # README screenshots
+│       ├── login.png
+│       ├── dashboard.png
+│       ├── course_panel.png
+│       └── facility_panel.png
+│
+├── Final Class Diagram.drawio.png         # UML class diagram
+├── OOP Semester Project.pdf               # Project requirements document
 ├── .gitignore
 └── README.md
 ```
@@ -279,7 +288,23 @@ All data is stored locally in the `data/` directory as binary serialized `.dat` 
 
 ## 📸 Screenshots
 
-> *(Coming soon)*
+### 🔐 Login Screen
+![Login Screen](assets/screenshots/login.png)
+
+---
+
+### 🖥️ Admin Dashboard
+![Admin Dashboard](assets/screenshots/dashboard.png)
+
+---
+
+### 📚 Course Panel
+![Course Panel](assets/screenshots/course_panel.png)
+
+---
+
+### 🏢 Facility Panel
+![Facility Panel](assets/screenshots/facility_panel.png)
 
 ---
 
