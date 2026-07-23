@@ -169,7 +169,7 @@ University-Campus-Management-System/
 │       ├── course_panel.png
 │       └── facility_panel.png
 │
-├── Final Class Diagram.drawio.png         # UML class diagram
+├── Class Diagram.png                      # UML class diagram
 ├── OOP Semester Project.pdf               # Project requirements document
 ├── .gitignore
 └── README.md
@@ -179,7 +179,9 @@ University-Campus-Management-System/
 
 ## 🌳 Class Hierarchy
 
-```
+![Class Diagram](Class%20Diagram.png)
+
+```text
 Campus_Entity (abstract)
 │
 ├── Academic_Unit (abstract)
