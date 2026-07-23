@@ -19,6 +19,11 @@ public class Book implements Serializable {
         setAuthor(author);
     }
 
+    // GETTERS
+    public String getISBN() {
+        return ISBN;
+    }
+
     // SETTERS
     public void setISBN(String ISBN) {
         if (ISBN == null || ISBN.isEmpty()) {
@@ -26,6 +31,10 @@ public class Book implements Serializable {
         } else {
             this.ISBN = ISBN;
         }
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public void setAuthor(String author) {
@@ -36,6 +45,10 @@ public class Book implements Serializable {
         }
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         if (title == null || title.isEmpty()) {
             System.out.println("Invalid Title Entered!!!!");
@@ -44,38 +57,16 @@ public class Book implements Serializable {
         }
     }
 
-    // GETTERS
-    public String getISBN() {
-        return ISBN;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "=== Book ===\n" +
-                        "  ISBN   : %s\n" +
-                        "  Title  : %s\n" +
-                        "  Author : %s",
-                ISBN,
-                title,
-                author);
+        return String.format("=== Book ===\n" + "  ISBN   : %s\n" + "  Title  : %s\n" + "  Author : %s", ISBN, title, author);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
         return ISBN != null && ISBN.equals(book.ISBN);
     }

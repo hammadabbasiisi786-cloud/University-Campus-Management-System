@@ -10,7 +10,8 @@ public class Equipment implements Serializable {
     private int operationalCost;
 
     // CONSTRUCTORS
-    public Equipment() {}
+    public Equipment() {
+    }
 
     public Equipment(String type, String name, int operationalCost) {
         setType(type);
@@ -20,7 +21,11 @@ public class Equipment implements Serializable {
 
     // SETTERS
 
-    // Type must not be null or empty
+    // GETTERS
+    public String getType() {
+        return type;
+    }
+
     public void setType(String type) {
         if (type == null || type.isEmpty()) {
             System.out.println("Error: type is empty");
@@ -29,7 +34,10 @@ public class Equipment implements Serializable {
         }
     }
 
-    // Name must not be null or empty
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
             System.out.println("Error: name is empty");
@@ -38,7 +46,10 @@ public class Equipment implements Serializable {
         }
     }
 
-    // Operational cost must be greater than 0
+    public int getOperationalCost() {
+        return operationalCost;
+    }
+
     public void setOperationalCost(int operationalCost) {
         if (operationalCost > 0) {
             this.operationalCost = operationalCost;
@@ -47,19 +58,12 @@ public class Equipment implements Serializable {
         }
     }
 
-    // GETTERS
-    public String getType() { return type; }
-    public String getName() { return name; }
-    public int getOperationalCost() { return operationalCost; }
-
     // OTHER METHODS
 
-    // Calculates the total monthly cost based on daily usage hours (cost per hour × hours per day × 30 days)
     public int calculateMonthlyCost(int hoursPerDay) {
         return operationalCost * hoursPerDay * 30;
     }
 
-    // Prints a brief summary of this equipment's type, name, and cost
     public void displayInfo() {
         System.out.println("Type: " + type + " | Name: " + name + " | Cost/hr: " + operationalCost);
     }
@@ -67,26 +71,20 @@ public class Equipment implements Serializable {
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "=== Equipment ===\n" +
-                        "  Type             : %s\n" +
-                        "  Name             : %s\n" +
-                        "  Operational Cost : %d",
-                type, name, operationalCost
-        );
+        return String.format("=== Equipment ===\n" + "  Type             : %s\n" + "  Name             : %s\n"
+                + "  Operational Cost : %d", type, name, operationalCost);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Equipment equipment = (Equipment) o;
-        return (type != null && type.equals(equipment.type))
-                && (name != null && name.equals(equipment.name));
+        return (type != null && type.equals(equipment.type)) && (name != null && name.equals(equipment.name));
     }
 }
-
-// -------------------------------------------------------
 
 class Projector extends Equipment {
 
@@ -106,8 +104,6 @@ class Projector extends Equipment {
     }
 }
 
-// -------------------------------------------------------
-
 class AirConditioner extends Equipment {
 
     // CONSTRUCTORS
@@ -125,8 +121,6 @@ class AirConditioner extends Equipment {
         return super.toString().replace("=== Equipment ===", "=== Air Conditioner ===");
     }
 }
-
-// -------------------------------------------------------
 
 class Computer extends Equipment {
 
@@ -146,8 +140,6 @@ class Computer extends Equipment {
     }
 }
 
-// -------------------------------------------------------
-
 class Camera extends Equipment {
 
     // CONSTRUCTORS
@@ -165,8 +157,6 @@ class Camera extends Equipment {
         return super.toString().replace("=== Equipment ===", "=== Camera ===");
     }
 }
-
-// -------------------------------------------------------
 
 class Fan extends Equipment {
 

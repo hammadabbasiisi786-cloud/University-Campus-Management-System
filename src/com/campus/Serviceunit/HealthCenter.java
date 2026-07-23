@@ -22,6 +22,11 @@ public class HealthCenter extends ServiceUnit implements Notifiable, Serializabl
         setNoOfDoctors(noOfDoctors);
     }
 
+    // GETTERS
+    public int getAvailableBeds() {
+        return availableBeds;
+    }
+
     // SETTERS
     public void setAvailableBeds(int availableBeds) {
         if (availableBeds >= 0) {
@@ -29,6 +34,10 @@ public class HealthCenter extends ServiceUnit implements Notifiable, Serializabl
         } else {
             System.out.println("Available beds cannot be negative");
         }
+    }
+
+    public int getNoOfDoctors() {
+        return noOfDoctors;
     }
 
     public void setNoOfDoctors(int noOfDoctors) {
@@ -39,13 +48,8 @@ public class HealthCenter extends ServiceUnit implements Notifiable, Serializabl
         }
     }
 
-    // GETTERS
-    public int getAvailableBeds() { return availableBeds; }
-    public int getNoOfDoctors() { return noOfDoctors; }
-
     // OTHER METHODS
 
-    // Sends an emergency alert to on-call doctors and prepares available beds for response
     @Override
     public void sendNotification(String message) {
         System.out.println("[Health Center Notification]");
@@ -56,13 +60,6 @@ public class HealthCenter extends ServiceUnit implements Notifiable, Serializabl
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "%s\n" +
-                        "  Available Beds : %d\n" +
-                        "  Doctors        : %d",
-                super.toString(),
-                availableBeds,
-                noOfDoctors
-        );
+        return String.format("%s\n" + "  Available Beds : %d\n" + "  Doctors        : %d", super.toString(), availableBeds, noOfDoctors);
     }
 }

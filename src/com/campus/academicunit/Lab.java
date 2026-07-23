@@ -32,18 +32,48 @@ public class Lab extends Academic_Unit {
         setLabAssistant(teacher);
     }
 
+    public static int getIdCounter() {
+        return idCounter;
+    }
+
+    public static void setIdCounter(int value) {
+        idCounter = value;
+    }
+
     // SETTERS
     public void setAvailability(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 
+    public void setLabAssistant(Teacher teacher) {
+        setTeacher(teacher);
+    }
+
+    // GETTERS
+    public String getLabNumber() {
+        return labNumber;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
     public void setCapacity(int capacity) {
-        if (capacity <=0) {
+        if (capacity <= 0) {
             System.out.println("Capacity must be greater than 0");
         } else {
             this.capacity = capacity;
         }
     }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
     public void setTeacher(Teacher teacher) {
         if (teacher == null) {
             System.out.println("Teacher cannot be null");
@@ -51,9 +81,11 @@ public class Lab extends Academic_Unit {
             this.teacher = teacher;
         }
     }
-    public void setLabAssistant(Teacher teacher) {
-        setTeacher(teacher);
+
+    public ArrayList<Student> getStudents() {
+        return repoStudent.getAll();
     }
+
     public void setStudents(ArrayList<Student> students) {
         if (students == null) {
             System.out.println("Student list cannot be null");
@@ -61,25 +93,14 @@ public class Lab extends Academic_Unit {
             repoStudent.setItems(students);
         }
     }
-    public static void setIdCounter(int value) { idCounter = value; }
-
-    // GETTERS
-    public String getLabNumber() { return labNumber; }
-    public int getCapacity() { return capacity; }
-    public boolean isAvailable() { return isAvailable; }
-    public Teacher getTeacher() { return teacher; }
-    public ArrayList<Student> getStudents() { return repoStudent.getAll(); }
-    public static int getIdCounter() { return idCounter; }
 
     // OTHER METHODS
 
-    // Returns the number of students currently enrolled in this lab
     @Override
     public int getNumberOfStudents() {
         return repoStudent.getAll().size();
     }
 
-    // Adds a student to the lab if not already present and capacity allows
     public void addStudent(Student student) {
         if (repoStudent.getAll().size() >= capacity) {
             System.out.println("Maximum capacity reached");
@@ -88,12 +109,10 @@ public class Lab extends Academic_Unit {
         repoStudent.add(student);
     }
 
-    // Removes a student from the lab if they are found in the list
     public void removeStudent(Student student) {
         repoStudent.remove(student);
     }
 
-    // Calculates operational cost based on equipment and students (per spec: students + equipment)
     @Override
     public double calculateOperationalCost() {
         double operationalCost = 0;
@@ -107,20 +126,7 @@ public class Lab extends Academic_Unit {
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "%s\n" +
-                        "  Lab Number    : %s\n" +
-                        "  Capacity      : %d\n" +
-                        "  Available     : %s\n" +
-                        "  Students      : %d\n" +
-                        "  Lab Assistant : %s",
-                super.toString(),
-                labNumber,
-                capacity,
-                (isAvailable ? "Yes" : "No"),
-                repoStudent.getAll().size(),
-                (teacher != null ? teacher.getName() : "Not Assigned")
-        );
+        return String.format("%s\n" + "  Lab Number    : %s\n" + "  Capacity      : %d\n" + "  Available     : %s\n" + "  Students      : %d\n" + "  Lab Assistant : %s", super.toString(), labNumber, capacity, (isAvailable ? "Yes" : "No"), repoStudent.getAll().size(), (teacher != null ? teacher.getName() : "Not Assigned"));
     }
 
     @Override

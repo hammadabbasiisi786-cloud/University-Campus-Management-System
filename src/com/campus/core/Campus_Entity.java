@@ -20,6 +20,11 @@ public abstract class Campus_Entity implements Serializable {
         setLocation(location);
     }
 
+    // GETTERS
+    public String getEntityID() {
+        return entityID;
+    }
+
     // SETTERS
     public void setEntityID(String entityID) {
         if (entityID == null || entityID.isEmpty()) {
@@ -27,6 +32,10 @@ public abstract class Campus_Entity implements Serializable {
         } else {
             this.entityID = entityID;
         }
+    }
+
+    public String getEntityName() {
+        return entityName;
     }
 
     public void setEntityName(String entityName) {
@@ -37,12 +46,20 @@ public abstract class Campus_Entity implements Serializable {
         }
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     public void setLocation(String location) {
         if (location == null || location.isEmpty()) {
             System.out.println("Invalid Location Entered!!!!");
         } else {
             this.location = location;
         }
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public void setStatus(String status) {
@@ -53,38 +70,14 @@ public abstract class Campus_Entity implements Serializable {
         }
     }
 
-    // GETTERS
-    public String getEntityID() {
-        return entityID;
-    }
-
-    public String getEntityName() {
-        return entityName;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
     // OTHER METHODS
-    // Defines the contract for how each specific campus unit calculates its
-    // operational expenses
+
     public abstract double calculateOperationalCost();
 
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "=== Campus Entity ===\n" +
-                        "  ID       : %s\n" +
-                        "  Name     : %s\n" +
-                        "  Location : %s\n" +
-                        "  Status   : %s",
-                entityID, entityName, location, status);
+        return String.format("=== Campus Entity ===\n" + "  ID       : %s\n" + "  Name     : %s\n" + "  Location : %s\n" + "  Status   : %s", entityID, entityName, location, status);
     }
 
     @Override

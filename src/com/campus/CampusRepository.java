@@ -3,7 +3,7 @@ package com.campus;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CampusRepository <T extends Serializable> implements Serializable {
+public class CampusRepository<T extends Serializable> implements Serializable {
     // FIELDS
     protected ArrayList<T> items;
 
@@ -13,17 +13,17 @@ public class CampusRepository <T extends Serializable> implements Serializable {
     }
 
     // SETTERS
-    public void setItems(ArrayList<T> items) { this.items = items; }
+    public void setItems(ArrayList<T> items) {
+        this.items = items;
+    }
 
     // GETTERS
-
-
-    // Returns the number of items currently stored in the repository
-    public int getSize() { return items.size(); }
+    public int getSize() {
+        return items.size();
+    }
 
     // OTHER METHODS
 
-    // Returns true if the given item exists in the repository, false if null or not found
     public boolean contains(T item) {
         if (item == null) {
             return false;
@@ -31,10 +31,10 @@ public class CampusRepository <T extends Serializable> implements Serializable {
         return items.contains(item);
     }
 
-    public ArrayList<T> getAll(){
+    public ArrayList<T> getAll() {
         return items;
     }
-    // Adds the given item to the repository if it is not null and not already present
+
     public boolean add(T item) {
         if (item == null) {
             System.out.println("Invalid Input.");
@@ -48,7 +48,6 @@ public class CampusRepository <T extends Serializable> implements Serializable {
         return true;
     }
 
-    // Removes the given item from the repository if it exists
     public boolean remove(T item) {
         if (item == null) {
             System.out.println("Invalid Input.");
@@ -62,7 +61,6 @@ public class CampusRepository <T extends Serializable> implements Serializable {
         return true;
     }
 
-    // Searches for the given item in the repository and prints whether it was found
     public boolean search(T item) {
         if (item == null) {
             System.out.println("Invalid Input.");
@@ -75,15 +73,11 @@ public class CampusRepository <T extends Serializable> implements Serializable {
         return true;
     }
 
-    // Prints the string representation of every item in the repository
     public void displayAll() {
         for (T item : items) {
             System.out.println(item.toString());
         }
     }
-
-    //return String
-
 
 
     public void clear() {
@@ -93,11 +87,7 @@ public class CampusRepository <T extends Serializable> implements Serializable {
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "=== Campus Repository ===\n" +
-                        "  Total Items : %d",
-                items.size()
-        );
+        return String.format("=== Campus Repository ===\n" + "  Total Items : %d", items.size());
     }
 
     public int size() {

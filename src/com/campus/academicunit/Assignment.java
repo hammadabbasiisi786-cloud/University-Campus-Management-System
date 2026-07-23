@@ -31,7 +31,11 @@ public class Assignment implements Serializable {
 
     // SETTERS
 
-    // Assignment number must be greater than 0 to be valid
+    // GETTERS
+    public int getAssignmentNumber() {
+        return assignmentNumber;
+    }
+
     public void setAssignmentNumber(int assignmentNumber) {
         if (assignmentNumber > 0) {
             this.assignmentNumber = assignmentNumber;
@@ -40,13 +44,20 @@ public class Assignment implements Serializable {
         }
     }
 
-    // Title must not be null or empty
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         if (title == null || title.isEmpty()) {
             System.out.println("Please enter a valid title");
         } else {
             this.title = title;
         }
+    }
+
+    public String getIssueDate() {
+        return issueDate;
     }
 
     public void setIssueDate(String issueDate) {
@@ -57,6 +68,10 @@ public class Assignment implements Serializable {
         }
     }
 
+    public String getDueDate() {
+        return dueDate;
+    }
+
     public void setDueDate(String dueDate) {
         if (dueDate == null || dueDate.isEmpty()) {
             System.out.println("Please enter a valid due date");
@@ -65,7 +80,10 @@ public class Assignment implements Serializable {
         }
     }
 
-    // Total marks must be greater than 0 to be valid
+    public int getTotalMarks() {
+        return totalMarks;
+    }
+
     public void setTotalMarks(int totalMarks) {
         if (totalMarks > 0) {
             this.totalMarks = totalMarks;
@@ -74,57 +92,26 @@ public class Assignment implements Serializable {
         }
     }
 
-    // Obtained marks must be non-negative and must not exceed total marks
+    public double getObtainedMarks() {
+        return obtainedMarks;
+    }
+
     public void setObtainedMarks(double obtainedMarks) {
-        if (obtainedMarks >= 0 && obtainedMarks <= totalMarks) {
+        if (obtainedMarks >= 0 && (totalMarks == 0 || obtainedMarks <= totalMarks)) {
             this.obtainedMarks = obtainedMarks;
         } else {
             System.out.println("Please enter a valid number for obtained marks");
         }
     }
 
-    // GETTERS
-    public int getAssignmentNumber() {
-        return assignmentNumber;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getIssueDate() {
-        return issueDate;
-    }
-
-    public String getDueDate() {
-        return dueDate;
-    }
-
-    public int getTotalMarks() {
-        return totalMarks;
-    }
-
-    public double getObtainedMarks() {
-        return obtainedMarks;
-    }
-
     // TO-STRING
     @Override
     public String toString() {
         return String.format(
-                "=== Assignment ===\n" +
-                        "  Number         : %d\n" +
-                        "  Title          : %s\n" +
-                        "  Issue Date     : %s\n" +
-                        "  Due Date       : %s\n" +
-                        "  Total Marks    : %d\n" +
-                        "  Obtained Marks : %.2f",
-                assignmentNumber,
-                title,
-                issueDate,
-                dueDate,
-                totalMarks,
-                obtainedMarks);
+                "=== Assignment ===\n" + "  Number         : %d\n" + "  Title          : %s\n"
+                        + "  Issue Date     : %s\n" + "  Due Date       : %s\n" + "  Total Marks    : %d\n"
+                        + "  Obtained Marks : %.2f",
+                assignmentNumber, title, issueDate, dueDate, totalMarks, obtainedMarks);
     }
 
     @Override

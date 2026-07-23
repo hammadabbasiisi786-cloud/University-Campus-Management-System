@@ -21,6 +21,11 @@ public class CampusZone implements Serializable {
         setZoneName(zoneName);
     }
 
+    // GETTERS
+    public String getZoneName() {
+        return zoneName;
+    }
+
     // SETTERS
     public void setZoneName(String zoneName) {
         if (zoneName == null || zoneName.isEmpty()) {
@@ -28,6 +33,10 @@ public class CampusZone implements Serializable {
         } else {
             this.zoneName = zoneName;
         }
+    }
+
+    public ArrayList<Facility> getFacilities() {
+        return repoFacility.getAll();
     }
 
     public void setFacilities(ArrayList<Facility> facilities) {
@@ -38,6 +47,10 @@ public class CampusZone implements Serializable {
         }
     }
 
+    public ArrayList<ServiceUnit> getServiceUnits() {
+        return repoServiceUnit.getAll();
+    }
+
     public void setServiceUnits(ArrayList<ServiceUnit> serviceUnits) {
         if (serviceUnits == null) {
             System.out.println("Service units list cannot be null");
@@ -46,29 +59,20 @@ public class CampusZone implements Serializable {
         }
     }
 
-    // GETTERS
-    public String getZoneName() { return zoneName; }
-    public ArrayList<Facility> getFacilities() { return repoFacility.getAll(); }
-    public ArrayList<ServiceUnit> getServiceUnits() { return repoServiceUnit.getAll(); }
-
     // OTHER METHODS
 
-    // Adds a facility to this zone's facility list
     public void addFacility(Facility facility) {
         repoFacility.add(facility);
     }
 
-    // Removes a facility from this zone's facility list
     public void removeFacility(Facility facility) {
         repoFacility.remove(facility);
     }
 
-    // Links a service unit to this zone
     public void addServiceUnit(ServiceUnit unit) {
         repoServiceUnit.add(unit);
     }
 
-    // Removes a service unit from this zone's service unit list
     public void removeServiceUnit(ServiceUnit unit) {
         repoServiceUnit.remove(unit);
     }
@@ -76,14 +80,6 @@ public class CampusZone implements Serializable {
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "=== Campus Zone ===\n" +
-                        "  Name         : %s\n" +
-                        "  Facilities   : %d\n" +
-                        "  Services     : %d",
-                zoneName,
-                repoFacility.getAll().size(),
-                repoServiceUnit.getAll().size()
-        );
+        return String.format("=== Campus Zone ===\n" + "  Name         : %s\n" + "  Facilities   : %d\n" + "  Services     : %d", zoneName, repoFacility.getAll().size(), repoServiceUnit.getAll().size());
     }
 }

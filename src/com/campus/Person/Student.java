@@ -31,30 +31,13 @@ public class Student implements Serializable {
 
     // SETTERS
 
-    // Name must not be null or empty
-    public void setName(String name) {
-        if (name == null || name.isEmpty()) {
-            System.out.println("Invalid name entered");
-        } else {
-            this.name = name;
-        }
-    }
-
-    public void setSemester(int semester) {
-        if (semester < 1 || semester > 8) {
-            System.out.println("Invalid semester entered");
-        } else {
-            this.semester = semester;
-        }
+    // GETTERS
+    public static int getStudentCounter() {
+        return studentCounter;
     }
 
     public static void setStudentCounter(int value) {
         studentCounter = value;
-    }
-
-    // GETTERS
-    public static int getStudentCounter() {
-        return studentCounter;
     }
 
     public String getStudentID() {
@@ -65,8 +48,24 @@ public class Student implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            System.out.println("Invalid name entered");
+        } else {
+            this.name = name;
+        }
+    }
+
     public int getSemester() {
         return semester;
+    }
+
+    public void setSemester(int semester) {
+        if (semester < 1 || semester > 8) {
+            System.out.println("Invalid semester entered");
+        } else {
+            this.semester = semester;
+        }
     }
 
     public String getRole() {
@@ -91,11 +90,7 @@ public class Student implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("=== Student ===\n")
-                .append("  ID       : ").append(studentID).append("\n")
-                .append("  Name     : ").append(name).append("\n")
-                .append("  Semester : ").append(semester).append("\n")
-                .append("  Courses  : ");
+        sb.append("=== Student ===\n").append("  ID       : ").append(studentID).append("\n").append("  Name     : ").append(name).append("\n").append("  Semester : ").append(semester).append("\n").append("  Courses  : ");
 
         if (enrolledCourses.isEmpty()) {
             sb.append("None");
@@ -110,7 +105,6 @@ public class Student implements Serializable {
         return sb.toString();
     }
 
-    // Returns all assignments for one specific enrolled course
     public ArrayList<Assignment> getAssignmentsForCourse(Course course) {
         if (course == null || !enrolledCourses.contains(course)) {
             System.out.println("Student is not enrolled in this course.");
@@ -129,10 +123,8 @@ public class Student implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
         return studentID.equals(student.studentID);
     }

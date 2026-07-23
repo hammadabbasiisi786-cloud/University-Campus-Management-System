@@ -13,19 +13,27 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
     private String peakHourRouteName;
     private boolean isPeakHour = false;
     private String currentTime = "Not Set";
-    private String[] peakTime = { "1pm", "2pm", "3pm" };
+    private String[] peakTime = {"1pm", "2pm", "3pm"};
 
     // CONSTRUCTORS
     public TransportService() {
         super();
     }
 
-    public TransportService(String entityID, String name, String location, int noOfStaff, int serviceHours,
-            double baseHourlyRate, int numberOfBuses, String normalRouteName, String peakHourRouteName) {
+    public TransportService(String entityID, String name, String location, int noOfStaff, int serviceHours, double baseHourlyRate, int numberOfBuses, String normalRouteName, String peakHourRouteName) {
         super(entityID, name, location, noOfStaff, serviceHours, baseHourlyRate);
         setNumberOfBuses(numberOfBuses);
         setNormalRouteName(normalRouteName);
         setPeakHourRouteName(peakHourRouteName);
+    }
+
+    public void setIsPeakHour(boolean isPeakHour) {
+        this.isPeakHour = isPeakHour;
+    }
+
+    // GETTERS
+    public int getNumberOfBuses() {
+        return numberOfBuses;
     }
 
     // SETTERS
@@ -37,12 +45,20 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
         }
     }
 
+    public String getNormalRouteName() {
+        return normalRouteName;
+    }
+
     public void setNormalRouteName(String normalRouteName) {
         if (normalRouteName != null && !normalRouteName.isEmpty()) {
             this.normalRouteName = normalRouteName;
         } else {
             System.out.println("Invalid Normal Route Name Entered!!!!");
         }
+    }
+
+    public String getPeakHourRouteName() {
+        return peakHourRouteName;
     }
 
     public void setPeakHourRouteName(String peakHourRouteName) {
@@ -53,8 +69,12 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
         }
     }
 
-    public void setIsPeakHour(boolean isPeakHour) {
-        this.isPeakHour = isPeakHour;
+    public boolean isPeakHour() {
+        return isPeakHour;
+    }
+
+    public String getCurrentTime() {
+        return currentTime;
     }
 
     public void setCurrentTime(String currentTime) {
@@ -65,6 +85,10 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
         }
     }
 
+    public String[] getPeakTime() {
+        return peakTime;
+    }
+
     public void setPeakTime(String[] peakTime) {
         if (peakTime != null) {
             this.peakTime = peakTime;
@@ -73,41 +97,12 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
         }
     }
 
-    // GETTERS
-    public int getNumberOfBuses() {
-        return numberOfBuses;
-    }
-
-    public String getNormalRouteName() {
-        return normalRouteName;
-    }
-
-    public String getPeakHourRouteName() {
-        return peakHourRouteName;
-    }
-
-    public boolean isPeakHour() {
-        return isPeakHour;
-    }
-
-    public String getCurrentTime() {
-        return currentTime;
-    }
-
-    public String[] getPeakTime() {
-        return peakTime;
-    }
-
-    // Convenience getter that returns the currently active route based on peak hour
-    // status
     public String getActiveRouteName() {
         return isPeakHour ? peakHourRouteName : normalRouteName;
     }
 
     // OTHER METHODS
 
-    // Checks if the given time matches a peak hour and updates the route and
-    // service mode accordingly
     public void updateServiceByTime(String timeInput) {
         setCurrentTime(timeInput);
         boolean matchFound = false;
@@ -129,7 +124,6 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
         System.out.println("Status: " + scheduleUpdate);
     }
 
-    // Returns the active route name based on peak hour status
     @Override
     public String generateSchedule() {
         if (isPeakHour) {
@@ -142,20 +136,6 @@ public class TransportService extends ServiceUnit implements Schedulable, Serial
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "%s\n" +
-                        "  Active Route      : %s\n" +
-                        "  Normal Route      : %s\n" +
-                        "  Peak Hour Route   : %s\n" +
-                        "  Buses             : %d\n" +
-                        "  Current Time      : %s\n" +
-                        "  Peak Hour         : %s",
-                super.toString(),
-                getActiveRouteName(),
-                normalRouteName,
-                peakHourRouteName,
-                numberOfBuses,
-                currentTime,
-                (isPeakHour ? "Yes" : "No"));
+        return String.format("%s\n" + "  Active Route      : %s\n" + "  Normal Route      : %s\n" + "  Peak Hour Route   : %s\n" + "  Buses             : %d\n" + "  Current Time      : %s\n" + "  Peak Hour         : %s", super.toString(), getActiveRouteName(), normalRouteName, peakHourRouteName, numberOfBuses, currentTime, (isPeakHour ? "Yes" : "No"));
     }
 }

@@ -28,6 +28,11 @@ public class Library extends Facility implements Reportable {
         setCostPerBook(costPerBook);
     }
 
+    // GETTERS
+    public String getTimings() {
+        return timings;
+    }
+
     // SETTERS
     public void setTimings(String timings) {
         if (timings == null || timings.isEmpty()) {
@@ -37,21 +42,16 @@ public class Library extends Facility implements Reportable {
         }
     }
 
+    public double getCostPerBook() {
+        return costPerBook;
+    }
+
     public void setCostPerBook(double costPerBook) {
         if (costPerBook < 0) {
             System.out.println("Cost per book cannot be negative");
         } else {
             this.costPerBook = costPerBook;
         }
-    }
-
-    // GETTERS
-    public String getTimings() {
-        return timings;
-    }
-
-    public double getCostPerBook() {
-        return costPerBook;
     }
 
     public int getLibraryUsage() {
@@ -68,12 +68,10 @@ public class Library extends Facility implements Reportable {
 
     // OTHER METHODS
 
-    // Adds a book to the library — same ISBN cannot be added twice
     public void addBook(Book book) {
         repoBook.add(book);
     }
 
-    // Removes a book from the library's repository
     public void removeBook(Book book) {
         if (repoBook.remove(book)) {
             System.out.println("Book removed: " + book.getTitle());
@@ -82,7 +80,6 @@ public class Library extends Facility implements Reportable {
         }
     }
 
-    // Searches for books by ISBN and prints all matches
     public void searchBook(String ISBN) {
         boolean found = false;
         for (Book b : repoBook.getAll()) {
@@ -96,8 +93,6 @@ public class Library extends Facility implements Reportable {
         }
     }
 
-    // Issues a book by ISBN to a student — finds a free copy, records the pair,
-    // increments usage counters
     public boolean issueBook(String ISBN, Student student) {
         for (Book b : repoBook.getAll()) {
             if (ISBN.equals(b.getISBN())) {
@@ -113,10 +108,9 @@ public class Library extends Facility implements Reportable {
                     repoIssuedRecords.add(new IssuedRecord(b, student));
                     libraryUsage++;
                     incrementFacilityUsage();
-                    System.out.println("Book issued: " + b.getTitle() +
-                            " | To: " + student.getName() +
-                            " | Library Usage: " + libraryUsage +
-                            " | Total Facility Usage: " + getTotalFacilityUsage());
+                    System.out.println(
+                            "Book issued: " + b.getTitle() + " | To: " + student.getName() + " | Library Usage: "
+                                    + libraryUsage + " | Total Facility Usage: " + getTotalFacilityUsage());
                     return true;
                 }
             }
@@ -125,14 +119,12 @@ public class Library extends Facility implements Reportable {
         return false;
     }
 
-    // Returns a book by ISBN from a specific student — removes their record
     public boolean returnBook(String ISBN, Student student) {
         for (IssuedRecord record : repoIssuedRecords.getAll()) {
-            if (record.getBook().getISBN().equals(ISBN) &&
-                    record.getStudent().getStudentID().equals(student.getStudentID())) {
+            if (record.getBook().getISBN().equals(ISBN)
+                    && record.getStudent().getStudentID().equals(student.getStudentID())) {
                 repoIssuedRecords.remove(record);
-                System.out.println("Book returned: " + record.getBook().getTitle() +
-                        " | By: " + student.getName());
+                System.out.println("Book returned: " + record.getBook().getTitle() + " | By: " + student.getName());
                 return true;
             }
         }
@@ -140,15 +132,13 @@ public class Library extends Facility implements Reportable {
         return false;
     }
 
-    // Returns all currently issued records
     public ArrayList<IssuedRecord> getIssuedRecords() {
         return repoIssuedRecords.getAll();
     }
 
-    // Returns maintenanceCost + cost of all books as operational cost
     @Override
     public double calculateOperationalCost() {
-        return maintenanceCost * libraryUsage;
+        return maintenanceCost + (repoIssuedRecords.getAll().size() * costPerBook);
     }
 
     @Override
@@ -170,10 +160,8 @@ public class Library extends Facility implements Reportable {
             System.out.println(" [No books currently issued]");
         } else {
             for (IssuedRecord r : repoIssuedRecords.getAll()) {
-                System.out.println(" □ " + r.getBook().getTitle() +
-                        " — " + r.getBook().getAuthor() +
-                        " | Issued to: " + r.getStudent().getName() +
-                        " (" + r.getStudent().getStudentID() + ")");
+                System.out.println(" □ " + r.getBook().getTitle() + " — " + r.getBook().getAuthor() + " | Issued to: "
+                        + r.getStudent().getName() + " (" + r.getStudent().getStudentID() + ")");
             }
         }
         System.out.println("--------------------------------------------------");
@@ -185,17 +173,9 @@ public class Library extends Facility implements Reportable {
     @Override
     public String toString() {
         return String.format(
-                "%s\n" +
-                        "  Timings       : %s\n" +
-                        "  Cost Per Book : %.2f\n" +
-                        "  Total Books   : %d\n" +
-                        "  Issued Books  : %d\n" +
-                        "  Library Usage : %d",
-                super.toString(),
-                timings,
-                costPerBook,
-                repoBook.getAll().size(),
-                repoIssuedRecords.getAll().size(),
+                "%s\n" + "  Timings       : %s\n" + "  Cost Per Book : %.2f\n" + "  Total Books   : %d\n"
+                        + "  Issued Books  : %d\n" + "  Library Usage : %d",
+                super.toString(), timings, costPerBook, repoBook.getAll().size(), repoIssuedRecords.getAll().size(),
                 libraryUsage);
     }
 }

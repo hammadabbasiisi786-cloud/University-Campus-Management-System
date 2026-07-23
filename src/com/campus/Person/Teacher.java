@@ -28,40 +28,13 @@ public class Teacher implements Serializable {
 
     // SETTERS
 
-    // Name must not be null or empty
-    public void setName(String name) {
-        if (name == null || name.isEmpty()) {
-            System.out.println("Invalid name entered");
-        } else {
-            this.name = name;
-        }
-    }
-
-    // Salary must be greater than 0
-    public void setSalary(double salary) {
-        if (salary > 0) {
-            this.salary = salary;
-        } else {
-            System.out.println("Invalid salary entered");
-        }
-    }
-
-    // Qualification must not be null or empty
-    public void setQualification(String qualification) {
-        if (qualification == null || qualification.isEmpty()) {
-            System.out.println("Invalid qualification entered");
-        } else {
-            this.qualification = qualification;
-        }
+    // GETTERS
+    public static int getTeacherCounter() {
+        return teacherCounter;
     }
 
     public static void setTeacherCounter(int value) {
         teacherCounter = value;
-    }
-
-    // GETTERS
-    public static int getTeacherCounter() {
-        return teacherCounter;
     }
 
     public String getTeacherID() {
@@ -72,12 +45,36 @@ public class Teacher implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            System.out.println("Invalid name entered");
+        } else {
+            this.name = name;
+        }
+    }
+
     public double getSalary() {
         return salary;
     }
 
+    public void setSalary(double salary) {
+        if (salary > 0) {
+            this.salary = salary;
+        } else {
+            System.out.println("Invalid salary entered");
+        }
+    }
+
     public String getQualification() {
         return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        if (qualification == null || qualification.isEmpty()) {
+            System.out.println("Invalid qualification entered");
+        } else {
+            this.qualification = qualification;
+        }
     }
 
     public String getRole() {
@@ -87,24 +84,13 @@ public class Teacher implements Serializable {
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "=== Teacher ===\n" +
-                        "  ID            : %s\n" +
-                        "  Name          : %s\n" +
-                        "  Salary        : %.2f\n" +
-                        "  Qualification : %s",
-                teacherID,
-                name,
-                salary,
-                qualification);
+        return String.format("=== Teacher ===\n" + "  ID            : %s\n" + "  Name          : %s\n" + "  Salary        : %.2f\n" + "  Qualification : %s", teacherID, name, salary, qualification);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
         return teacherID.equals(teacher.teacherID);
     }

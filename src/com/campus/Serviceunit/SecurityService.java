@@ -24,6 +24,11 @@ public class SecurityService extends ServiceUnit implements Notifiable, Serializ
         setNumberOfPatrolCars(numberOfPatrolCars);
     }
 
+    // GETTERS
+    public int getNumberOfPatrolCars() {
+        return numberOfPatrolCars;
+    }
+
     // SETTERS
     public void setNumberOfPatrolCars(int numberOfPatrolCars) {
         if (numberOfPatrolCars >= 0) {
@@ -33,8 +38,16 @@ public class SecurityService extends ServiceUnit implements Notifiable, Serializ
         }
     }
 
+    public boolean isEmergencyMode() {
+        return emergencyMode;
+    }
+
     public void setEmergencyMode(boolean emergencyMode) {
         this.emergencyMode = emergencyMode;
+    }
+
+    public String getCurrentEmergencyStatus() {
+        return currentEmergencyStatus;
     }
 
     public void setCurrentEmergencyStatus(String currentEmergencyStatus) {
@@ -45,6 +58,10 @@ public class SecurityService extends ServiceUnit implements Notifiable, Serializ
         }
     }
 
+    public ArrayList<Notifiable> getEmergencyContacts() {
+        return emergencyContacts;
+    }
+
     public void setEmergencyContacts(ArrayList<Notifiable> emergencyContacts) {
         if (emergencyContacts != null) {
             this.emergencyContacts = emergencyContacts;
@@ -53,22 +70,14 @@ public class SecurityService extends ServiceUnit implements Notifiable, Serializ
         }
     }
 
-    // GETTERS
-    public int getNumberOfPatrolCars() { return numberOfPatrolCars; }
-    public boolean isEmergencyMode() { return emergencyMode; }
-    public String getCurrentEmergencyStatus() { return currentEmergencyStatus; }
-    public ArrayList<Notifiable> getEmergencyContacts() { return emergencyContacts; }
-
     // OTHER METHODS
 
-    // Registers a notifiable unit (e.g. HealthCenter) as an emergency contact
     public void addEmergencyContact(Notifiable unit) {
         if (unit != null) {
             emergencyContacts.add(unit);
         }
     }
 
-    // Activates emergency mode and notifies all registered emergency contacts with the given message
     public void handleEmergencySituation(String message) {
         setEmergencyMode(true);
         setCurrentEmergencyStatus("EMERGENCY");
@@ -80,7 +89,6 @@ public class SecurityService extends ServiceUnit implements Notifiable, Serializ
         }
     }
 
-    // Receives and displays a security alert notification
     @Override
     public void sendNotification(String message) {
         System.out.println("[Security Alert] Received: " + message);
@@ -89,17 +97,6 @@ public class SecurityService extends ServiceUnit implements Notifiable, Serializ
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "%s\n" +
-                        "  Patrol Cars      : %d\n" +
-                        "  Emergency Mode   : %s\n" +
-                        "  Emergency Status : %s\n" +
-                        "  Alert Contacts   : %d",
-                super.toString(),
-                numberOfPatrolCars,
-                (emergencyMode ? "Active" : "Inactive"),
-                currentEmergencyStatus,
-                emergencyContacts.size()
-        );
+        return String.format("%s\n" + "  Patrol Cars      : %d\n" + "  Emergency Mode   : %s\n" + "  Emergency Status : %s\n" + "  Alert Contacts   : %d", super.toString(), numberOfPatrolCars, (emergencyMode ? "Active" : "Inactive"), currentEmergencyStatus, emergencyContacts.size());
     }
 }

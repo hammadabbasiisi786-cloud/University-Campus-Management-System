@@ -21,7 +21,9 @@ public class CampusZonePanel extends JPanel {
     private JButton removeZoneButton;
     private JButton viewInfoButton;
     private JButton addFacilityButton;
+    private JButton removeFacilityButton;
     private JButton addServiceButton;
+    private JButton removeServiceButton;
     private JButton refreshButton;
 
     private JTable zoneTable;
@@ -60,7 +62,9 @@ public class CampusZonePanel extends JPanel {
         facilityBox = new JComboBox<>();
         facilityPanel.add(facilityBox);
         addFacilityButton = new JButton("Assign Facility to Selected Zone");
+        removeFacilityButton = new JButton("Remove Facility");
         facilityPanel.add(addFacilityButton);
+        facilityPanel.add(removeFacilityButton);
         bottomPanel.add(facilityPanel);
 
         // Row 2: Service Assignment
@@ -69,7 +73,9 @@ public class CampusZonePanel extends JPanel {
         serviceUnitBox = new JComboBox<>();
         servicePanel.add(serviceUnitBox);
         addServiceButton = new JButton("Assign Service to Selected Zone");
+        removeServiceButton = new JButton("Remove Service");
         servicePanel.add(addServiceButton);
+        servicePanel.add(removeServiceButton);
         bottomPanel.add(servicePanel);
         
         // Row 3: Admin Buttons
@@ -99,7 +105,9 @@ public class CampusZonePanel extends JPanel {
         removeZoneButton.addActionListener(e -> removeZone());
         viewInfoButton.addActionListener(e -> viewZoneInfo());
         addFacilityButton.addActionListener(e -> assignFacility());
+        removeFacilityButton.addActionListener(e -> unassignFacility());
         addServiceButton.addActionListener(e -> assignService());
+        removeServiceButton.addActionListener(e -> unassignService());
         refreshButton.addActionListener(e -> {
             refreshComboBoxes();
             refreshTable();
@@ -232,6 +240,64 @@ public class CampusZonePanel extends JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "This service unit is already in this zone.");
             }
+        }
+    }
+
+    private void unassignFacility() {
+        CampusZone selectedZone = getSelectedZone();
+        if (selectedZone == null) {
+            JOptionPane.showMessageDialog(this, "Please select a zone from the table first.");
+            return;
+        }
+
+        String selection = (String) facilityBox.getSelectedItem();
+        if (selection == null || selection.equals("None")) return;
+
+        String facilityId = selection.substring(selection.indexOf("(") + 1, selection.indexOf(")"));
+        
+        Facility facilityToRemove = null;
+        for (Facility f : selectedZone.getFacilities()) {
+            if (f.getEntityID().equals(facilityId)) {
+                facilityToRemove = f;
+                break;
+            }
+        }
+
+        if (facilityToRemove != null) {
+            selectedZone.removeFacility(facilityToRemove);
+            JOptionPane.showMessageDialog(this, "Facility removed from " + selectedZone.getZoneName());
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "This facility is not assigned to the selected zone.");
+        }
+    }
+
+    private void unassignService() {
+        CampusZone selectedZone = getSelectedZone();
+        if (selectedZone == null) {
+            JOptionPane.showMessageDialog(this, "Please select a zone from the table first.");
+            return;
+        }
+
+        String selection = (String) serviceUnitBox.getSelectedItem();
+        if (selection == null || selection.equals("None")) return;
+
+        String serviceId = selection.substring(selection.indexOf("(") + 1, selection.indexOf(")"));
+        
+        ServiceUnit serviceToRemove = null;
+        for (ServiceUnit s : selectedZone.getServiceUnits()) {
+            if (s.getEntityID().equals(serviceId)) {
+                serviceToRemove = s;
+                break;
+            }
+        }
+
+        if (serviceToRemove != null) {
+            selectedZone.removeServiceUnit(serviceToRemove);
+            JOptionPane.showMessageDialog(this, "Service Unit removed from " + selectedZone.getZoneName());
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "This service unit is not assigned to the selected zone.");
         }
     }
 

@@ -13,9 +13,7 @@ import java.util.TimerTask;
 
 public class DataManager {
 
-    // =====================================================================
-    // FILE PATH CONSTANTS
-    // =====================================================================
+    // FILEPATHS
     private static final String DATA_FOLDER = "data/";
     private static final String STUDENTS_FILE = DATA_FOLDER + "students.dat";
     private static final String TEACHERS_FILE = DATA_FOLDER + "teachers.dat";
@@ -34,9 +32,8 @@ public class DataManager {
     private static final String LOGIN_FILE = DATA_FOLDER + "loginmanager.dat";
     private static final String COUNTERS_FILE = DATA_FOLDER + "counters.dat";
 
-    // =====================================================================
-    // FIELDS — one repository per type
-    // =====================================================================
+    // FIELDS
+
     private CampusRepository<Student> repoStudents = new CampusRepository<>();
     private CampusRepository<Teacher> repoTeachers = new CampusRepository<>();
     private CampusRepository<Course> repoCourses = new CampusRepository<>();
@@ -54,17 +51,13 @@ public class DataManager {
     private LoginManager loginManager = new LoginManager();
     private Timer autoSaveTimer;
 
-    // =====================================================================
     // CONSTRUCTORS
-    // =====================================================================
     public DataManager() {
-        // Create the data folder if it does not exist
+        // Ensure the data folder exists before any save/load operations
         new File(DATA_FOLDER).mkdirs();
     }
 
-    // =====================================================================
-    // GETTERS — expose repositories to the rest of the app
-    // =====================================================================
+    // GETTERS
     public CampusRepository<Student> getRepoStudents() {
         return repoStudents;
     }
@@ -125,11 +118,8 @@ public class DataManager {
         return loginManager;
     }
 
-    // =====================================================================
     // OTHER METHODS
-    // =====================================================================
 
-    // Saves all repositories and counters to their respective .dat files
     public void saveAll() {
         System.out.println("\n--- Saving all data ---");
         save(repoStudents, STUDENTS_FILE);
@@ -151,7 +141,6 @@ public class DataManager {
         System.out.println("--- All data saved successfully ---\n");
     }
 
-    // Loads all repositories from their .dat files, then restores static counters
     @SuppressWarnings("unchecked")
     public void loadAll() {
         System.out.println("\n--- Loading all data ---");
@@ -216,13 +205,11 @@ public class DataManager {
         if (loadedLogin != null)
             loginManager = loadedLogin;
 
-        // IMPORTANT: Always restore counters last, after all data is loaded
         loadCounters();
 
         System.out.println("--- All data loaded successfully ---\n");
     }
 
-    // Starts an auto-save timer that saves all data every 5 minutes
     public void startAutoSave() {
         autoSaveTimer = new Timer(true); // daemon=true so it doesn't block app exit
         autoSaveTimer.scheduleAtFixedRate(new TimerTask() {
@@ -235,7 +222,6 @@ public class DataManager {
         System.out.println("[Auto-Save] Timer started — saves every 5 minutes.");
     }
 
-    // Stops the auto-save timer
     public void stopAutoSave() {
         if (autoSaveTimer != null) {
             autoSaveTimer.cancel();
@@ -243,14 +229,8 @@ public class DataManager {
         }
     }
 
-    // =====================================================================
-    // PRIVATE HELPERS
-    // =====================================================================
-
-    // Serializes any object to the given file path — handles IOException
     private void save(Object data, String filepath) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(
-                new FileOutputStream(filepath))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filepath))) {
             oos.writeObject(data);
             System.out.println("  Saved : " + filepath);
         } catch (IOException e) {
@@ -258,8 +238,6 @@ public class DataManager {
         }
     }
 
-    // Deserializes an object from the given file path
-    // Returns null if the file does not exist, is corrupted, or class is not found
     private Object load(String filepath) {
         File file = new File(filepath);
 
@@ -273,8 +251,7 @@ public class DataManager {
             return null;
         }
 
-        try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream(filepath))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filepath))) {
             Object data = ois.readObject();
             System.out.println("  Loaded   : " + filepath);
             return data;
@@ -287,20 +264,13 @@ public class DataManager {
         }
     }
 
-    // Saves the current value of all static counters to counters.dat
     private void saveCounters() {
-        CounterManager manager = new CounterManager(
-                Student.getStudentCounter(),
-                Course.getTotalCourses(),
-                Classroom.getIdCounter(),
-                Lab.getIdCounter(),
-                Teacher.getTeacherCounter(),
-                Admin.getAdminCounter(),
-                Facility.getTotalFacilityUsage());
+        CounterManager manager = new CounterManager(Student.getStudentCounter(), Course.getTotalCourses(),
+                Classroom.getIdCounter(), Lab.getIdCounter(), Teacher.getTeacherCounter(), Admin.getAdminCounter(),
+                Department.getIdCounter(), Facility.getTotalFacilityUsage());
         save(manager, COUNTERS_FILE);
     }
 
-    // Loads counter values from counters.dat and restores all static counters
     private void loadCounters() {
         CounterManager manager = (CounterManager) load(COUNTERS_FILE);
         if (manager != null) {
@@ -310,13 +280,12 @@ public class DataManager {
             Lab.setIdCounter(manager.getLabCounter());
             Teacher.setTeacherCounter(manager.getTeacherCounter());
             Admin.setAdminCounter(manager.getAdminCounter());
+            Department.setIdCounter(manager.getDepartmentCounter());
             Facility.setFacilityCounter(manager.getTotalFacilityUsage());
-            System.out.println("  Counters restored → Student:" + manager.getStudentCounter()
-                    + " Teacher:" + manager.getTeacherCounter()
-                    + " Admin:"   + manager.getAdminCounter()
-                    + " Course:"  + manager.getCourseCounter()
-                    + " Classroom:" + manager.getClassroomCounter()
-                    + " Lab:"     + manager.getLabCounter()
+            System.out.println("  Counters restored → Student:" + manager.getStudentCounter() + " Teacher:"
+                    + manager.getTeacherCounter() + " Admin:" + manager.getAdminCounter() + " Course:"
+                    + manager.getCourseCounter() + " Classroom:" + manager.getClassroomCounter() + " Lab:"
+                    + manager.getLabCounter() + " Dept:" + manager.getDepartmentCounter()
                     + " Facility:" + manager.getTotalFacilityUsage());
         }
     }

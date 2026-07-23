@@ -21,6 +21,11 @@ public abstract class ServiceUnit extends Campus_Entity {
         setBaseHourlyRate(baseHourlyRate);
     }
 
+    // GETTERS
+    public int getStaffCount() {
+        return noOfStaff;
+    }
+
     // SETTERS
     public void setStaffCount(int noOfStaff) {
         if (noOfStaff < 0) {
@@ -28,6 +33,10 @@ public abstract class ServiceUnit extends Campus_Entity {
         } else {
             this.noOfStaff = noOfStaff;
         }
+    }
+
+    public int getServiceHours() {
+        return serviceHours;
     }
 
     public void setServiceHours(int serviceHours) {
@@ -38,6 +47,10 @@ public abstract class ServiceUnit extends Campus_Entity {
         }
     }
 
+    public double getBaseHourlyRate() {
+        return baseHourlyRate;
+    }
+
     public void setBaseHourlyRate(double baseHourlyRate) {
         if (baseHourlyRate < 0) {
             System.out.println("Base hourly rate cannot be negative");
@@ -46,14 +59,8 @@ public abstract class ServiceUnit extends Campus_Entity {
         }
     }
 
-    // GETTERS
-    public int getStaffCount() { return noOfStaff; }
-    public int getServiceHours() { return serviceHours; }
-    public double getBaseHourlyRate() { return baseHourlyRate; }
-
     // OTHER METHODS
 
-    // Calculates operational cost as total staff multiplied by hourly rate and service hours
     @Override
     public double calculateOperationalCost() {
         return (this.noOfStaff * baseHourlyRate) * serviceHours;
@@ -62,15 +69,6 @@ public abstract class ServiceUnit extends Campus_Entity {
     // TO-STRING
     @Override
     public String toString() {
-        return String.format(
-                "%s\n" +
-                        "  Staff Count   : %d\n" +
-                        "  Service Hours : %d\n" +
-                        "  Hourly Rate   : %.2f",
-                super.toString(),
-                noOfStaff,
-                serviceHours,
-                baseHourlyRate
-        );
+        return String.format("%s\n" + "  Staff Count   : %d\n" + "  Service Hours : %d\n" + "  Hourly Rate   : %.2f", super.toString(), noOfStaff, serviceHours, baseHourlyRate);
     }
 }
