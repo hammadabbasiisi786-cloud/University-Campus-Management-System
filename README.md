@@ -1,5 +1,8 @@
 # University Campus Management System
 
+> [!CAUTION]
+> **This repository is archived.** It is no longer actively maintained and is kept for historical reference.
+
 <div align="center">
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
